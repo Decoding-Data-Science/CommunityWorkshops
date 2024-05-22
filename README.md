@@ -1,2 +1,2 @@
 # Coomunityworkshops
-Coomunityworkshops
+Community workshops
