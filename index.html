@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ship Your First Enterprise RAG App — Free Masterclass (Aug 16, 2025)</title>
+  <meta name="description" content="Hands-on, live masterclass: build and deploy an enterprise-ready RAG application in 2 hours. Seats limited to 100 builders. No replay." />
+  <link rel="icon" href="https://decodingdatascience.com/favicon-512x512.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "Ship Your First Enterprise RAG App — Free Masterclass",
+    "startDate": "2025-08-16T10:30:00+04:00",
+    "endDate": "2025-08-16T12:30:00+04:00",
+    "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "location": {
+      "@type": "VirtualLocation",
+      "url": "https://nas.io/artificialintelligence/events/apitoapp-masterclass-deploy-your-first-llm-on-hugging-face"
+    },
+    "organizer": {
+      "@type": "Organization",
+      "name": "Decoding Data Science",
+      "url": "https://decodingdatascience.com"
+    },
+    "image": "https://decodingdatascience.com/favicon-512x512.png",
+    "description": "From raw documents to a deployed, enterprise-ready RAG app — in just 2 hours, live. Learn ingestion, vector DBs, retrieval, and LLM interface integration. Live-only: no replay.",
+    "offers": {
+      "@type": "Offer",
+      "price": 0,
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "url": "https://nas.io/artificialintelligence/events/apitoapp-masterclass-deploy-your-first-llm-on-hugging-face",
+      "validFrom": "2025-08-12T00:00:00+04:00"
+    }
+  }
+  </script>
+  <style>
+    /* Smooth fonts */
+    html, body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-white">
+  <main>
+    <!-- HERO -->
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-indigo-600/30 via-slate-900 to-slate-950"></div>
+      <div class="relative max-w-7xl mx-auto px-6 pt-16 pb-10">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm backdrop-blur">
+          <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+          Live Masterclass • Sat, 16 Aug • 10:30–12:30 (Dubai Time)
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+          Ship Your First <span class="text-indigo-300">Enterprise RAG App</span>
+        </h1>
+        <p class="mt-4 max-w-3xl text-lg text-slate-300">
+          From raw documents to a deployed, enterprise-ready RAG app — in just 2 hours. Hands-on, practical, and production-minded.
+        </p>
+
+        <!-- CTA Row -->
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href="https://nas.io/artificialintelligence/events/apitoapp-masterclass-deploy-your-first-llm-on-hugging-face" class="inline-flex items-center justify-center rounded-2xl bg-indigo-500 px-6 py-3 font-semibold text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+            Register Free (100 seats)
+          </a>
+          <a id="gcal" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-2xl bg-white/10 px-6 py-3 font-semibold text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30">
+            Add to Google Calendar
+          </a>
+          <button id="icsBtn" class="inline-flex items-center justify-center rounded-2xl bg-white/10 px-6 py-3 font-semibold text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30">
+            Download .ics
+          </button>
+          <button id="shareBtn" class="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-transparent px-4 py-3 text-sm text-slate-200 hover:bg-white/10">
+            Share
+          </button>
+        </div>
+
+        <!-- Countdown -->
+        <div class="mt-10 grid w-full max-w-2xl grid-cols-4 gap-3 text-center">
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div id="d" class="text-3xl font-bold tabular-nums">00</div>
+            <div class="mt-1 text-xs uppercase tracking-wide text-slate-400">Days</div>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div id="h" class="text-3xl font-bold tabular-nums">00</div>
+            <div class="mt-1 text-xs uppercase tracking-wide text-slate-400">Hours</div>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div id="m" class="text-3xl font-bold tabular-nums">00</div>
+            <div class="mt-1 text-xs uppercase tracking-wide text-slate-400">Min</div>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div id="s" class="text-3xl font-bold tabular-nums">00</div>
+            <div class="mt-1 text-xs uppercase tracking-wide text-slate-400">Sec</div>
+          </div>
+        </div>
+
+        <!-- Host -->
+        <div class="mt-10 flex items-center gap-4">
+          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-500 font-bold">MA</div>
+          <div>
+            <div class="text-sm text-slate-400">Hosted by</div>
+            <div class="text-base font-semibold">Mohammad Arshad</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INFO STRIP -->
+    <section class="border-y border-white/10 bg-slate-900/30">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 gap-4 px-6 py-6 md:grid-cols-5">
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="text-xs uppercase tracking-wide text-slate-400">Date</div>
+          <div class="mt-1 text-base font-semibold text-white">Saturday, 16 Aug 2025</div>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="text-xs uppercase tracking-wide text-slate-400">Time</div>
+          <div class="mt-1 text-base font-semibold text-white">10:30 AM – 12:30 PM (Dubai Time)</div>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="text-xs uppercase tracking-wide text-slate-400">Mode</div>
+          <div class="mt-1 text-base font-semibold text-white">Online (Live via Zoom)</div>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="text-xs uppercase tracking-wide text-slate-400">Seats</div>
+          <div class="mt-1 text-base font-semibold text-white">100 builders only</div>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="text-xs uppercase tracking-wide text-slate-400">Cost</div>
+          <div class="mt-1 text-base font-semibold text-white">Free</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALUE SECTION -->
+    <section class="max-w-7xl mx-auto px-6 py-12">
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div>
+          <h2 class="text-2xl font-bold">What you’ll build</h2>
+          <ul class="mt-4 space-y-3 text-slate-300">
+            <li class="flex gap-2"><span class="mt-2 inline-block h-2 w-2 flex-none translate-y-1 rounded-full bg-indigo-400"></span> Ingest and chunk raw documents for retrieval-ready context.</li>
+            <li class="flex gap-2"><span class="mt-2 inline-block h-2 w-2 flex-none translate-y-1 rounded-full bg-indigo-400"></span> Create embeddings and index them in a vector database.</li>
+            <li class="flex gap-2"><span class="mt-2 inline-block h-2 w-2 flex-none translate-y-1 rounded-full bg-indigo-400"></span> Retrieve top-k context with guards to reduce hallucinations.</li>
+            <li class="flex gap-2"><span class="mt-2 inline-block h-2 w-2 flex-none translate-y-1 rounded-full bg-indigo-400"></span> Wire the pipeline into an LLM-powered chat interface.</li>
+            <li class="flex gap-2"><span class="mt-2 inline-block h-2 w-2 flex-none translate-y-1 rounded-full bg-indigo-400"></span> Deploy the app publicly — ready to share with stakeholders.</li>
+          </ul>
+
+          <div class="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 class="font-semibold">Who is this for?</h3>
+            <p class="mt-2 text-slate-300">Builders, developers, analysts, and AI enthusiasts who want hands-on, production-minded RAG skills.</p>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-bold">Prerequisites</h2>
+          <ul class="mt-4 space-y-3 text-slate-300">
+            <li class="flex gap-2"><span class="mt-2 inline-block h-2 w-2 flex-none translate-y-1 rounded-full bg-indigo-400"></span> Basic Python familiarity (functions, virtual environments).</li>
+            <li class="flex gap-2"><span class="mt-2 inline-block h-2 w-2 flex-none translate-y-1 rounded-full bg-indigo-400"></span> GitHub account recommended.</li>
+            <li class="flex gap-2"><span class="mt-2 inline-block h-2 w-2 flex-none translate-y-1 rounded-full bg-indigo-400"></span> Laptop with stable internet; be ready to code along.</li>
+          </ul>
+
+          <div class="mt-8 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-6">
+            <h3 class="font-semibold">Important</h3>
+            <p class="mt-2 text-amber-100">Live-only experience — no replay will be provided.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AGENDA -->
+    <section class="max-w-7xl mx-auto px-6 pb-12">
+      <h2 class="text-2xl font-bold">Agenda (2 hours)</h2>
+      <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="text-sm text-slate-400">10:30</div>
+          <div class="mt-1 text-lg font-semibold">Kickoff & goals</div>
+          <div class="mt-1 text-slate-300">Session flow, deliverables, and success criteria.</div>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="text-sm text-slate-400">10:40</div>
+          <div class="mt-1 text-lg font-semibold">Data ingestion & chunking</div>
+          <div class="mt-1 text-slate-300">Load documents; design chunking for retrieval.</div>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="text-sm text-slate-400">11:00</div>
+          <div class="mt-1 text-lg font-semibold">Embeddings & indexing</div>
+          <div class="mt-1 text-slate-300">Generate embeddings and index to a vector DB.</div>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="text-sm text-slate-400">11:25</div>
+          <div class="mt-1 text-lg font-semibold">Context retrieval</div>
+          <div class="mt-1 text-slate-300">Top-k retrieval, filtering, and basic guardrails.</div>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="text-sm text-slate-400">11:50</div>
+          <div class="mt-1 text-lg font-semibold">LLM interface</div>
+          <div class="mt-1 text-slate-300">Connect the pipeline to a chat UI.</div>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="text-sm text-slate-400">12:10</div>
+          <div class="mt-1 text-lg font-semibold">Deploy & share</div>
+          <div class="mt-1 text-slate-300">Push a public build; Q&A and next steps.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REGISTER -->
+    <section id="register" class="bg-slate-900/40">
+      <div class="max-w-3xl mx-auto px-6 py-12">
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-8">
+          <h2 class="text-2xl font-bold">Register now</h2>
+          <p class="mt-2 text-slate-300">Seats are limited to ensure a high-touch experience. Secure yours and be ready to code along.</p>
+
+          <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <a href="https://nas.io/artificialintelligence/events/apitoapp-masterclass-deploy-your-first-llm-on-hugging-face" class="md:col-span-2 w-full text-center rounded-2xl bg-indigo-500 px-6 py-3 font-semibold text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+              Secure my seat
+            </a>
+            <div class="md:col-span-2 grid grid-cols-1 gap-2 md:grid-cols-3 mt-4">
+              <div class="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">Beginner–intermediate friendly</div>
+              <div class="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">Hands-on walkthrough</div>
+              <div class="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">Production-minded</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT / CTA -->
+    <section class="max-w-7xl mx-auto px-6 py-12">
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div class="md:col-span-2">
+          <h2 class="text-2xl font-bold">About the masterclass</h2>
+          <p class="mt-3 text-slate-300">
+            Join a focused, live build where we take raw documents and ship a working Retrieval‑Augmented Generation application in two hours. We cover ingestion, embeddings, indexing, retrieval, and LLM integration — with an eye toward enterprise use.
+          </p>
+          <p class="mt-3 text-slate-300">
+            This session is part of the AI Residency Masterclass Series. Learn more at
+            <a href="https://decodingdatascience.com/airesidency" target="_blank" rel="noreferrer" class="text-indigo-300 underline">decodingdatascience.com/airesidency</a>.
+          </p>
+        </div>
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
+          <h3 class="font-semibold">Key notes</h3>
+          <ul class="mt-3 space-y-2 text-slate-300">
+            <li class="flex gap-2"><span class="mt-2 inline-block h-2 w-2 flex-none translate-y-1 rounded-full bg-indigo-400"></span> Live-only. No replay will be available.</li>
+            <li class="flex gap-2"><span class="mt-2 inline-block h-2 w-2 flex-none translate-y-1 rounded-full bg-indigo-400"></span> Seats limited to 100 builders.</li>
+            <li class="flex gap-2"><span class="mt-2 inline-block h-2 w-2 flex-none translate-y-1 rounded-full bg-indigo-400"></span> Best experience on a laptop; have Python set up.</li>
+          </ul>
+          <a href="https://nas.io/artificialintelligence/events/apitoapp-masterclass-deploy-your-first-llm-on-hugging-face" class="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-indigo-500 px-6 py-3 font-semibold text-white hover:bg-indigo-400">Register Free</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10">
+      <div class="max-w-7xl mx-auto flex flex-col items-center justify-between gap-4 px-6 py-8 md:flex-row">
+        <div class="text-sm text-slate-400">© <span id="year"></span> Decoding Data Science</div>
+        <div class="flex items-center gap-4 text-sm text-slate-400">
+          <a href="https://decodingdatascience.com/airesidency" target="_blank" rel="noreferrer" class="hover:text-white">AI Residency</a>
+          <a href="#register" class="hover:text-white">Register</a>
+          <button id="shareBtn2" class="hover:text-white">Share</button>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Countdown to Dubai time 2025-08-16T10:30:00+04:00
+    const target = new Date('2025-08-16T10:30:00+04:00').getTime();
+    function tick() {
+      const now = Date.now();
+      const diff = Math.max(0, target - now);
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+      document.getElementById('d').textContent = String(d).padStart(2, '0');
+      document.getElementById('h').textContent = String(h).padStart(2, '0');
+      document.getElementById('m').textContent = String(m).padStart(2, '0');
+      document.getElementById('s').textContent = String(s).padStart(2, '0');
+    }
+    setInterval(tick, 1000); tick();
+
+    // Google Calendar
+    const gcal = document.getElementById('gcal');
+    const start = '20250816T063000Z'; // 10:30 GST is 06:30Z
+    const end   = '20250816T083000Z'; // 12:30 GST is 08:30Z
+    const text = encodeURIComponent('Ship Your First Enterprise RAG App — Free Masterclass');
+    const details = encodeURIComponent('From raw documents to a deployed, enterprise-ready RAG app — in just 2 hours, live. Seats limited to 100 builders. No replay.');
+    const location = encodeURIComponent('Online');
+    gcal.href = `https://www.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}%2F${end}&details=${details}&location=${location}`;
+
+    // ICS download
+    function downloadICS() {
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const stamp = `${now.getUTCFullYear()}${pad(now.getUTCMonth()+1)}${pad(now.getUTCDate())}T${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}${pad(now.getUTCSeconds())}Z`;
+      const ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Decoding Data Science//RAG Masterclass//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        'UID:rag-masterclass-20250816@decodingdatascience.com',
+        `DTSTAMP:${stamp}`,
+        'DTSTART:20250816T063000Z',
+        'DTEND:20250816T083000Z',
+        'SUMMARY:Ship Your First Enterprise RAG App — Free Masterclass',
+        'LOCATION:Online',
+        'DESCRIPTION:From raw documents to a deployed, enterprise-ready RAG app — in just 2 hours, live. Seats limited to 100 builders. No replay.',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'rag-masterclass-2025-08-16.ics';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    document.getElementById('icsBtn').addEventListener('click', downloadICS);
+
+    // Share
+    function copyLink() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          alert('Page link copied to clipboard.');
+        });
+      } else {
+        alert('Copy not supported in this browser');
+      }
+    }
+    document.getElementById('shareBtn').addEventListener('click', copyLink);
+    document.getElementById('shareBtn2').addEventListener('click', copyLink);
+  </script>
+</body>
+</html>
