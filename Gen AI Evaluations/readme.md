@@ -22,5 +22,10 @@ source .venv/bin/activate
 # 2) Install dependencies
 pip install -r requirements.txt
 
-# 3) Launch Jupyter and open a notebook
+# 3) Update environment variables with open ai key and langsmith key
+
+
+# 4) Launch Jupyter and open a notebook
 jupyter lab   # or: jupyter notebook
+
+
