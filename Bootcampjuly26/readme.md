@@ -1,61 +1,65 @@
-# Agentic AI Demo Challenge
+# AI Accelerator Bootcamp — 5th Edition
 
-[![Decoding Data Science](https://raw.githubusercontent.com/Decoding-Data-Science/airesidency/main/DDS%20HIGH%20RES%20Logo%20%20copywhite.png)](https://decodingdatascience.com)
+<a href="https://decodingdatascience.com"><img src="https://raw.githubusercontent.com/Decoding-Data-Science/airesidency/main/DDS%20HIGH%20RES%20Logo%20%20copywhite.png" alt="Decoding Data Science" width="180"></a>
 
-> **Build a working agentic AI application, solo, and demo it — online on August 4, live in Dubai on August 6.**
+> **3-day live intensive — from AI-curious to shipping a real enterprise AI chatbot. July 24–26, 2026.**
 
-🔗 **Full challenge details & registration →** [decoding-data-science.github.io/airesidency/agentic-ai-demo-challenge.html](https://decoding-data-science.github.io/airesidency/agentic-ai-demo-challenge.html)
+🔗 **Full details & registration →** [decodingdatascience.com/ai-accelerator-bootcamp-2026](https://decodingdatascience.com/ai-accelerator-bootcamp-2026/)
 
 ---
 
 ## About
 
-The Agentic AI Demo Challenge is a free, solo challenge by [Decoding Data Science](https://decodingdatascience.com) — open to students, freelancers, and experienced developers. Participants build and submit a working agentic AI application for a chance to demo it to a judging panel and compete for **$4,250 in prizes**.
+The AI Accelerator Bootcamp is a hands-on, 3-day live online intensive by [Decoding Data Science](https://decodingdatascience.com). Participants build a working enterprise AI chatbot using RAG architecture — LlamaIndex, Pinecone, OpenAI, and Gradio — deployed and demo-ready by Day 3. CPD-certified with 10 CPD hours.
 
-| Date | Milestone |
-|---|---|
-| July 16 | Announcement + Live Q&A |
-| August 2, 11:45 PM GST | Submissions close |
-| August 4 | Online Demo Day |
-| August 6 — Dubai | Physical Demo Day + Winners Announced |
+| Day | Date | Time (GST) |
+|---|---|---|
+| Day 1 | Friday, July 24 | 6:30–8:30 PM |
+| Day 2 | Saturday, July 25 | 11:00 AM–1:00 PM |
+| Day 3 | Sunday, July 26 | 2:00–4:00 PM |
 
 ## Repository Structure
 
 ```
 ├── README.md
 ├── data/               ← Datasets and supporting files
-├── notebooks/          ← Jupyter notebooks and walkthroughs
+├── notebooks/          ← Jupyter notebooks and code walkthroughs
 ├── pdfs/               ← Reference documents and resources
 └── .gitignore
 ```
 
-## What Participants Submit
+## What You'll Build
 
-- A working project / deployed link
-- GitHub repository link
-- Recorded demo (optional)
+A real enterprise AI chatbot using:
 
-## Prizes
+- **LlamaIndex** — data ingestion and indexing
+- **Pinecone** — vector database
+- **OpenAI** — LLM backbone
+- **Gradio** — UI interface
+- **RAG Architecture** — retrieval-augmented generation pipeline
 
-| Place | Prize | Value |
-|---|---|---|
-| 🥇 1st | CAIO Program + JetBrains All Products License | $1,750 |
-| 🥈 2nd | AI for Builders Program (CPD-backed certificate) | $1,500 |
-| 🥉 3rd | CAIO Program (includes AI for Builders + certificate) | $1,000 |
+## What's Included
 
-*Rewards are for winning placements, not automatic for all participants. Subject to eligibility, project quality, and final review.*
+- 6 hours of live coding across 3 days
+- Day 0 Prep Pack (sent immediately on registration)
+- Python Essentials Certification ($200 value)
+- Early-bird support materials ($100 value)
+- Bonus AI resource packs ($200 value)
+- AI Builders community access
+- Live Q&A session
+- CPD-certified completion certificate
 
-## Join the Challenge
+## Registration
 
-**[Register here →](https://nas.com/artificialintelligence/challenges/agentic-ai-demo-challenge)**
+**[Secure your seat → $49 early bird](https://decodingdatascience.com/ai-accelerator-bootcamp-2026/)**
 
-Free to join. One person, one project. Sign-up is part of the DDS community.
+Early-bird pricing: **$49** (regular $149). Limited seats at this price.
 
 ---
 
 ## About Decoding Data Science
 
-**194K+ community members** · **1,000+ events hosted** · **50+ countries** · **CPD Verified**
+**194K+ community members** · **1,000+ events hosted** · **50+ countries** · **CPD Approved Training Provider**
 
 Founded by [Mohammad Arshad](https://www.linkedin.com/in/araboree/) — 21 years of industry experience in data, AI & technology leadership.
 
