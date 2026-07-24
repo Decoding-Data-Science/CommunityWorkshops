@@ -51,9 +51,7 @@ A real enterprise AI chatbot using:
 
 ## Registration
 
-**[Secure your seat → $49 early bird](https://decodingdatascience.com/ai-accelerator-bootcamp-2026/)**
-
-Early-bird pricing: **$49** (regular $149). Limited seats at this price.
+**[Secure your seat → $99 early bird](https://decodingdatascience.com/ai-accelerator-bootcamp-2026/)**
 
 ---
 
