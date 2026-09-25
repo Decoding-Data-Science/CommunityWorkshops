@@ -1,0 +1,2129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Accelerator Bootcamp | Complete Session Guide | Decoding Data Science</title>
+<meta name="description" content="Complete guide for the DDS AI Accelerator Bootcamp: Day 0 to Day 3, the Clarity-Prototype-Evidence framework, the full RAG code walkthrough, Gradio and Hugging Face Spaces deployment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070b14; --bg2:#0b1220; --panel:#0e1627; --panel2:#121c31; --line:#1f2c47;
+  --text:#e6edf7; --muted:#93a1b8; --cyan:#22d3ee; --violet:#8b5cf6; --amber:#f5a623;
+  --green:#34d399; --red:#f87171; --code:#050810;
+  --radius:14px; --side:270px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;font-size:16px;line-height:1.7;
+  background-image:
+    radial-gradient(900px 500px at 85% -5%,rgba(139,92,246,.14),transparent 60%),
+    radial-gradient(800px 500px at -5% 10%,rgba(34,211,238,.10),transparent 60%),
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:auto,auto,42px 42px,42px 42px;
+  background-attachment:fixed}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+h1,h2,h3,h4{font-family:"Space Grotesk",Inter,sans-serif;line-height:1.2;margin:0 0 .5em;letter-spacing:-.01em}
+h1{font-size:clamp(2.1rem,5vw,3.6rem);font-weight:700}
+h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700}
+h3{font-size:1.3rem;font-weight:600;color:#fff;margin-top:1.8em}
+h4{font-size:1.05rem;font-weight:600;color:var(--cyan);margin-top:1.4em}
+p{margin:.6em 0 1em}
+p,li,summary,.card,.step,.callout,.say{overflow-wrap:anywhere}
+td,th{overflow-wrap:normal;word-break:normal}
+code:not(pre code){overflow-wrap:anywhere}
+html,body{overflow-x:hidden}
+a{color:var(--cyan);text-decoration:none;border-bottom:1px dotted rgba(34,211,238,.5)}
+a:hover{border-bottom-style:solid}
+code,pre,kbd{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace}
+code{background:rgba(34,211,238,.08);color:#9be7f5;padding:.12em .4em;border-radius:6px;font-size:.88em}
+strong{color:#fff;font-weight:600}
+ul,ol{padding-left:1.3em;margin:.4em 0 1em}
+li{margin:.3em 0}
+
+/* layout */
+.side{position:fixed;inset:0 auto 0 0;width:var(--side);background:rgba(7,11,20,.92);backdrop-filter:blur(8px);border-right:1px solid var(--line);padding:22px 16px;overflow-y:auto;z-index:50}
+.side .brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.side .brand img{height:30px;width:auto}
+.side .brand span{font-family:"Space Grotesk",Inter,sans-serif;font-weight:600;font-size:.95rem;color:#fff}
+.side small{display:block;color:var(--muted);font-size:.74rem;margin-bottom:16px}
+.side nav a{display:block;border:0;color:var(--muted);font-size:.86rem;padding:6px 10px;border-radius:8px;line-height:1.35;margin:1px 0}
+.side nav a:hover{background:var(--panel);color:#fff}
+.side nav a.active{background:rgba(34,211,238,.1);color:var(--cyan)}
+.side nav .grp{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:#5d6d8a;margin:14px 10px 4px}
+.side nav a.sub{padding-left:22px;font-size:.8rem}
+main{margin-left:var(--side);padding:0 clamp(18px,4vw,56px) 80px}
+.wrap{max-width:1040px;margin:0 auto}
+.menu-btn{display:none;position:fixed;top:12px;left:12px;z-index:60;background:var(--panel);color:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font:600 .85rem Inter,sans-serif}
+@media(max-width:980px){
+  .side{transform:translateX(-100%);transition:transform .25s}
+  .side.open{transform:none}
+  main{margin-left:0}
+  .menu-btn{display:block}
+  .hero{padding-top:64px}
+}
+
+/* hero */
+.hero{padding:70px 0 40px}
+.herogrid{display:grid;grid-template-columns:1.15fr 1fr;gap:32px;align-items:center}
+@media(max-width:900px){.herogrid{grid-template-columns:1fr}}
+.eyebrow{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.grad{background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:1.15rem;color:#c5d0e4;max-width:820px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:28px 0}
+.fact{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+.fact b{display:block;font-family:"Space Grotesk",Inter,sans-serif;font-size:1.5rem;color:#fff}
+.fact span{font-size:.82rem;color:var(--muted)}
+
+/* orbit visual: 6 core elements revolving around the AI app core */
+.orbit-wrap{position:relative;aspect-ratio:1/1;max-width:440px;margin:0 auto;display:flex;align-items:center;justify-content:center}
+.orbit-wrap:before{content:"";position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.16),rgba(139,92,246,.08) 55%,transparent 75%);filter:blur(6px)}
+.orbit-ring{position:absolute;border:1px dashed rgba(148,163,199,.28);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%)}
+.orbit-ring.r1{width:78%;height:78%;animation:spin 38s linear infinite}
+.orbit-ring.r2{width:100%;height:100%;border-style:solid;border-color:rgba(34,211,238,.14);animation:spin 60s linear infinite reverse}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.orbit-core{position:relative;z-index:3;width:31%;aspect-ratio:1/1;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:radial-gradient(circle at 35% 30%,#1a2440,var(--code) 70%);border:1px solid rgba(34,211,238,.5);
+  box-shadow:0 0 0 1px rgba(139,92,246,.15),0 0 40px rgba(34,211,238,.35),inset 0 0 30px rgba(139,92,246,.15);
+  animation:pulseCore 3.6s ease-in-out infinite}
+@keyframes pulseCore{0%,100%{box-shadow:0 0 0 1px rgba(139,92,246,.15),0 0 34px rgba(34,211,238,.3),inset 0 0 26px rgba(139,92,246,.14)}50%{box-shadow:0 0 0 1px rgba(34,211,238,.3),0 0 54px rgba(34,211,238,.55),inset 0 0 34px rgba(139,92,246,.22)}}
+.orbit-core span{font-family:"Space Grotesk",Inter,sans-serif;font-weight:700;font-size:.92rem;line-height:1.25;color:#fff}
+.orbit-core em{display:block;font-style:normal;font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase;margin-bottom:3px}
+.orbit-orbiter{position:absolute;inset:0;animation:spin 26s linear infinite}
+.orbit-node{position:absolute;top:50%;left:50%;width:29%;transform-origin:center;--r:150px;
+  transform:rotate(var(--ang)) translateX(var(--r))}
+.orbit-node .pin{position:absolute;top:50%;left:50%;width:100%;display:flex;flex-direction:column;align-items:center;gap:4px;
+  transform:translate(-50%,-50%) rotate(calc(var(--ang) * -1));animation:mmCounter 26s linear infinite}
+@keyframes mmCounter{
+  from{transform:translate(-50%,-50%) rotate(calc(var(--ang) * -1))}
+  to{transform:translate(-50%,-50%) rotate(calc(var(--ang) * -1 - 360deg))}
+}
+.orbit-node .dot{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Space Grotesk",Inter,sans-serif;font-weight:700;font-size:.68rem;color:#04121a;
+  background:linear-gradient(135deg,var(--cyan),#67e8f9);box-shadow:0 0 16px rgba(34,211,238,.55),0 0 0 4px rgba(7,11,20,.9)}
+.orbit-node .lab{font-size:.68rem;color:#cfe0f5;background:rgba(7,11,20,.72);border:1px solid var(--line);padding:2px 8px;border-radius:99px;white-space:nowrap;font-family:"JetBrains Mono",monospace;letter-spacing:.02em}
+.orbit-node:nth-child(1){--ang:0deg}
+.orbit-node:nth-child(2){--ang:60deg}
+.orbit-node:nth-child(3){--ang:120deg}
+.orbit-node:nth-child(4){--ang:180deg}
+.orbit-node:nth-child(5){--ang:240deg}
+.orbit-node:nth-child(6){--ang:300deg}
+.orbit-node:nth-child(2) .dot{background:linear-gradient(135deg,var(--violet),#c4b5fd)}
+.orbit-node:nth-child(4) .dot{background:linear-gradient(135deg,var(--amber),#fbbf24)}
+.orbit-node:nth-child(6) .dot{background:linear-gradient(135deg,var(--green),#6ee7b7)}
+@media(max-width:900px){
+  .orbit-node{--r:118px}
+  .orbit-wrap{max-width:320px}}
+.scan{position:absolute;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(34,211,238,.7),transparent);animation:scan 5s ease-in-out infinite;z-index:2}
+@keyframes scan{0%{top:10%;opacity:0}10%{opacity:1}50%{top:88%;opacity:1}60%{opacity:0}100%{top:10%;opacity:0}}
+
+/* animated mind map: hub + 6 spokes */
+.mindmap{position:relative;margin:22px 0;background:radial-gradient(600px 340px at 50% 0%,rgba(139,92,246,.08),transparent 70%),var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:10px}
+.mindmap svg{display:block;width:100%;height:auto}
+.mm-link{fill:none;stroke:url(#mmGrad);stroke-width:1.6;stroke-dasharray:6 7;animation:mmFlow 2.2s linear infinite}
+.mm-link.d2{animation-delay:-.3s}.mm-link.d3{animation-delay:-.6s}.mm-link.d4{animation-delay:-.9s}.mm-link.d5{animation-delay:-1.2s}.mm-link.d6{animation-delay:-1.5s}
+@keyframes mmFlow{to{stroke-dashoffset:-26}}
+.mm-hub{fill:var(--code);stroke:rgba(34,211,238,.6);stroke-width:1.4;animation:mmPulse 3.4s ease-in-out infinite}
+@keyframes mmPulse{0%,100%{filter:drop-shadow(0 0 6px rgba(34,211,238,.35))}50%{filter:drop-shadow(0 0 16px rgba(34,211,238,.65))}}
+.mm-hubtext{font-family:"Space Grotesk",Inter,sans-serif;font-weight:700;fill:#fff}
+.mm-node{fill:var(--panel2);stroke-width:1.3}
+.mm-node.c1{stroke:var(--cyan)} .mm-node.c2{stroke:var(--violet)} .mm-node.c3{stroke:var(--cyan)}
+.mm-node.c4{stroke:var(--amber)} .mm-node.c5{stroke:var(--violet)} .mm-node.c6{stroke:var(--green)}
+.mm-num{font-family:"JetBrains Mono",monospace;font-size:9px;fill:var(--muted)}
+.mm-label{font-family:"Space Grotesk",Inter,sans-serif;font-weight:600;font-size:12.5px;fill:#f0f4fb}
+.mm-sub{font-family:Inter,sans-serif;font-size:9.5px;fill:var(--muted)}
+.mm-nodegroup{animation:mmFloat 5s ease-in-out infinite}
+.mm-nodegroup.f2{animation-delay:-.8s}.mm-nodegroup.f3{animation-delay:-1.6s}.mm-nodegroup.f4{animation-delay:-2.4s}.mm-nodegroup.f5{animation-delay:-3.2s}.mm-nodegroup.f6{animation-delay:-4s}
+@keyframes mmFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* sections */
+section{padding:56px 0 8px;border-top:1px solid var(--line);margin-top:36px}
+section.first{border-top:0;margin-top:0}
+.tag{display:inline-block;font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:99px;border:1px solid var(--line);color:var(--cyan);background:rgba(34,211,238,.06);margin-bottom:12px}
+.tag.v{color:#c4b5fd;background:rgba(139,92,246,.1)}
+.tag.a{color:var(--amber);background:rgba(245,166,35,.08)}
+
+/* cards and grids */
+.grid{display:grid;gap:14px;margin:18px 0}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.card{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+.card h4{margin-top:0}
+.card p:last-child,.card ul:last-child{margin-bottom:0}
+.card .n{font-family:"Space Grotesk",Inter,sans-serif;font-weight:700;font-size:.8rem;color:var(--violet);letter-spacing:.1em}
+.card.cy{border-color:rgba(34,211,238,.35)}
+.card.vi{border-color:rgba(139,92,246,.4)}
+.card.am{border-color:rgba(245,166,35,.4)}
+
+.callout{border-left:3px solid var(--cyan);background:rgba(34,211,238,.06);padding:14px 18px;border-radius:0 12px 12px 0;margin:20px 0}
+.callout.warn{border-color:var(--amber);background:rgba(245,166,35,.07)}
+.callout.vio{border-color:var(--violet);background:rgba(139,92,246,.08)}
+.callout b.t{display:block;font-family:"Space Grotesk",Inter,sans-serif;color:#fff;margin-bottom:2px}
+.callout p:last-child{margin-bottom:0}
+
+/* tables */
+.tw{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:var(--radius)}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:520px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--panel2);color:#fff;font-family:"Space Grotesk",Inter,sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+td.hl{color:var(--green);font-weight:600}
+tr.pick td{background:rgba(34,211,238,.06)}
+
+/* code */
+.code{position:relative;margin:16px 0;background:var(--code);border:1px solid var(--line);border-radius:12px}
+.code .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line);font:500 .74rem "JetBrains Mono",monospace;color:var(--muted)}
+.code button{background:var(--panel2);color:var(--cyan);border:1px solid var(--line);border-radius:8px;padding:3px 10px;font:500 .72rem "JetBrains Mono",monospace;cursor:pointer}
+.code button:hover{border-color:var(--cyan)}
+pre{margin:0;padding:14px 16px;overflow-x:auto;font-size:.82rem;line-height:1.6;color:#d6e2f5;tab-size:4}
+pre .c{color:#6b7c99}
+pre .k{color:#c4b5fd}
+pre .s{color:#86efac}
+pre .f{color:#67e8f9}
+pre .n{color:#fbbf24}
+
+/* flows */
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:18px 0}
+.step{flex:1 1 130px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 12px 10px;position:relative;min-width:120px}
+.step b{display:block;font-family:"Space Grotesk",Inter,sans-serif;color:#fff;font-size:.95rem}
+.step span{font-size:.78rem;color:var(--muted);line-height:1.4;display:block;margin-top:2px}
+.step i{font-style:normal;font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-size:.68rem;color:var(--cyan)}
+.step.v{border-color:rgba(139,92,246,.5)}
+.step.a{border-color:rgba(245,166,35,.5)}
+.lane{margin:22px 0 6px;font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+
+/* timeline */
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:24px 0}
+.day{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden}
+.day:before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--violet))}
+.day .d{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-size:.72rem;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase}
+.day h4{color:#fff;margin:.3em 0 .4em;font-size:1.15rem}
+.day p{font-size:.88rem;color:var(--muted);margin:.3em 0}
+.day .cp{display:inline-block;margin-top:8px;font-size:.72rem;padding:2px 9px;border-radius:99px;border:1px solid var(--line);color:var(--amber);font-family:"JetBrains Mono",ui-monospace,Consolas,monospace}
+
+/* CPE */
+.cpe{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:22px 0;position:relative}
+.cpe .p{position:relative;overflow:hidden;border-radius:var(--radius);padding:22px;border:1px solid var(--line);background:var(--panel)}
+.cpe .p:before{content:"";position:absolute;top:0;left:-40%;width:40%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:cpeSweep 3.6s linear infinite}
+.cpe .p:nth-child(2):before{background:linear-gradient(90deg,transparent,var(--violet),transparent);animation-delay:-1.2s}
+.cpe .p:nth-child(3):before{background:linear-gradient(90deg,transparent,var(--amber),transparent);animation-delay:-2.4s}
+@keyframes cpeSweep{to{left:100%}}
+.cpe .big{font-family:"Space Grotesk",Inter,sans-serif;font-size:3rem;font-weight:700;line-height:1}
+.cpe .p:nth-child(1) .big{color:var(--cyan)}
+.cpe .p:nth-child(2) .big{color:var(--violet)}
+.cpe .p:nth-child(3) .big{color:var(--amber)}
+.cpe h3{margin-top:.3em}
+
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:0 16px}
+details[open]{padding-bottom:12px}
+summary{cursor:pointer;padding:13px 0;font-family:"Space Grotesk",Inter,sans-serif;font-weight:600;color:#fff;list-style:none;display:flex;align-items:center;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";color:var(--cyan);font-weight:700;margin-left:auto}
+summary .pill{white-space:nowrap}
+details[open] summary:after{content:"\2212"}
+
+.pill{display:inline-block;font-size:.72rem;padding:2px 9px;border-radius:99px;font-weight:600;font-family:"JetBrains Mono",ui-monospace,Consolas,monospace}
+.pill.ok{background:rgba(52,211,153,.12);color:var(--green)}
+.pill.no{background:rgba(248,113,113,.12);color:var(--red)}
+.pill.ed{background:rgba(245,166,35,.12);color:var(--amber)}
+.say{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;margin:14px 0;color:#cbd6ea;font-size:.93rem;background:rgba(255,255,255,.02)}
+.say:before{content:"Presenter line";display:block;font:600 .68rem "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.bench-q{cursor:pointer}
+footer{margin-left:var(--side);padding:30px clamp(18px,4vw,56px);border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+@media(max-width:980px){footer{margin-left:0}}
+@media print{
+  .side,.menu-btn,.code button{display:none}
+  main,footer{margin-left:0}
+  body{background:#fff;color:#111;font-size:13pt}
+  h1,h2,h3,h4,strong,summary,th{color:#111}
+  .card,.day,.step,.fact,.p,details,.callout{background:#fff;border-color:#bbb}
+  pre{color:#111;white-space:pre-wrap}.code{background:#f6f6f6}
+  details{display:block} details>*{display:block}
+  section{page-break-inside:avoid}
+  .orbit-wrap{display:none}
+  .herogrid{grid-template-columns:1fr}
+  .mindmap{background:#fff;border-color:#bbb}
+  .mm-node{fill:#fff}
+  .mm-label,.mm-hubtext{fill:#111}
+  .mm-sub,.mm-num{fill:#555}
+  .mm-hub{fill:#fff;stroke:#888}
+}
+</style>
+</head>
+<body>
+<button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">Menu</button>
+<aside class="side" id="side">
+  <div class="brand">
+    <img src="https://raw.githubusercontent.com/Decoding-Data-Science/airesidency/main/DDS%20HIGH%20RES%20Logo%20%20copywhite.png" alt="Decoding Data Science" onerror="this.style.display='none'">
+    <span>DDS</span>
+  </div>
+  <small>AI Accelerator Bootcamp | Session Guide</small>
+  <nav id="toc">
+    <a href="#top">Overview</a>
+    <div class="grp">Foundations</div>
+    <a href="#journey">The 4-day journey</a>
+    <a href="#cpe">The CPE framework</a>
+    <a href="#why">Why this matters</a>
+    <a href="#project">The project and stack</a>
+    <div class="grp">Day 0</div>
+    <a href="#day0">Readiness</a>
+    <div class="grp">Day 1</div>
+    <a href="#day1">Clarity</a>
+    <a class="sub" href="#llm-choice">Choosing the LLM</a>
+    <a class="sub" href="#rag-what">What is RAG</a>
+    <div class="grp">Day 2</div>
+    <a href="#day2">Prototype: build the RAG pipeline</a>
+    <a class="sub" href="#data">The data and its themes</a>
+    <a class="sub" href="#reasoning">Reasoning vs generating</a>
+    <a class="sub" href="#load">Loading documents</a>
+    <a class="sub" href="#chunk">Chunking</a>
+    <a class="sub" href="#embed">Embeddings (1536)</a>
+    <a class="sub" href="#llamastore">LlamaIndex storage</a>
+    <a class="sub" href="#persist">Persistent memory</a>
+    <a class="sub" href="#pinecone">Pinecone vector DB</a>
+    <a class="sub" href="#metadata">Metadata</a>
+    <a class="sub" href="#retriever">The retriever</a>
+    <a class="sub" href="#architecture">Full RAG architecture</a>
+    <div class="grp">Day 3</div>
+    <a href="#day3">Evidence: integrate and deploy</a>
+    <a class="sub" href="#prompt">System prompt</a>
+    <a class="sub" href="#gradio">Gradio</a>
+    <a class="sub" href="#hf">Hugging Face Spaces</a>
+    <a class="sub" href="#bench">Test the chatbot</a>
+    <div class="grp">Reference</div>
+    <a href="#fullcode">Complete code</a>
+    <a href="#evidence">Demo, evaluation, submission</a>
+    <a href="#trouble">Troubleshooting</a>
+    <a href="#glossary">Glossary and links</a>
+  </nav>
+</aside>
+
+<main id="top">
+<div class="wrap">
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="herogrid">
+    <div>
+      <div class="eyebrow">Decoding Data Science | AI Accelerator Bootcamp | Starts 25 September 2026</div>
+      <h1>From <span class="grad">AI Curious</span> to <span class="grad">AI Builder</span></h1>
+      <p class="lead">The complete session guide for building the DDS Enterprise HR Chatbot: Day 0 readiness, Day 1 clarity, Day 2 prototype, Day 3 evidence. Every concept, every decision and every line of the code, in one place.</p>
+      <div class="facts">
+        <div class="fact"><b>4</b><span>sessions: Day 0, 1, 2, 3</span></div>
+        <div class="fact"><b>CPE</b><span>Clarity, Prototype, Evidence</span></div>
+        <div class="fact"><b>1 app</b><span>DDS Enterprise HR Chatbot, live on Hugging Face</span></div>
+        <div class="fact"><b>5 tools</b><span>OpenAI, LlamaIndex, Pinecone, Gradio, Hugging Face</span></div>
+        <div class="fact"><b>1536</b><span>dimensions per embedding vector</span></div>
+      </div>
+      <div class="callout">
+        <b class="t">How to use this page</b>
+        <p>Follow the left menu in order. Day 0 and Day 1 explain <em>what and why</em>, Day 2 builds the retrieval pipeline step by step, Day 3 connects the LLM, builds the Gradio interface and deploys. Every code block has a copy button. The complete working code, the data, and a 12-question test bench are at the end.</p>
+      </div>
+    </div>
+    <div class="orbit-wrap" role="img" aria-label="Six things a real AI application needs, orbiting the core system: Problem, Data, Retrieval, LLM, Interface, Evidence">
+      <div class="scan"></div>
+      <div class="orbit-ring r1"></div>
+      <div class="orbit-ring r2"></div>
+      <div class="orbit-orbiter">
+        <div class="orbit-node"><div class="pin"><div class="dot">01</div><div class="lab">Problem</div></div></div>
+        <div class="orbit-node"><div class="pin"><div class="dot">02</div><div class="lab">Data</div></div></div>
+        <div class="orbit-node"><div class="pin"><div class="dot">03</div><div class="lab">Retrieval</div></div></div>
+        <div class="orbit-node"><div class="pin"><div class="dot">04</div><div class="lab">LLM</div></div></div>
+        <div class="orbit-node"><div class="pin"><div class="dot">05</div><div class="lab">Interface</div></div></div>
+        <div class="orbit-node"><div class="pin"><div class="dot">06</div><div class="lab">Evidence</div></div></div>
+      </div>
+      <div class="orbit-core"><span><em>Core</em>AI<br>Application</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= JOURNEY ================= -->
+<section class="first" id="journey">
+  <span class="tag">Foundations</span>
+  <h2>The journey at a glance</h2>
+  <p>One project, four sessions. Each session produces something you carry into the next one. By the end you have a working, deployed AI application you can explain, demo and put in a portfolio.</p>
+  <div class="days">
+    <div class="day"><div class="d">Day 0 | Thu 24 Sep</div><h4>Readiness</h4>
+      <p>Python essentials, accounts, API keys and secrets, idea template, progress tracker.</p><span class="cp">Prepare</span></div>
+    <div class="day"><div class="d">Day 1 | Fri 25 Sep</div><h4>Clarity</h4>
+      <p>Scope, data, workflow and LLM choice. Why RAG. Architecture and stack. The clarity document.</p><span class="cp">C in CPE</span></div>
+    <div class="day"><div class="d">Day 2 | Sat 26 Sep</div><h4>Prototype</h4>
+      <p>Load, chunk, embed, store, persist, retrieve. Build the retrieval pipeline and test it with HR questions.</p><span class="cp">P in CPE</span></div>
+    <div class="day"><div class="d">Day 3 | Sun 27 Sep</div><h4>Evidence</h4>
+      <p>Connect the LLM, add the system prompt, build Gradio, deploy on Hugging Face Spaces, test, submit.</p><span class="cp">E in CPE</span></div>
+  </div>
+  <p style="color:var(--muted);font-size:.9rem">Session times follow the registration page at <a href="https://decodingdatascience.com/bootcamp">decodingdatascience.com/bootcamp</a>.</p>
+
+  <h3>What you will be able to do</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Explain</h4><p>How a real enterprise AI application is structured end to end: problem, data, retrieval, model, interface, evidence.</p></div>
+    <div class="card"><h4>Build</h4><p>A retrieval-augmented HR assistant using OpenAI, LlamaIndex and Pinecone that answers only from company documents.</p></div>
+    <div class="card"><h4>Ship and prove</h4><p>A Gradio app on Hugging Face Spaces, tested on normal and edge-case questions, with an evidence trail.</p></div>
+  </div>
+</section>
+
+<!-- ================= CPE ================= -->
+<section id="cpe">
+  <span class="tag v">Framework</span>
+  <h2>The CPE framework: Clarity, Prototype, Evidence</h2>
+  <p>CPE is the mental model that runs through every session. It stops the two most common failures: coding before the problem is defined, and finishing a demo with nothing to prove it works.</p>
+  <div class="cpe">
+    <div class="p"><div class="big">C</div><h3>Clarity</h3>
+      <p>Decide exactly what you are building before you write code: the user, the problem, the data, what the bot should and should not answer, and what "done" means.</p>
+      <p><strong>Output:</strong> the 9-section clarity document.</p></div>
+    <div class="p"><div class="big">P</div><h3>Prototype</h3>
+      <p>Turn the decisions into a working system: load documents, chunk, embed, store, retrieve, generate. Small enough to finish, real enough to explain to a business audience.</p>
+      <p><strong>Output:</strong> a working RAG pipeline and chatbot.</p></div>
+    <div class="p"><div class="big">E</div><h3>Evidence</h3>
+      <p>Deploy it, test it honestly, and record what worked and what did not. Evidence separates "I learned AI" from "I built an AI application".</p>
+      <p><strong>Output:</strong> live link, test questions, demo, reflection.</p></div>
+  </div>
+  <div class="tw"><table>
+    <tr><th>Phase</th><th>Question it answers</th><th>What it protects you from</th><th>Where it lives</th></tr>
+    <tr><td><strong>Clarity</strong></td><td>What exactly are we building, for whom, from which data?</td><td>A vague idea that becomes a vague app, however good the model.</td><td>Day 0 and Day 1</td></tr>
+    <tr><td><strong>Prototype</strong></td><td>Does the pipeline actually retrieve the right context and answer from it?</td><td>Demos that only work on a slide.</td><td>Day 2 and the first half of Day 3</td></tr>
+    <tr><td><strong>Evidence</strong></td><td>Can someone else use it, and can we show how well it works?</td><td>A screenshot with no proof, no tests and no limits stated.</td><td>Day 3 and the demo and evaluation session</td></tr>
+  </table></div>
+  <div class="say">A vague AI idea creates a vague AI app. Clarity first, then prototype, then evidence. The challenge submission is simply proof that learning became execution.</div>
+</section>
+
+<!-- ================= WHY ================= -->
+<section id="why">
+  <span class="tag">Foundations</span>
+  <h2>Why this matters</h2>
+  <h3>Why most people stay stuck at "AI curious"</h3>
+  <div class="grid g2">
+    <div class="card am"><h4>The common loop</h4>
+      <ul><li>Consume tutorials and tool demos</li><li>Try prompts without a clear use case</li><li>Jump into code before defining the problem</li><li>Ignore the role of data and retrieval</li><li>End up with a vague demo and more confusion</li></ul></div>
+    <div class="card cy"><h4>The gap is not motivation. It is structure.</h4>
+      <p>Builders work from one simple sequence:</p>
+      <p style="font-family:'Space Grotesk';font-size:1.1rem;color:#fff"><strong>problem &rarr; data &rarr; retrieval &rarr; generation &rarr; interface</strong></p>
+      <p><strong>AI curious</strong> asks "which tool is best?" <strong>AI builder</strong> asks "what system does this user problem need?"</p></div>
+  </div>
+
+  <h3>Why enterprise HR is the right project</h3>
+  <p>Employees ask the same questions again and again: how many leave days do I have, what is the sick-leave process, can I work remotely, how do I claim travel expenses. The answers exist, but they are buried in PDFs, handbooks, emails and portals. HR teams lose hours to repeat questions and employees lose time searching.</p>
+  <div class="grid g4">
+    <div class="card"><h4>Repetitive</h4><p>The same policy questions, every week.</p></div>
+    <div class="card"><h4>Policy-based</h4><p>Answers live in documents, so they can be grounded.</p></div>
+    <div class="card"><h4>Measurable</h4><p>You can test against known correct answers.</p></div>
+    <div class="card"><h4>Portfolio-grade</h4><p>Document-grounded assistants are the dominant enterprise AI pattern.</p></div>
+  </div>
+
+  <h3>Why not just use ChatGPT, or just prompt a model?</h3>
+  <p>A language model does not know your company's policies. If you ask it "how many annual leave days do DDS employees get?" it will produce a fluent guess. In HR, a confident wrong answer is worse than no answer. Retrieval-Augmented Generation fixes this by retrieving the relevant policy text first and forcing the model to answer from it.</p>
+  <div class="grid g2">
+    <div class="card"><h4>Without RAG</h4><ul><li>Only general model knowledge</li><li>Higher hallucination risk</li><li>Weak grounding in company data</li><li>No way to point back to a source</li></ul></div>
+    <div class="card cy"><h4>With RAG</h4><ul><li>Answers based on internal documents</li><li>More relevant and useful responses</li><li>Much better fit for business workflows</li><li>Source file and page can be shown</li></ul></div>
+  </div>
+  <div class="callout warn"><b class="t">The honest caveat</b><p>RAG reduces hallucination risk. It does not remove the need for testing. That is why the third phase of CPE is Evidence.</p></div>
+</section>
+
+<!-- ================= PROJECT ================= -->
+<section id="project">
+  <span class="tag">Foundations</span>
+  <h2>The project and the stack</h2>
+  <p>You are building the <strong>DDS Enterprise HR Chatbot</strong>, also called <strong>Ayesha</strong> in the deployed app. It answers employee questions from the DDS HR policy documents, stays inside HR scope, and declines politely (with a contact email) when a question is out of scope, confidential, or not supported by the documents.</p>
+  <p>You can try the target build before you start: <a href="https://huggingface.co/spaces/decodingdatascience/dds-hr-rag-chatbot">huggingface.co/spaces/decodingdatascience/dds-hr-rag-chatbot</a>. You will build your own version of it.</p>
+
+  <div class="tw"><table>
+    <tr><th>Tool</th><th>Role in the system</th><th>Analogy</th></tr>
+    <tr><td><strong>OpenAI</strong></td><td>The LLM that writes the answer, and the embedding model that turns text into vectors.</td><td>The brain and the translator.</td></tr>
+    <tr><td><strong>LlamaIndex</strong></td><td>Orchestration: loads documents, splits them into chunks, builds the index, creates the retriever and query engine.</td><td>The project manager.</td></tr>
+    <tr><td><strong>Pinecone</strong></td><td>Vector database. Stores embeddings and runs fast semantic search. Free starter plan is enough for the bootcamp.</td><td>The library catalogue that searches by meaning.</td></tr>
+    <tr><td><strong>Gradio</strong></td><td>The chat interface users actually see. Turns Python functions into a web app.</td><td>The front desk.</td></tr>
+    <tr><td><strong>Hugging Face Spaces</strong></td><td>Hosting. Puts your Gradio app on a public URL with secret management.</td><td>The shop window.</td></tr>
+  </table></div>
+
+  <h3>The six things a real AI app needs</h3>
+  <p>This is the anchor mind map for the whole bootcamp. Whenever a session feels abstract, return to this: six decisions, one system.</p>
+  <div class="mindmap">
+    <svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mind map: AI application core, connected to Problem, Data, Retrieval, LLM, Interface and Evidence">
+      <defs>
+        <linearGradient id="mmGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#8b5cf6"/>
+        </linearGradient>
+      </defs>
+      <path class="mm-link d1" d="M450,210 L110,80"/>
+      <path class="mm-link d2" d="M450,210 L110,340"/>
+      <path class="mm-link d3" d="M450,210 L450,44"/>
+      <path class="mm-link d4" d="M450,210 L450,378"/>
+      <path class="mm-link d5" d="M450,210 L790,80"/>
+      <path class="mm-link d6" d="M450,210 L790,340"/>
+
+      <g class="mm-nodegroup f1"><rect class="mm-node c1" x="20" y="54" width="180" height="52" rx="12"/><text class="mm-num" x="34" y="72">01</text><text class="mm-label" x="34" y="88">Problem</text><text class="mm-sub" x="34" y="100">clear user, clear task</text></g>
+      <g class="mm-nodegroup f2"><rect class="mm-node c2" x="20" y="314" width="180" height="52" rx="12"/><text class="mm-num" x="34" y="332">02</text><text class="mm-label" x="34" y="348">Data</text><text class="mm-sub" x="34" y="360">source docs and knowledge</text></g>
+      <g class="mm-nodegroup f3"><rect class="mm-node c3" x="360" y="16" width="180" height="52" rx="12"/><text class="mm-num" x="374" y="34">03</text><text class="mm-label" x="374" y="50">Retrieval</text><text class="mm-sub" x="374" y="62">right context, right moment</text></g>
+      <g class="mm-nodegroup f4"><rect class="mm-node c4" x="360" y="352" width="180" height="52" rx="12"/><text class="mm-num" x="374" y="370">04</text><text class="mm-label" x="374" y="386">LLM</text><text class="mm-sub" x="374" y="398">reasons, then generates</text></g>
+      <g class="mm-nodegroup f5"><rect class="mm-node c5" x="700" y="54" width="180" height="52" rx="12"/><text class="mm-num" x="714" y="72">05</text><text class="mm-label" x="714" y="88">Interface</text><text class="mm-sub" x="714" y="100">how users interact</text></g>
+      <g class="mm-nodegroup f6"><rect class="mm-node c6" x="700" y="314" width="180" height="52" rx="12"/><text class="mm-num" x="714" y="332">06</text><text class="mm-label" x="714" y="348">Evidence</text><text class="mm-sub" x="714" y="360">judge quality, improve</text></g>
+
+      <circle class="mm-hub" cx="450" cy="210" r="62"/>
+      <text class="mm-hubtext" x="450" y="203" font-size="13" text-anchor="middle">AI</text>
+      <text class="mm-hubtext" x="450" y="221" font-size="13" text-anchor="middle">Application</text>
+    </svg>
+  </div>
+  <p><strong>Use case + data + retrieval + LLM + interface + evaluation = a useful AI application.</strong> Miss any one and the app is weaker.</p>
+
+  <h3>Scope: what the MVP does and does not do</h3>
+  <div class="grid g3">
+    <div class="card cy"><h4>In scope</h4><p>PDF policy documents, RAG retrieval, LLM response, chat UI, deployment, demo evidence.</p></div>
+    <div class="card am"><h4>Out of scope for the bootcamp</h4><p>SSO, production HRMS integration, role-based access control, full audit system.</p></div>
+    <div class="card vi"><h4>Optional extensions</h4><p>Admin dashboard, feedback tracking, analytics, escalation to HR ticketing, multilingual support.</p></div>
+  </div>
+</section>
+
+<!-- ================= DAY 0 ================= -->
+<section id="day0">
+  <span class="tag a">Day 0 | Readiness | 1 CPD hour</span>
+  <h2>Day 0: Python, API and project readiness</h2>
+  <p>Day 0 is not extra admin. It is the readiness layer that makes the main sessions smoother and fairer. Practical AI workshops fail when people arrive without accounts, API keys, Python basics or a clear idea. Day 0 removes that friction so Day 1 can start with thinking, not troubleshooting.</p>
+
+  <h3>The 60-minute flow</h3>
+  <div class="flow">
+    <div class="step"><i>00-10</i><b>Journey</b><span>Clarity, prototype, evidence</span></div>
+    <div class="step"><i>10-20</i><b>Python readiness</b><span>Variables, functions, dictionaries, imports</span></div>
+    <div class="step"><i>20-35</i><b>Tools and API setup</b><span>Colab, OpenAI, Pinecone, Hugging Face</span></div>
+    <div class="step"><i>35-50</i><b>Idea template</b><span>User, problem, data, scope, success</span></div>
+    <div class="step"><i>50-60</i><b>Progress tracker</b><span>Readiness confirmation and blockers</span></div>
+  </div>
+
+  <h3>Minimum Python you need</h3>
+  <p>This is not a Python course. It is a readiness check for building API-based AI applications. Each concept maps directly to a line you will see in the chatbot code.</p>
+  <div class="tw"><table>
+    <tr><th>Concept</th><th>Where it appears in the chatbot</th></tr>
+    <tr><td><strong>Variables</strong></td><td>Questions, prompts, model names, index names (<code>INDEX_NAME = "quickstart"</code>).</td></tr>
+    <tr><td><strong>Strings</strong></td><td>System prompts, user questions, chatbot responses.</td></tr>
+    <tr><td><strong>Lists</strong></td><td>Documents, chunks, retrieved nodes, test questions.</td></tr>
+    <tr><td><strong>Dictionaries</strong></td><td>Config, metadata (<code>{"file_name": ..., "page_label": ...}</code>), API responses.</td></tr>
+    <tr><td><strong>Functions</strong></td><td>The reusable <code>query_doc(question)</code> that Gradio calls.</td></tr>
+    <tr><td><strong>Imports and try/except</strong></td><td>Loading OpenAI, LlamaIndex, Pinecone, Gradio; handling errors gracefully during a demo.</td></tr>
+  </table></div>
+
+  <h3>Tools and accounts checklist</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Google Colab</h4><p>Open a notebook and run a simple Python cell.</p></div>
+    <div class="card"><h4>OpenAI API</h4><p>Create or confirm API key access for LLM and embedding calls. Add prepaid credit.</p></div>
+    <div class="card"><h4>Pinecone</h4><p>Create an account and API key for the vector database.</p></div>
+    <div class="card"><h4>Hugging Face</h4><p>Create an account for Spaces deployment.</p></div>
+    <div class="card"><h4>Zoom</h4><p>Join live sessions, use screen share for blockers.</p></div>
+    <div class="card"><h4>DDS resources</h4><p>Handbook PDFs, templates and notebook files from the resources repository.</p></div>
+  </div>
+
+  <h3>API keys and secret handling</h3>
+  <p>An API key is a password for a paid service. Treating it carefully is part of professional AI work.</p>
+  <div class="grid g3">
+    <div class="card"><h4>Use secrets, not hardcoding</h4><p>Store <code>OPENAI_API_KEY</code> and <code>PINECONE_API_KEY</code> in Colab Secrets during the notebook stage and in Hugging Face Space secrets at deployment.</p></div>
+    <div class="card"><h4>Keep names consistent</h4><p>Use the same two secret names in notebooks, deployment files and Spaces. It avoids the most common beginner error.</p></div>
+    <div class="card am"><h4>Never expose keys</h4><p>Not in slides, screenshots, recordings, chat, shared notebooks or GitHub repositories. Never inside <code>app.py</code>.</p></div>
+  </div>
+  <div class="code"><div class="bar"><span>Colab: read keys from Secrets (never paste them into a cell)</span><button data-copy>Copy</button></div><pre>import os
+from google.colab import userdata
+
+os.environ["OPENAI_API_KEY"]   = userdata.get("OPENAI_API_KEY")
+os.environ["PINECONE_API_KEY"] = userdata.get("PINECONE_API_KEY")</pre></div>
+
+  <h3>The idea template and the progress tracker</h3>
+  <p>The <strong>idea template</strong> becomes your project brief for every later session and the final demo. Fill in: project title, target user, problem statement, current pain, data source, in scope, out of scope, expected output, model and stack, success criteria, risks, demo questions.</p>
+  <p>The <strong>progress tracker</strong> is your project memory. Each day, record what you completed, what worked, what failed, what you fixed and what evidence you produced. Evidence is not only the final link. It includes screenshots, tested questions, issues, fixes and reflection.</p>
+  <div class="flow">
+    <div class="step"><i>Day 0</i><b>Accounts, keys, idea template</b></div>
+    <div class="step"><i>Day 1</i><b>Clarity and scope</b><span>Simple HR chatbot, LLM exploration</span></div>
+    <div class="step"><i>Day 2</i><b>Retrieval pipeline</b><span>Chunks, embeddings, Pinecone</span></div>
+    <div class="step"><i>Day 3</i><b>RAG, Gradio, deployment</b></div>
+    <div class="step a"><i>Demo</i><b>Evidence</b><span>Questions tested, feedback, improvements</span></div>
+  </div>
+
+  <h3>Ready for Day 1 checklist</h3>
+  <ul>
+    <li>I can open Google Colab and run a Python cell.</li>
+    <li>I understand the minimum Python concepts for the notebook.</li>
+    <li>I have OpenAI, Pinecone and Hugging Face access ready, or I know my blocker.</li>
+    <li>I have started the idea template for the DDS HR assistant.</li>
+    <li>I have created the progress tracker for daily checkpoints.</li>
+  </ul>
+  <div class="say">Day 0 is the readiness layer. If you have a blocker, write it down and raise it today, so tomorrow is spent thinking, not on account issues.</div>
+</section>
+
+<!-- ================= DAY 1 ================= -->
+<section id="day1">
+  <span class="tag">Day 1 | Clarity</span>
+  <h2>Day 1: Project scope, data, workflow and the LLM</h2>
+  <p>Theme: <strong>clarity before coding</strong>. Today is not about finishing the app. It is about making the system understandable, practical and buildable. If scope, data, workflow and LLM are unclear, the app stays vague no matter how good the model is.</p>
+
+  <h3>Day 1 agenda</h3>
+  <div class="grid g3">
+    <div class="card"><span class="n">1</span><h4>Why people stay AI curious</h4><p>Structure, not motivation, is the gap.</p></div>
+    <div class="card"><span class="n">2</span><h4>What a real AI app needs</h4><p>Problem, data, retrieval, LLM, interface, evidence.</p></div>
+    <div class="card"><span class="n">3</span><h4>The project</h4><p>The DDS HR Enterprise Chatbot.</p></div>
+    <div class="card"><span class="n">4</span><h4>Why RAG matters</h4><p>Enterprise AI needs retrieval, not just prompting.</p></div>
+    <div class="card"><span class="n">5</span><h4>Architecture, stack and LLM setup</h4><p>How the pieces connect and why we chose them.</p></div>
+    <div class="card"><span class="n">6</span><h4>Day 1 checkpoint</h4><p>The 9-section clarity document.</p></div>
+  </div>
+
+  <h3>From tool user to system thinker</h3>
+  <p>A tool user tries prompts inside a tool. A system thinker designs how information enters the system, how context is retrieved, how the model generates, how the user interacts, and how quality is checked. In the HR example: the user asks about leave; the system searches HR documents; the model writes the answer; the interface shows it; evaluation checks it is accurate and safe.</p>
+
+  <h3 id="llm-choice">The LLM: the brain of your application</h3>
+  <p>The LLM is the reasoning and language-generation layer. It interprets the question, uses the retrieved context, and writes a readable answer. But the <strong>LLM is not the company database</strong>. It becomes useful when connected to trusted policy context. In the app, Python sends questions to the model through an API and receives responses programmatically, instead of you chatting manually in a website.</p>
+  <p>Model selection is a decision framework, not a fixed ranking. The right model depends on the task, cost, latency, reasoning needs and privacy requirements. Simple routing or extraction may use a smaller model; complex reasoning or high-stakes answers may need stronger models and more careful evaluation. The public text leaderboard at <a href="https://arena.ai/leaderboard/text">arena.ai/leaderboard/text</a> is a useful reference.</p>
+
+  <h4>Why we did not build on a free API</h4>
+  <p>Free tiers are excellent for solo prototyping at home, but not reliable for a live classroom. Gemini free-tier limits as shown on the Day 1 slide:</p>
+  <div class="tw"><table>
+    <tr><th>Model</th><th>Requests / min</th><th>Requests / day</th><th>Status</th></tr>
+    <tr><td>Gemini 2.5 Pro</td><td>5</td><td>100</td><td>Timeout risk</td></tr>
+    <tr><td>Gemini 2.5 Flash</td><td>10</td><td>250</td><td>Limited</td></tr>
+    <tr><td>Gemini 2.5 Flash-Lite</td><td>15</td><td>1,000</td><td>Limited</td></tr>
+    <tr><td>Gemini 3.5 Flash</td><td>~10</td><td>~250</td><td>Limited</td></tr>
+  </table></div>
+  <ul>
+    <li>With 50+ people in a live session, 5 to 15 requests per minute breaks immediately.</li>
+    <li>Google cut free quotas by 50 to 80 percent in December 2025 without warning.</li>
+    <li>No SLA, free users are deprioritised at peak hours, and free-tier data may be used for model training, which matters for enterprise use.</li>
+  </ul>
+
+  <h4>Gemini paid vs OpenAI, for this bootcamp</h4>
+  <div class="tw"><table>
+    <tr><th></th><th>Gemini</th><th>OpenAI</th></tr>
+    <tr><td>Minimum credit to start</td><td>$10 prepaid</td><td class="hl">$5</td></tr>
+    <tr><td>Free-tier reliability</td><td>Timeouts at peak</td><td class="hl">No free tier needed</td></tr>
+    <tr><td>Cheapest LLM (input / output per 1M tokens)</td><td class="hl">$0.10 / $0.40</td><td>$0.20 / $1.25</td></tr>
+    <tr><td>Embedding model (per 1M tokens)</td><td>$0.15</td><td class="hl">$0.02 (about 7.5x cheaper)</td></tr>
+    <tr><td>Playground access</td><td>Requires billing setup</td><td class="hl">Instant with $5</td></tr>
+    <tr><td>Billing complexity</td><td>GCP + prepay + tiers</td><td class="hl">Add credit, start</td></tr>
+    <tr><td>Stability</td><td>Caps and quota changes</td><td class="hl">Stable rate limits</td></tr>
+  </table></div>
+  <p>Fair reading: Gemini's cheapest model wins on raw token price. OpenAI wins on reliability, setup simplicity and embedding cost, which is what matters for a live bootcamp and for a RAG pipeline that embeds a lot of text.</p>
+
+  <h4>OpenAI pricing reference (July 2026, per 1M tokens, standard tier)</h4>
+  <div class="tw"><table>
+    <tr><th>Model</th><th>Input</th><th>Cached input</th><th>Output</th><th>Tier</th></tr>
+    <tr><td>gpt-5.6-sol</td><td>$5.00</td><td>$0.50</td><td>$30.00</td><td>Flagship</td></tr>
+    <tr><td>gpt-5.6-terra</td><td>$2.50</td><td>$0.25</td><td>$15.00</td><td>Flagship</td></tr>
+    <tr><td>gpt-5.6-luna</td><td>$1.00</td><td>$0.10</td><td>$6.00</td><td>Flagship</td></tr>
+    <tr><td>gpt-5.5</td><td>$5.00</td><td>$0.50</td><td>$30.00</td><td>Mid</td></tr>
+    <tr><td>gpt-5.4</td><td>$2.50</td><td>$0.25</td><td>$15.00</td><td>Mid</td></tr>
+    <tr><td>gpt-5.4-mini</td><td>$0.75</td><td>$0.075</td><td>$4.50</td><td>Lite</td></tr>
+    <tr class="pick"><td>gpt-5.4-nano</td><td>$0.20</td><td>$0.02</td><td>$1.25</td><td>Lite (bootcamp pick)</td></tr>
+    <tr><td>gpt-5.5-pro / gpt-5.4-pro</td><td>$30.00</td><td>n/a</td><td>$180.00</td><td>Pro</td></tr>
+    <tr class="pick"><td>text-embedding-3-small</td><td>$0.02</td><td>n/a</td><td>n/a</td><td>Embedding (bootcamp pick)</td></tr>
+    <tr><td>text-embedding-3-large</td><td>$0.13</td><td>n/a</td><td>n/a</td><td>Embedding (higher quality)</td></tr>
+  </table></div>
+  <div class="callout warn"><b class="t">Prices and model names change</b><p>Verify current pricing and availability before any real deployment. In the code, the chat model and the embedding model are single variables, so switching models is a one-line change. Cached input is about 10 times cheaper, which is why a fixed system prompt sent repeatedly costs little.</p></div>
+
+  <h4>The bootcamp stack and what it costs</h4>
+  <div class="grid g3">
+    <div class="card cy"><h4>LLM</h4><p><strong>gpt-5.4-nano</strong> recommended on the Day 1 slide. $0.20 in / $1.25 out per 1M tokens: pennies per API call.</p></div>
+    <div class="card cy"><h4>Embeddings</h4><p><strong>text-embedding-3-small</strong>, $0.02 per 1M tokens, 1536 dimensions.</p></div>
+    <div class="card cy"><h4>Vector database</h4><p><strong>Pinecone free tier</strong>, $0. Enough for the bootcamp.</p></div>
+  </div>
+  <p><strong>Setup:</strong> create an OpenAI account, add $5 credit, generate an API key, start building. Estimated total for the entire bootcamp: <strong>under $1 per participant</strong>. The reference app in this guide runs <code>gpt-4o-mini</code> as its default chat model; see the code walkthrough for how the model is configured and swapped.</p>
+
+  <h3 id="rag-what">What is RAG?</h3>
+  <p><strong>Retrieval-Augmented Generation.</strong> Instead of answering only from memory, the system first retrieves relevant company knowledge, then generates a grounded response.</p>
+  <div class="flow">
+    <div class="step"><i>1</i><b>Retrieve</b><span>Find the most relevant chunks from your documents.</span></div>
+    <div class="step v"><i>2</i><b>Augment</b><span>Pass that context into the model prompt.</span></div>
+    <div class="step a"><i>3</i><b>Generate</b><span>Produce an answer based on retrieved evidence.</span></div>
+  </div>
+
+  <h3>How the system works, end to end</h3>
+  <div class="flow">
+    <div class="step"><i>Docs</i><b>Documents</b><span>Policies and source files</span></div>
+    <div class="step"><i>Prepare</i><b>Chunk</b><span>Clean and split content</span></div>
+    <div class="step"><i>Embed</i><b>Vectors</b><span>Create semantic vectors</span></div>
+    <div class="step"><i>Store</i><b>Pinecone</b><span>Save the vectors</span></div>
+    <div class="step v"><i>Ask</i><b>Question</b><span>User sends a question</span></div>
+    <div class="step v"><i>Retrieve</i><b>Best chunks</b><span>Find matching context</span></div>
+    <div class="step a"><i>Answer</i><b>Grounded reply</b><span>LLM writes from context</span></div>
+  </div>
+  <div class="callout"><b class="t">The single most important sentence of Day 1</b><p>The LLM is not the database. The retriever brings the evidence. The LLM writes the answer.</p></div>
+
+  <h3>Questions we must answer before building</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Scope</h4><ul><li>Who is the primary user?</li><li>What exact problem are we solving?</li><li>What should the assistant answer?</li><li>What should it not answer?</li><li>What makes it useful?</li></ul></div>
+    <div class="card"><h4>Data</h4><ul><li>Which documents matter for version 1?</li><li>Are they clean and relevant?</li><li>Do they need chunking or preprocessing?</li><li>What gaps may weaken retrieval?</li></ul></div>
+    <div class="card"><h4>OS and LLM</h4><ul><li>How does the workflow move from query to answer?</li><li>Where does retrieval happen?</li><li>Which model and embeddings will we use?</li><li>How will we judge success?</li></ul></div>
+  </div>
+
+  <h3>Day 1 deliverable: the clarity document (9 sections)</h3>
+  <p>No code today. Submit as text, Google Doc, PDF or screenshot.</p>
+  <div class="tw"><table>
+    <tr><th>#</th><th>Section</th><th>What to write</th></tr>
+    <tr><td>1</td><td>Project title</td><td>HR Policy Chatbot (plus your own internal name)</td></tr>
+    <tr><td>2</td><td>Problem statement</td><td>2 to 4 sentences on the problem</td></tr>
+    <tr><td>3</td><td>Target user</td><td>Who will use the chatbot</td></tr>
+    <tr><td>4</td><td>AI use case</td><td>One sentence on what it does</td></tr>
+    <tr><td>5</td><td>Input data</td><td>Which HR documents power it</td></tr>
+    <tr><td>6</td><td>Sample questions</td><td>5 to 10 questions an employee may ask</td></tr>
+    <tr><td>7</td><td>Expected output</td><td>What a good answer looks like</td></tr>
+    <tr><td>8</td><td>Definition of done</td><td>What a successful v1 looks like</td></tr>
+    <tr><td>9</td><td>Future improvements</td><td>2 to 3 ideas for later versions</td></tr>
+  </table></div>
+  <div class="grid g2">
+    <div class="card cy"><h4>v1 is done when</h4><ul><li>A user can ask HR policy questions and get helpful answers.</li><li>Answers are based on the uploaded HR document.</li><li>The bot avoids answers the document does not support.</li><li>It clearly says when information is not available.</li></ul></div>
+    <div class="card"><h4>Sample questions your bot should answer</h4><ul><li>How many annual leave days do employees get?</li><li>What is the process to apply for sick leave?</li><li>Can I work from home, and what are the rules?</li><li>What are the rules for maternity / paternity leave?</li><li>How do I claim business travel expenses?</li><li>Where can I find the code of conduct?</li></ul></div>
+  </div>
+  <div class="callout vio"><b class="t">Real example: HALA, an HR agentic assistant</b><p>To show that this pattern scales: HALA serves a fictional 1,000-employee, 5-office, 4-country company (Meridian Group) using Gemini with native function calling, Gradio and Hugging Face Spaces. Problem, user, input, output, stack and success criteria were defined first, exactly as in the clarity document. This is a real deployed project, and you can build this too.</p></div>
+
+  <h3>What is coming next</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Day 2: retrieval pipeline</h4><p>Chunking, embeddings, indexing, Pinecone, LlamaIndex wiring. This makes the difference between a simple chatbot and a document-grounded assistant.</p></div>
+    <div class="card"><h4>Day 3: the working assistant</h4><p>Connect retrieval to the LLM prompt, generate grounded answers, build Gradio, test, refine, deploy.</p></div>
+  </div>
+  <div class="say">A vague AI idea creates a vague AI app. Start with clarity on the problem, the data, the workflow and the model setup, and then building becomes much easier. Now we move from clarity to prototype.</div>
+</section>
+
+<!-- ================= DAY 2 ================= -->
+<section id="day2">
+  <span class="tag v">Day 2 | Prototype</span>
+  <h2>Day 2: Build the RAG pipeline with LlamaIndex and Pinecone</h2>
+  <p>Today the clarity decisions become technical steps. The target is not a perfect enterprise system. It is a working retrieval pipeline you can test. You do not need to understand every line on first read; you need to understand the sequence and what each stage contributes.</p>
+  <div class="flow">
+    <div class="step"><i>1</i><b>Load</b><span>PDFs into Document objects</span></div>
+    <div class="step"><i>2</i><b>Chunk</b><span>Split into 600-token pieces</span></div>
+    <div class="step"><i>3</i><b>Embed</b><span>1536-number vector per chunk</span></div>
+    <div class="step"><i>4</i><b>Store</b><span>LlamaIndex memory, then Pinecone</span></div>
+    <div class="step v"><i>5</i><b>Retrieve</b><span>Top-k closest chunks</span></div>
+    <div class="step a"><i>6</i><b>Test</b><span>Ask HR questions, inspect sources</span></div>
+  </div>
+  <p><strong>Day 2 checkpoints:</strong> document loaded, chunks created, embeddings generated, retrieval tested, first grounded answer produced.</p>
+
+  <h3>Install and setup</h3>
+  <div class="code"><div class="bar"><span>Colab cell 1: install</span><button data-copy>Copy</button></div><pre>!pip install -U llama-index llama-index-vector-stores-pinecone \
+    llama-index-readers-file pypdf llama-index-llms-openai \
+    llama-index-embeddings-openai pinecone gradio</pre></div>
+  <p>What each package is for: <code>llama-index</code> is the orchestration core; <code>llama-index-readers-file</code> and <code>pypdf</code> read PDFs; <code>llama-index-llms-openai</code> and <code>llama-index-embeddings-openai</code> connect OpenAI; <code>llama-index-vector-stores-pinecone</code> and <code>pinecone</code> connect the vector database; <code>gradio</code> is for Day 3.</p>
+
+  <!-- DATA -->
+  <h3 id="data">The data: what is in the knowledge base</h3>
+  <p>The assistant is only as good as its knowledge base. We use four synthetic, training-friendly DDS HR documents. They are safe to demo (no real employee data) and small enough to debug. Real numbers from loading them:</p>
+  <div class="tw"><table>
+    <tr><th>Document</th><th>Version and date</th><th>Pages</th><th>What it covers</th></tr>
+    <tr><td><strong>DDS Employee Handbook</strong></td><td>v1, effective 3 Mar 2026</td><td>4</td><td>18 sections: values, employment types, anti-harassment, code of conduct, hours, probation, performance, confidentiality, data protection, acceptable AI use, discipline, grievance.</td></tr>
+    <tr><td><strong>DDS Leave Policy</strong> (DDS-HR-POL-001)</td><td>v2.0, effective 1 Jul 2026</td><td>6</td><td>12 sections: annual, sick, maternity, paternity, parental, bereavement, marriage, study, Hajj and unpaid leave; accrual, carry-over, notice periods, public holidays, workflow.</td></tr>
+    <tr><td><strong>DDS Remote Work Policy</strong></td><td>v1, effective 3 Mar 2026</td><td>2</td><td>Eligibility and approval, availability, home-office standard, security and data handling, async-first work, working abroad, equipment.</td></tr>
+    <tr><td><strong>DDS HR FAQ</strong></td><td>v1, effective 3 Mar 2026</td><td>1</td><td>Six common questions: request leave, sickness, remote work, tools, report harassment, case-specific questions.</td></tr>
+  </table></div>
+  <p><strong>Total: 4 PDFs, 13 pages.</strong> LlamaIndex's PDF reader produces one Document per page, so you get 13 Document objects, which become 15 chunks with the app's settings.</p>
+
+  <h4>The themes in the data</h4>
+  <div class="grid g3">
+    <div class="card cy"><h4>Time off and leave</h4><p>22 working days annual leave (1.83 days accrued per month); 15 days fully paid sick leave; 60 calendar days maternity; 5 days paternity; 5 days parental; bereavement, marriage, study, Hajj, unpaid leave. Carry-over capped at 10 days, expiring 31 March. Notice tiers of 7, 14 and 30 days by length of leave.</p></div>
+    <div class="card"><h4>Working arrangements</h4><p>Office hours 9:00 to 18:00 Dubai, Monday to Friday; core collaboration hours (for example 12:00 to 16:00 GST); remote work depends on role, performance and manager approval; async-first documentation; working abroad needs approval.</p></div>
+    <div class="card"><h4>Conduct, ethics and inclusion</h4><p>Anti-discrimination and anti-harassment, confidential reporting, no retaliation, conflicts of interest, professional behaviour.</p></div>
+    <div class="card vi"><h4>Data protection and AI use</h4><p>Least-privilege access, approved systems only, do not paste confidential data into public chatbots, verify AI outputs, cite sources. Relevant to the bot itself.</p></div>
+    <div class="card"><h4>Performance and discipline</h4><p>Probation and confirmation, quarterly goals, PIP steps, progressive discipline, gross misconduct examples, grievance escalation.</p></div>
+    <div class="card am"><h4>Governance and versioning</h4><p>Leave Policy v2 replaces v1 in full. Handbook says local law prevails. Contract terms (such as notice periods) live outside these documents, which creates a natural out-of-scope test.</p></div>
+  </div>
+  <div class="callout"><b class="t">Data quality lesson</b><p>Start with three to five clean documents, not the entire company knowledge base. Document what the dataset contains and what it does not contain. The Leave Policy is the newest and most detailed document, so most leave questions will retrieve from it. This is also why the prompt says "latest handbook".</p></div>
+
+  <!-- REASONING -->
+  <h3 id="reasoning">Reasoning versus generating: what the LLM actually does</h3>
+  <p>In a RAG application the LLM does two different jobs inside one call, and it helps to separate them.</p>
+  <div class="grid g2">
+    <div class="card vi"><h4>Reasoning</h4>
+      <p>Deciding what to do with the retrieved context: Is this question about DDS HR at all? Does the retrieved text actually contain the answer? Which of two retrieved clauses applies? For "10 days of leave", which notice tier is it? Reasoning is where wrong answers are prevented.</p></div>
+    <div class="card cy"><h4>Generating</h4>
+      <p>Writing the answer in clear, professional language from the evidence that survived the reasoning step: concise, polite, step by step. Generation is where the user experience is created.</p></div>
+  </div>
+  <p>Two model families matter here. A <strong>standard (non-reasoning) chat model</strong> answers directly. A <strong>reasoning model</strong> spends extra hidden "thinking" tokens before answering: it is slower and costs more (thinking tokens are billed as output), and it earns that cost on hard multi-step problems such as maths, coding and complex planning.</p>
+  <div class="tw"><table>
+    <tr><th>Decision</th><th>Our choice</th><th>Why</th></tr>
+    <tr><td>Model class</td><td>Small, fast, low-cost chat model</td><td>In RAG the retriever does the heavy lifting. The model reads 2 to 4 short chunks and summarises them. A frontier or pro reasoning model would add cost and latency for little gain.</td></tr>
+    <tr><td>Temperature</td><td><code>0.2</code></td><td>Low temperature keeps answers stable and factual. HR policy is not creative writing.</td></tr>
+    <tr><td>Where "reasoning" lives</td><td>In the prompt</td><td>The system prompt tells the model to check scope and evidence before answering. The course app says "always reason before concluding". The hardened version says to determine this silently and never reveal private reasoning.</td></tr>
+    <tr><td>When to upgrade</td><td>When evaluation shows failures</td><td>If tests show the model misapplying policy logic (for example tiered notice rules), try a stronger model on the failing questions. Test first, then pay.</td></tr>
+  </table></div>
+  <div class="say">The LLM reasons over evidence, then generates. Retrieval decides what evidence it sees, and that is why we spend Day 2 on retrieval rather than on picking the fanciest model.</div>
+
+  <h3>Configure the models (LlamaIndex Settings)</h3>
+  <p><code>Settings</code> is LlamaIndex's global configuration. Set it once and every component (index, retriever, query engine) uses it.</p>
+  <div class="code"><div class="bar"><span>Colab cell 2: keys and global settings</span><button data-copy>Copy</button></div><pre>import os
+from llama_index.core import Settings
+from llama_index.llms.openai import OpenAI
+from llama_index.embeddings.openai import OpenAIEmbedding
+
+# LLM: writes the final answer. Low temperature = stable, factual.
+Settings.llm = OpenAI(model="gpt-4o-mini", temperature=0.2)
+
+# Embedding model: turns text into a 1536-number vector.
+Settings.embed_model = OpenAIEmbedding(model="text-embedding-ada-002")
+
+# Chunking parameters (explained below)
+Settings.chunk_size = 600
+Settings.chunk_overlap = 200</pre></div>
+  <div class="callout warn"><b class="t">Model names are just configuration</b><p>The reference app uses <code>gpt-4o-mini</code> for chat and <code>text-embedding-ada-002</code> for embeddings. The hardened live-demo version uses <code>text-embedding-3-small</code>. Both produce <strong>1536-dimension</strong> vectors. To use the Day 1 recommendation, change the strings to <code>gpt-5.4-nano</code> and <code>text-embedding-3-small</code>. <strong>One rule you cannot bend:</strong> the model you embed with at indexing time must be the same model you use for queries, and the Pinecone index dimension must match it.</p></div>
+
+  <!-- LOAD -->
+  <h3 id="load">Step 1: Load the documents</h3>
+  <p><code>SimpleDirectoryReader</code> walks a folder and reads every file. We give it <code>PDFReader</code> for PDFs. It returns a list of <code>Document</code> objects.</p>
+  <div class="code"><div class="bar"><span>Colab cell 3: load PDFs</span><button data-copy>Copy</button></div><pre>from llama_index.core import SimpleDirectoryReader
+from llama_index.readers.file import PDFReader
+
+documents = SimpleDirectoryReader(
+    input_dir="Data",                    # folder name is case-sensitive
+    required_exts=[".pdf"],
+    file_extractor={".pdf": PDFReader()},
+).load_data()
+
+print(len(documents))          # 13  (one Document per PDF page)
+print(documents[0].metadata)   # file name, page label, size, dates
+print(documents[0].text[:300]) # the extracted text</pre></div>
+  <p><strong>Check:</strong> the PDFs must contain selectable text. Scanned image PDFs need OCR first, otherwise you get zero documents and an error.</p>
+
+  <!-- CHUNK -->
+  <h3 id="chunk">Step 2: Chunking</h3>
+  <p>A page is too big and too mixed to be a good search unit. If you embed a whole page about sick leave, maternity leave and public holidays as one vector, the meaning is blurred. Chunking splits documents into passages small enough to be about one thing, but large enough to keep context.</p>
+  <div class="grid g3">
+    <div class="card"><h4>Chunk size: 600</h4><p>Measured in tokens (about 450 words). Enough to hold a full policy clause with its numbers.</p></div>
+    <div class="card"><h4>Overlap: 200</h4><p>Each chunk repeats the last 200 tokens of the previous one, so a sentence or rule split at a boundary is still whole in at least one chunk.</p></div>
+    <div class="card"><h4>Splitter</h4><p><code>SentenceSplitter</code> is LlamaIndex's default. It prefers to break on sentence boundaries rather than mid-sentence.</p></div>
+  </div>
+  <div class="code"><div class="bar"><span>Colab cell 4: inspect the chunks yourself</span><button data-copy>Copy</button></div><pre>from llama_index.core.node_parser import SentenceSplitter
+
+splitter = SentenceSplitter(chunk_size=600, chunk_overlap=200)
+nodes = splitter.get_nodes_from_documents(documents)
+
+print(len(nodes))            # 15 chunks (called "nodes" in LlamaIndex)
+print(nodes[3].text[:400])   # read a chunk
+print(nodes[3].metadata)     # metadata is inherited from the page</pre></div>
+  <p>Real results from our four PDFs, so you can see the trade-off:</p>
+  <div class="tw"><table>
+    <tr><th>chunk_size / overlap</th><th>Chunks</th><th>Handbook</th><th>FAQ</th><th>Leave Policy</th><th>Remote Work</th></tr>
+    <tr><td>1024 / 20 (LlamaIndex default)</td><td>13</td><td>4</td><td>1</td><td>6</td><td>2</td></tr>
+    <tr><td>600 / 150 (hardened demo)</td><td>14</td><td>4</td><td>1</td><td>7</td><td>2</td></tr>
+    <tr class="pick"><td>600 / 200 (course app)</td><td>15</td><td>4</td><td>1</td><td>8</td><td>2</td></tr>
+  </table></div>
+  <p>Our documents are small, so the differences look modest, but the principle scales. Smaller chunks give more precise retrieval but less context per chunk. Larger chunks give more context but blur the topic. Overlap costs a few extra vectors and protects against split rules. There is no universal best value: <strong>tune chunk size by testing retrieval on real questions.</strong></p>
+
+  <!-- EMBED -->
+  <h3 id="embed">Step 3: Embeddings, the 1536 numbers</h3>
+  <p>A computer cannot compare meaning in raw text. An <strong>embedding model</strong> converts a piece of text into a list of numbers (a vector) placed in a high-dimensional space so that <em>texts with similar meaning land close together</em>. "How many vacation days do I get?" and "annual leave entitlement" share almost no words, yet their vectors are close. That is semantic search, and it is why RAG beats keyword search for policies.</p>
+  <div class="code"><div class="bar"><span>Colab cell 5: see an embedding</span><button data-copy>Copy</button></div><pre>vec = Settings.embed_model.get_text_embedding(
+    "Full-time employees are entitled to 22 working days of paid annual leave."
+)
+print(len(vec))     # 1536
+print(vec[:5])      # five floats, e.g. 0.0123, -0.0087, ...
+
+q = Settings.embed_model.get_query_embedding("How many vacation days do I get?")
+print(len(q))       # 1536  (same space as the chunks, so they are comparable)</pre></div>
+  <div class="grid g2">
+    <div class="card cy"><h4>Why exactly 1536?</h4><p>It is the output size of OpenAI's <code>text-embedding-ada-002</code> and of <code>text-embedding-3-small</code> by default. Each chunk becomes 1536 floating-point numbers, about 6 KB (1536 x 4 bytes). <code>text-embedding-3-large</code> outputs 3072. The vector database index must be created with exactly the same dimension.</p></div>
+    <div class="card"><h4>How similarity is measured</h4><p>The vector database finds the stored vectors nearest to the question's vector using a distance metric: <strong>cosine</strong> (angle), <strong>euclidean</strong> (straight-line distance) or dot product. OpenAI embeddings are normalised to length 1, so all three rank results identically. The course app uses euclidean; the hardened version uses cosine.</p></div>
+  </div>
+  <p><strong>Cost:</strong> our whole knowledge base is roughly 15 chunks, so embedding it costs a fraction of a cent. That is why you index once and reuse, rather than re-embedding on every restart.</p>
+
+  <!-- LLAMA STORE -->
+  <h3 id="llamastore">Step 4: Store it first in LlamaIndex (in memory)</h3>
+  <p><code>VectorStoreIndex</code> is the object that ties everything together. When you call <code>from_documents</code> it chunks the documents, calls the embedding model for every chunk, and keeps the vectors in LlamaIndex's built-in in-memory vector store.</p>
+  <div class="code"><div class="bar"><span>Colab cell 6: build the first index</span><button data-copy>Copy</button></div><pre>from llama_index.core import VectorStoreIndex
+
+index = VectorStoreIndex.from_documents(documents, show_progress=True)
+
+query_engine = index.as_query_engine()
+print(query_engine.query("How many days of annual leave do employees get?"))</pre></div>
+  <p>This is the fastest way to a working RAG loop and it is perfect for learning. Its limit is in the name: <strong>memory is temporary</strong>. Restart the notebook and the vectors are gone, and you pay to embed everything again.</p>
+
+  <!-- PERSIST -->
+  <h3 id="persist">Step 5: Persistent memory, and what the files are</h3>
+  <p>To keep the index between sessions, persist it to disk and load it back later. No re-embedding, no extra cost.</p>
+  <div class="code"><div class="bar"><span>Colab cell 7: persist and reload</span><button data-copy>Copy</button></div><pre>from llama_index.core import StorageContext, load_index_from_storage
+
+# Save
+index.storage_context.persist(persist_dir="./storage")
+
+# Later (or after a restart): load without re-embedding
+storage_context = StorageContext.from_defaults(persist_dir="./storage")
+index = load_index_from_storage(storage_context)</pre></div>
+  <p>Look inside <code>./storage</code>. LlamaIndex writes five JSON files. This is what "looking at the LlamaIndex embedding and vector files" means:</p>
+  <div class="tw"><table>
+    <tr><th>File</th><th>What it holds</th></tr>
+    <tr><td><code>default__vector_store.json</code></td><td>The vectors. Its <code>embedding_dict</code> maps each chunk ID to its list of 1536 numbers (15 vectors for our data), plus <code>text_id_to_ref_doc_id</code> and <code>metadata_dict</code>. This is the largest file.</td></tr>
+    <tr><td><code>docstore.json</code></td><td>The chunks themselves: the text, its metadata (file name, page label), character offsets, and relationships back to the source document.</td></tr>
+    <tr><td><code>index_store.json</code></td><td>The index structure: which chunk IDs belong to this index.</td></tr>
+    <tr><td><code>graph_store.json</code></td><td>Knowledge-graph data. Empty for a plain vector index.</td></tr>
+    <tr><td><code>image__vector_store.json</code></td><td>Image embeddings. Empty here because we index text only.</td></tr>
+  </table></div>
+  <div class="code"><div class="bar"><span>Colab cell 8: prove there are 1536 numbers</span><button data-copy>Copy</button></div><pre>import json
+
+vs = json.load(open("storage/default__vector_store.json"))
+emb = vs["embedding_dict"]
+first_id = next(iter(emb))
+print(len(emb), "vectors")           # 15 vectors
+print(len(emb[first_id]), "numbers") # 1536 numbers each</pre></div>
+  <div class="callout"><b class="t">Local files vs a vector database</b><p>Persisting to JSON is simple and free but lives on one machine and is loaded fully into memory. A real deployment needs a managed vector database that is shared, scalable, searchable across users and survives restarts. That is Pinecone.</p></div>
+
+  <!-- PINECONE -->
+  <h3 id="pinecone">Step 6: Pinecone, the vector database</h3>
+  <p>Pinecone stores your vectors as a managed service and does fast nearest-neighbour search. The key setup decisions are the <strong>index name</strong>, the <strong>dimension (1536)</strong>, the <strong>metric</strong> and the <strong>region</strong>.</p>
+  <div class="code"><div class="bar"><span>Colab cell 9: create or attach a Pinecone index</span><button data-copy>Copy</button></div><pre>from pinecone import Pinecone, ServerlessSpec
+from llama_index.vector_stores.pinecone import PineconeVectorStore
+from llama_index.core import StorageContext, VectorStoreIndex
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+INDEX_NAME = "quickstart"
+DIMENSION  = 1536            # must equal the embedding model's output size
+
+if INDEX_NAME not in [i["name"] for i in pc.list_indexes()]:
+    pc.create_index(
+        name=INDEX_NAME,
+        dimension=DIMENSION,
+        metric="euclidean",   # cosine also works; OpenAI vectors are normalised
+        spec=ServerlessSpec(cloud="aws", region="us-east-1"),
+    )
+
+pinecone_index = pc.Index(INDEX_NAME)
+vector_store   = PineconeVectorStore(pinecone_index=pinecone_index)
+
+storage_context = StorageContext.from_defaults(vector_store=vector_store)
+index = VectorStoreIndex.from_documents(
+    documents, storage_context=storage_context
+)</pre></div>
+  <p>Notice the only change from Step 4 is <code>storage_context</code>: we tell LlamaIndex to put the vectors in Pinecone instead of memory. Everything else is identical. That is the point of an orchestration framework.</p>
+  <div class="grid g2">
+    <div class="card am"><h4>Create once, reuse forever</h4><p>The app checks whether the index already holds vectors with <code>describe_index_stats()</code>. If yes it attaches with <code>VectorStoreIndex.from_vector_store(vector_store)</code>. If no it loads the PDFs and builds. Deleting and recreating on every restart would re-embed every PDF (real API cost) and risks a race between two cold starts.</p></div>
+    <div class="card"><h4>Three ways to fail</h4><p>Dimension mismatch (index made for a different embedding model). Empty index (the build step never ran). Wrong namespace (the hardened app writes to a namespace such as <code>dds-hr-v1</code>). Check <code>describe_index_stats()</code> first.</p></div>
+  </div>
+
+  <!-- METADATA -->
+  <h3 id="metadata">Metadata: how a vector remembers where it came from</h3>
+  <p>A vector alone is just numbers. Metadata is what makes an answer traceable. LlamaIndex attaches metadata to every chunk and it travels into Pinecone with the vector.</p>
+  <div class="tw"><table>
+    <tr><th>Metadata key</th><th>Example</th><th>Used for</th></tr>
+    <tr><td><code>file_name</code></td><td>DDS_Leave_Policy_v2.pdf</td><td>Showing which document an answer came from.</td></tr>
+    <tr><td><code>page_label</code></td><td>2</td><td>Pointing to the page.</td></tr>
+    <tr><td><code>file_path</code>, <code>file_type</code>, <code>file_size</code></td><td>application/pdf, 16573</td><td>Housekeeping and filtering.</td></tr>
+    <tr><td><code>creation_date</code>, <code>last_modified_date</code></td><td>date of file</td><td>Freshness. Supports "use the latest policy".</td></tr>
+  </table></div>
+  <p>Alongside this, each Pinecone record carries the chunk text and node and document IDs, so the retriever can rebuild the full chunk without a second lookup. The hardened app uses this to append <strong>"Retrieved from: file name, page N"</strong> to each answer, which is the source-visibility feature that builds trust.</p>
+  <div class="code"><div class="bar"><span>Reading metadata from a retrieved chunk</span><button data-copy>Copy</button></div><pre>for hit in retriever.retrieve("How many sick leave days do I get?"):
+    m = hit.node.metadata
+    print(m["file_name"], "| page", m["page_label"], "| score", round(hit.score, 3))</pre></div>
+  <div class="callout warn"><b class="t">Metadata caution</b><p>Metadata from <code>file_path</code> can leak local folder names, and metadata that is embedded with the text can shift similarity slightly. For sensitive deployments, control which keys are shown to the model and to the user.</p></div>
+
+  <!-- RETRIEVER -->
+  <h3 id="retriever">Step 7: The retriever</h3>
+  <p>The <strong>retriever</strong> is the component that answers: "given this question, which chunks should the model see?" It embeds the question with the same embedding model, asks Pinecone for the closest vectors, and returns the top-k chunks with similarity scores.</p>
+  <div class="code"><div class="bar"><span>Colab cell 10: retrieve without the LLM</span><button data-copy>Copy</button></div><pre>retriever = index.as_retriever(similarity_top_k=4)
+
+results = retriever.retrieve("How much notice do I need for 10 days of annual leave?")
+
+for r in results:
+    print(round(r.score, 3), r.node.metadata["file_name"], "p.", r.node.metadata["page_label"])
+    print(r.node.text[:250].replace("\n", " "))
+    print("-" * 60)</pre></div>
+  <div class="grid g3">
+    <div class="card"><h4>similarity_top_k</h4><p>How many chunks to return. LlamaIndex default is 2; the hardened app uses 4. Too low misses supporting clauses; too high adds noise and cost.</p></div>
+    <div class="card"><h4>Score</h4><p>How close the chunk is to the question. Use it to spot weak retrieval: if the top score is poor, the answer will be poor.</p></div>
+    <div class="card"><h4>Debug retrieval first</h4><p>If the retrieved text does not contain the answer, no prompt or model can fix it. Always look at retrieval before blaming the LLM.</p></div>
+  </div>
+  <p>This is the most valuable debugging habit in RAG: <strong>retrieval and generation fail for different reasons.</strong> Bad retrieval means wrong chunks (fix chunking, top-k, data). Bad generation means the right chunks but a wrong or ungrounded answer (fix the prompt or model).</p>
+
+  <!-- ARCHITECTURE -->
+  <h3 id="architecture">The full RAG architecture</h3>
+  <p>RAG is two separate flows. The indexing flow happens before anyone asks anything. The answering flow runs on every question.</p>
+  <div class="lane">Flow 1: Indexing (offline, once)</div>
+  <div class="flow">
+    <div class="step"><i>1</i><b>HR PDFs</b><span>4 files, 13 pages</span></div>
+    <div class="step"><i>2</i><b>SimpleDirectoryReader + PDFReader</b><span>13 Document objects</span></div>
+    <div class="step"><i>3</i><b>SentenceSplitter</b><span>600 tokens, 200 overlap, 15 nodes</span></div>
+    <div class="step"><i>4</i><b>Embedding model</b><span>15 vectors x 1536 numbers</span></div>
+    <div class="step a"><i>5</i><b>Pinecone index</b><span>vectors + text + metadata</span></div>
+  </div>
+  <div class="lane">Flow 2: Answering (online, every question)</div>
+  <div class="flow">
+    <div class="step v"><i>1</i><b>Employee question</b><span>"How many sick days do I get?"</span></div>
+    <div class="step v"><i>2</i><b>Embed the question</b><span>same model, 1536 numbers</span></div>
+    <div class="step v"><i>3</i><b>Pinecone search</b><span>nearest top-k vectors</span></div>
+    <div class="step v"><i>4</i><b>Retrieve chunks</b><span>text + file + page</span></div>
+    <div class="step a"><i>5</i><b>Augment the prompt</b><span>system rules + context + question</span></div>
+    <div class="step a"><i>6</i><b>LLM</b><span>reason over evidence, then generate</span></div>
+    <div class="step"><i>7</i><b>Answer + source</b><span>shown in the Gradio chat</span></div>
+  </div>
+  <div class="callout vio"><b class="t">Where each word in RAG happens</b><p><strong>Retrieval</strong> = steps 2 to 4. <strong>Augmentation</strong> = step 5, where the retrieved chunks are pasted into the prompt as "Context information is below". <strong>Generation</strong> = step 6. The LLM never sees the whole handbook, only the few chunks that matter for this question.</p></div>
+
+  <h3>Query engine: putting retrieval and the LLM together</h3>
+  <p>The query engine wraps the retriever, the prompt template and the LLM into one call. You supply a QA prompt template with two placeholders: <code>{context_str}</code> (the retrieved chunks) and <code>{query_str}</code> (the question).</p>
+  <div class="code"><div class="bar"><span>Colab cell 11: query engine with a custom prompt</span><button data-copy>Copy</button></div><pre>from llama_index.core import PromptTemplate
+
+SYSTEM_PROMPT = """You are AYesha, the Decoding Data Science (DDS) Enterprise HR Chatbot.
+Answer questions exclusively using the attached DDS HR Handbook. ...
+"""
+
+QA_TEMPLATE = PromptTemplate(
+    SYSTEM_PROMPT
+    + "\n\nContext information is below.\n---------------------\n{context_str}\n---------------------\n"
+    "Given the context information and not prior knowledge, answer the query.\n"
+    "Query: {query_str}\nAnswer: "
+)
+
+query_engine = index.as_query_engine(text_qa_template=QA_TEMPLATE)
+response = query_engine.query("What is the annual leave policy?")
+
+print(response)                     # the answer
+print(response.source_nodes[0].node.metadata)   # where it came from</pre></div>
+  <p>A practical LlamaIndex detail worth knowing: a query engine does not accept a <code>system_prompt=</code> argument (only a chat engine does), so the query-engine way to enforce scope and persona is this custom QA prompt template.</p>
+
+  <h3>Day 2 wrap-up: what you should be able to show</h3>
+  <ul>
+    <li>Documents loaded (13) and chunks created (15), with a screenshot of one chunk.</li>
+    <li>An embedding printed with length 1536.</li>
+    <li>The <code>./storage</code> folder and its five files, or the Pinecone index stats.</li>
+    <li>A retrieval test with scores and source pages for two or three HR questions.</li>
+    <li>A first grounded answer from the query engine.</li>
+  </ul>
+  <div class="say">Retrieval is the difference between a simple chatbot and a document-grounded assistant. Tomorrow we give it behaviour, an interface and a public URL.</div>
+</section>
+
+<!-- ================= DAY 3 ================= -->
+<section id="day3">
+  <span class="tag a">Day 3 | Evidence</span>
+  <h2>Day 3: From retrieval pipeline to working AI chatbot</h2>
+  <p>Day 3 is the completion day. Yesterday you built retrieval. Today the notebook becomes an application: the LLM is connected to the retrieved context, the system prompt sets its behaviour, Gradio gives it an interface, and Hugging Face Spaces gives it a public URL. The goal is a usable, explainable, shareable prototype, not a perfect enterprise system.</p>
+  <div class="grid g3">
+    <div class="card"><span class="n">DAY 1</span><h4>Clarity</h4><p>Use case, architecture, and why RAG is needed.</p></div>
+    <div class="card"><span class="n">DAY 2</span><h4>Retrieval</h4><p>LlamaIndex processing, embeddings, Pinecone, retrieval tests.</p></div>
+    <div class="card cy"><span class="n">DAY 3</span><h4>Completion</h4><p>Connect the LLM, build the UI, deploy, test, conclude.</p></div>
+  </div>
+
+  <h3>What happens when a user asks a question</h3>
+  <div class="flow">
+    <div class="step v"><i>1</i><b>User asks</b><span>An HR question</span></div>
+    <div class="step v"><i>2</i><b>Query goes to retrieval</b></div>
+    <div class="step v"><i>3</i><b>Pinecone returns context</b><span>Relevant HR chunks</span></div>
+    <div class="step a"><i>4</i><b>Context to the LLM</b></div>
+    <div class="step a"><i>5</i><b>Grounded answer</b></div>
+    <div class="step"><i>6</i><b>Shown in Gradio</b></div>
+  </div>
+  <p><strong>Key idea:</strong> the LLM does not answer alone. It answers using retrieved enterprise context.</p>
+
+  <!-- PROMPT -->
+  <h3 id="prompt">System instruction: shaping behaviour, scope and trust</h3>
+  <p>Retrieval gives the assistant context. The system prompt tells it <em>how to behave</em>. For HR, this matters because employees will ask sensitive and case-specific questions. The assistant should support employees, not replace HR judgment or legal review.</p>
+  <div class="grid g2">
+    <div class="card"><h4>Behaviour to enforce</h4><ul>
+      <li>Answer only HR-related questions.</li>
+      <li>Use retrieved policy context.</li>
+      <li>Stay concise, polite and professional.</li>
+      <li>Do not invent missing policies.</li>
+      <li>Say clearly when context is insufficient.</li>
+      <li>Suggest escalation when needed.</li></ul></div>
+    <div class="card"><h4>The five prompt layers</h4><ul>
+      <li><strong>Role:</strong> defines identity ("HR policy assistant for employees").</li>
+      <li><strong>Grounding:</strong> "Use only the provided context. If unsure, say what is missing."</li>
+      <li><strong>Tone:</strong> clear, professional, step by step.</li>
+      <li><strong>Safety:</strong> no legal or medical advice; escalate sensitive issues.</li>
+      <li><strong>Sources:</strong> mention the relevant policy section when available.</li></ul></div>
+  </div>
+  <h4>The deployed prompt: AYesha (course version)</h4>
+  <div class="code"><div class="bar"><span>SYSTEM_PROMPT in the course app.py</span><button data-copy>Copy</button></div><pre>You are AYesha, the Decoding Data Science (DDS) Enterprise HR Chatbot. Answer questions
+exclusively using the attached DDS HR Handbook. Base all responses on the most up-to-date
+information available in the handbook. Only respond to queries directly related to DDS HR
+policies as outlined in the handbook.
+
+Important instructions:
+- Only answer questions directly supported by the latest DDS HR handbook.
+- Decline politely and redirect to the provided email address for any questions outside
+  scope or for confidential information.
+- Always reason before concluding. Only present the answer after checking scope and source.
+Remember: As AYesha, the DDS HR Enterprise Chatbot, you must never provide information
+outside authorized HR handbook content and always respond respectfully according to these
+constraints.</pre></div>
+  <h4>Why the hardened version rewrites it</h4>
+  <p>The production-style version of the prompt is stricter, and each change is a lesson in prompt design:</p>
+  <div class="tw"><table>
+    <tr><th>Change</th><th>Why it is better</th></tr>
+    <tr><td>Numbered rules instead of prose</td><td>Easier for the model to follow and for you to audit and test.</td></tr>
+    <tr><td>"Silently determine scope... Never reveal private reasoning or chain-of-thought"</td><td>Keeps the reasoning step but stops the bot exposing internal reasoning to users.</td></tr>
+    <tr><td>"Do not invent, infer, or supplement missing policy details using general knowledge"</td><td>Closes the most common hallucination path.</td></tr>
+    <tr><td>Explicit ban: salary information, confidential employee information, individual performance information, old policies</td><td>Names the sensitive categories so the bot refuses them reliably.</td></tr>
+    <tr><td>One exact decline message defined as a constant</td><td>Consistent, testable refusal. It is also returned in code if the model returns an empty answer.</td></tr>
+    <tr><td>"Continue following these rules for every follow-up"</td><td>Guards against the rules fading later in a conversation.</td></tr>
+  </table></div>
+  <div class="code"><div class="bar"><span>The exact decline message (hardened version)</span><button data-copy>Copy</button></div><pre>I'm sorry, I can only answer questions about the latest DDS HR policies.
+For confidential or other queries, please email connect@decodingdatascience.com.</pre></div>
+
+  <!-- GRADIO -->
+  <h3 id="gradio">Build the Gradio interface</h3>
+  <p>Gradio turns a Python function into a web app. A notebook proves you can code; an interface lets other people test the chatbot repeatedly with normal and edge-case questions. That makes it the best testing tool you have.</p>
+  <div class="grid g2">
+    <div class="card"><h4>Why Gradio</h4><ul><li>Fast route to a working chatbot interface.</li><li>Users type HR questions and see responses live.</li><li>Far easier to test than running code cells.</li><li>A clean demo for peers, managers or recruiters.</li></ul></div>
+    <div class="card"><h4>The pattern</h4><p>Wrap the query engine in a function, then hand that function to Gradio. One function, one textbox in, one answer out. Focus on getting a working input-output flow before improving design.</p></div>
+  </div>
+  <div class="code"><div class="bar"><span>The function and the interface (course version)</span><button data-copy>Copy</button></div><pre>@spaces.GPU
+def query_doc(prompt):
+    try:
+        response = query_engine.query(prompt)
+        return str(response)
+    except Exception as e:
+        logger.exception("Query failed")
+        return f"Error: {str(e)}"
+
+gr.Interface(
+    fn=query_doc,
+    inputs=gr.Textbox(label="Ask a question about the document"),
+    outputs=gr.Textbox(label="Answer"),
+    title="DDS Enterprise HR Chatbot — AYesha",
+    description="Ask questions related to HR for latest information.",
+).launch()</pre></div>
+  <p><code>try/except</code> matters in a live demo: if the API is slow or a key is wrong, the user sees a message instead of a crash. <code>@spaces.GPU</code> is the Hugging Face ZeroGPU decorator: it is only needed when the Space runs on ZeroGPU hardware. This app makes API calls and does not use a GPU, so on a standard CPU Space you can drop the <code>spaces</code> import and decorator, which is what the hardened version does.</p>
+  <h4>Upgrade: Blocks, examples, sources and input checks</h4>
+  <p>The hardened version uses <code>gr.Blocks</code> for a custom layout, a primary Ask button plus Clear, clickable example questions (including a deliberate out-of-scope one: <em>"What is the salary range for a data scientist?"</em>), empty-input handling, a user-friendly error message, and a <strong>"Retrieved from: file, page"</strong> line built from <code>response.source_nodes</code>.</p>
+  <div class="code"><div class="bar"><span>Adding source visibility to any answer</span><button data-copy>Copy</button></div><pre>def format_sources(response):
+    labels = []
+    for s in (response.source_nodes or [])[:3]:
+        m = s.node.metadata or {}
+        name, page = m.get("file_name"), m.get("page_label")
+        if name:
+            label = f"{name}, page {page}" if page else name
+            if label not in labels:
+                labels.append(label)
+    return ("\n\n**Retrieved from:** " + "; ".join(labels)) if labels else ""</pre></div>
+  <div class="callout warn"><b class="t">Do not use <code>demo.launch(share=True)</code> in deployment</b><p>It creates a temporary public tunnel and is not needed on Hugging Face Spaces, which hosts the app at its own URL.</p></div>
+
+  <!-- HF -->
+  <h3 id="hf">Deploy to Hugging Face Spaces</h3>
+  <p>A notebook proves you can code. A deployed Space proves someone else can use what you built. Deployment turns a coding exercise into something people can try, share, give feedback on and see in a portfolio. It is prototype deployment, not enterprise production: production would add authentication, role-based access, monitoring, compliance and data governance.</p>
+
+  <h4>The deployment flow</h4>
+  <div class="flow">
+    <div class="step"><i>1</i><b>Create the Space</b><span>New Space, SDK: Gradio</span></div>
+    <div class="step"><i>2</i><b>Upload the files</b><span>app.py, requirements.txt, README.md, PDF folder</span></div>
+    <div class="step v"><i>3</i><b>Add secrets</b><span>OPENAI_API_KEY, PINECONE_API_KEY</span></div>
+    <div class="step v"><i>4</i><b>Build and watch logs</b><span>First run indexes the PDFs</span></div>
+    <div class="step a"><i>5</i><b>Restart once more</b><span>Logs: reusing existing vectors</span></div>
+    <div class="step a"><i>6</i><b>Test in incognito</b><span>Normal, out-of-scope, confidential</span></div>
+  </div>
+
+  <h4>The files your Space needs</h4>
+  <div class="tw"><table>
+    <tr><th>File</th><th>Purpose</th></tr>
+    <tr><td><code>app.py</code></td><td>The whole application: settings, Pinecone, index, prompt, Gradio.</td></tr>
+    <tr><td><code>requirements.txt</code></td><td>The Python packages Hugging Face installs at build time.</td></tr>
+    <tr><td><code>README.md</code></td><td>Contains the Space configuration header (see below).</td></tr>
+    <tr><td><code>Data/</code> (or <code>data/</code>) with the PDFs</td><td>The knowledge base, read on the first run only.</td></tr>
+  </table></div>
+  <div class="callout warn"><b class="t">The folder name is case-sensitive</b><p>The course <code>app.py</code> reads <code>input_dir="Data"</code> (capital D). The hardened version reads <code>data</code> (lowercase). Linux is case-sensitive, so the folder you upload must match the name in your code exactly, or you will get "No PDF documents were loaded".</p></div>
+
+  <h4>requirements.txt</h4>
+  <div class="code"><div class="bar"><span>Course version (unpinned)</span><button data-copy>Copy</button></div><pre>gradio
+spaces
+pinecone
+llama-index
+llama-index-vector-stores-pinecone
+llama-index-readers-file
+pypdf
+llama-index-llms-openai
+llama-index-embeddings-openai</pre></div>
+  <p>Unpinned packages always install the newest version, which is convenient but can break a working app when a library changes. The hardened version pins exact versions for a reproducible build (see the complete code section).</p>
+
+  <h4>README.md configuration header</h4>
+  <div class="code"><div class="bar"><span>README.md (top of file)</span><button data-copy>Copy</button></div><pre>---
+title: DDS Enterprise HR Chatbot
+colorFrom: blue
+colorTo: indigo
+sdk: gradio
+sdk_version: 6.20.0
+python_version: "3.10"
+app_file: app.py
+pinned: false
+---</pre></div>
+
+  <h4>Secrets: never inside the code</h4>
+  <ol>
+    <li>Open the Space, then <strong>Settings &rarr; Variables and secrets</strong>.</li>
+    <li>Add <code>OPENAI_API_KEY</code> and <code>PINECONE_API_KEY</code> as <strong>Secrets</strong> (not plain variables).</li>
+    <li>Use exactly these names. The app reads them with <code>os.getenv(...)</code> and stops with a clear error if either is missing.</li>
+    <li>Restart the Space so the app picks them up.</li>
+  </ol>
+  <h4>Optional variables (hardened version)</h4>
+  <div class="tw"><table>
+    <tr><th>Variable</th><th>Default</th><th>Purpose</th></tr>
+    <tr><td><code>PINECONE_INDEX_NAME</code></td><td>dds-hr-handbook</td><td>Which index to use or create.</td></tr>
+    <tr><td><code>PINECONE_NAMESPACE</code></td><td>dds-hr-v1</td><td>A partition inside the index. New handbook version, new namespace.</td></tr>
+    <tr><td><code>OPENAI_CHAT_MODEL</code></td><td>gpt-4o-mini</td><td>Change the chat model without touching code.</td></tr>
+    <tr><td><code>FORCE_REINDEX</code></td><td>false</td><td>Set true for one restart to rebuild vectors, then set back to false.</td></tr>
+  </table></div>
+
+  <h4>What the logs should say</h4>
+  <div class="grid g2">
+    <div class="card cy"><h4>First successful start</h4><p><code>Creating Pinecone index...</code><br><code>Loading PDF...</code><br><code>Handbook indexing completed.</code></p></div>
+    <div class="card"><h4>Second start (the important test)</h4><p><code>Reusing N existing vector(s) from namespace...</code> It must <strong>not</strong> re-embed. If it does, you are paying for embeddings on every restart.</p></div>
+  </div>
+
+  <h4>Updating the handbook later</h4>
+  <p>Safest: change <code>PINECONE_NAMESPACE</code> to <code>dds-hr-v2</code>, upload the new PDF, restart. The old version stays untouched and you can roll back. Alternative: set <code>FORCE_REINDEX=true</code>, restart once, then immediately set it back to <code>false</code> and restart again.</p>
+
+  <h4>Hosting and cost notes</h4>
+  <ul>
+    <li>Hugging Face hosting can be free, but <strong>OpenAI usage is chargeable</strong> even when hosting is free. A public Space that anyone can query spends your API credit, so watch usage.</li>
+    <li>The course app declares <code>spaces</code> and <code>@spaces.GPU</code> for ZeroGPU hardware. The app itself needs no GPU.</li>
+    <li>Do not put notebook commands such as <code>!pip install</code> in <code>app.py</code>.</li>
+  </ul>
+  <div class="say">Deployment is the moment the project becomes shareable. Keep the keys in secrets, watch the logs on first start, restart once to confirm it reuses vectors, and test in an incognito window before you share the link.</div>
+
+  <h3>Common Day 3 mistakes</h3>
+  <div class="grid g3">
+    <div class="card am"><h4>Connecting the LLM without good retrieved context</h4><p>Verify retrieval returns useful chunks first.</p></div>
+    <div class="card am"><h4>Weak or vague system instructions</h4><p>The bot answers too broadly.</p></div>
+    <div class="card am"><h4>UI works, answer not grounded</h4><p>A working interface is not a trustworthy app.</p></div>
+    <div class="card am"><h4>Deploying without testing real HR questions</h4><p>Test before you share the link.</p></div>
+    <div class="card am"><h4>Style over reliability</h4><p>Polish comes after correctness.</p></div>
+    <div class="card am"><h4>Sharing before checking edge cases</h4><p>Try refusals and out-of-scope questions.</p></div>
+  </div>
+
+  <!-- BENCH -->
+  <h3 id="bench">Test the chatbot: the DDS Enterprise HR test bench</h3>
+  <p>A chatbot that launches is not automatically useful. Test relevance, grounding, scope control, refusal to guess, tone and edge cases. Below are 12 questions with the answer the documents actually support, checked against the four PDFs. Click a question to see the expected behaviour and source. Use these to score your own bot.</p>
+  <div id="benchList">
+
+  <details><summary>1. What is the annual leave policy? <span class="pill ok">Answerable</span></summary>
+    <p>Full-time employees get <strong>22 working days</strong> of paid annual leave per leave year (pro-rata for part-time and mid-year joiners). It accrues at <strong>1.83 days per completed month</strong>. Max single block is 15 consecutive working days; at least one continuous block of 5 days must be taken each year.</p><p><em>Source: Leave Policy v2, section 3.</em></p></details>
+
+  <details><summary>2. How much notice do I need for 10 days of annual leave? <span class="pill ok">Answerable</span></summary>
+    <p><strong>30 calendar days</strong> for 10 or more working days (14 days for 3 to 9 working days; 7 days for 1 to 2 days). Managers respond within 3 business days. A good bot picks the correct tier, which tests reasoning as well as retrieval.</p><p><em>Source: Leave Policy v2, section 3.4.</em></p></details>
+
+  <details><summary>3. How many sick leave days do I get and do I need a medical certificate? <span class="pill ok">Answerable</span></summary>
+    <p><strong>15 working days</strong> per year at full pay, after probation. Notify your manager within 1 hour of your normal start time. A medical certificate is required for <strong>2 or more consecutive working days</strong>. Beyond 15 days, up to 30 further calendar days at half pay, then up to 45 unpaid, with documentation.</p><p><em>Source: Leave Policy v2, section 5; HR FAQ.</em></p></details>
+
+  <details><summary>4. Can I carry over unused leave? <span class="pill ok">Answerable</span></summary>
+    <p>Up to <strong>10 unused days</strong> carry into the next year automatically, and must be used by <strong>31 March</strong>, or they expire without compensation. Unused leave is not paid out during employment; on termination, accrued unused leave is paid at the basic salary rate.</p><p><em>Source: Leave Policy v2, section 4.</em></p></details>
+
+  <details><summary>5. What are the maternity leave rules? <span class="pill ok">Answerable</span></summary>
+    <p><strong>60 calendar days at full pay</strong>, exceeding the statutory minimum. Notify HR at least 30 calendar days before the expected date, with medical documentation. Leave can start up to 30 days before delivery. Nursing breaks: one paid hour per day for 6 months after return.</p><p><em>Source: Leave Policy v2, section 7.1 to 7.2.</em></p></details>
+
+  <details><summary>6. Can I work remotely full-time? <span class="pill ed">Conditional</span></summary>
+    <p>It <strong>depends on role suitability, performance and operational needs</strong>, with line-manager approval. HR may set role-based constraints (event roles need onsite presence), and remote status can be revoked. The bot should not answer a flat yes or no.</p><p><em>Source: Remote Work Policy, section 2; HR FAQ.</em></p></details>
+
+  <details><summary>7. What are the core collaboration hours? <span class="pill ed">Partial</span></summary>
+    <p>Teams set their own core hours where meetings may be scheduled; the handbook gives <strong>12:00 to 16:00 GST as an example</strong>. Standard Dubai office hours are 9:00 to 18:00, Monday to Friday. A careful bot says "for example" rather than presenting the example as a rule.</p><p><em>Source: Employee Handbook, section 6.</em></p></details>
+
+  <details><summary>8. Can I paste confidential DDS data into a public AI tool? <span class="pill ok">Answerable</span></summary>
+    <p><strong>No.</strong> Do not paste confidential data into public chatbots unless an approved enterprise environment is in place. Use approved model providers and enterprise settings for sensitive data, verify AI outputs, and do not treat AI as a source of truth.</p><p><em>Source: Employee Handbook sections 12 and 13; Remote Work Policy section 5.</em></p></details>
+
+  <details><summary>9. I booked a non-refundable flight before my leave was approved. What should I do? <span class="pill ed">Edge case</span></summary>
+    <p>The policy says employees should <strong>not book non-refundable travel before approval is confirmed</strong> in the leave system, but it does not say what to do afterwards. A good bot states what the policy says, admits the gap, and points to the manager or HR for the case-specific situation.</p><p><em>Source: Leave Policy v2, section 3.4.</em></p></details>
+
+  <details><summary>10. I saw harassment but I am not the victim. Can I still report it? <span class="pill ed">Edge case</span></summary>
+    <p>Concerns can be raised with <strong>HR or a People Partner</strong> (or the manager where appropriate). Reports are handled confidentially to the extent possible and <strong>retaliation for good-faith reports is prohibited</strong>. The documents do not restrict reporting to victims, and the bot should not invent a rule either way.</p><p><em>Source: Employee Handbook section 4; HR FAQ.</em></p></details>
+
+  <details><summary>11. What is the salary range for a data scientist? <span class="pill no">Must decline</span></summary>
+    <p>Out of scope and confidential. Expected: the <strong>decline message</strong> with the contact email. Not answering, and not guessing a number, is the correct behaviour.</p><p><em>Tests: scope control and the "no salary information" rule.</em></p></details>
+
+  <details><summary>12. What is the resignation notice period? <span class="pill no">Must decline or qualify</span></summary>
+    <p>The handbook says notice periods are <strong>defined in your offer letter or contract</strong>, and gives no number. A grounded bot must not supply a typical figure from general knowledge. It should say the handbook does not specify it and refer the user to HR or their contract.</p><p><em>Tests: refusal to fill gaps from general knowledge, the most important hallucination test.</em></p></details>
+
+  </div>
+  <div class="grid g2">
+    <div class="card"><h4>What to observe in every answer</h4><ul><li>Is it relevant and grounded in retrieved text?</li><li>Does it stay in HR scope?</li><li>Does it avoid guessing when context is missing?</li><li>Is the tone professional and clear?</li><li>Does it handle edge cases calmly and escalate?</li></ul></div>
+    <div class="card cy"><h4>Your evidence requirement</h4><p>Record at least <strong>three normal tests and one edge case</strong> with the bot's actual output, plus a screenshot. Test in the deployed Space, in an incognito browser, not only in the notebook.</p></div>
+  </div>
+</section>
+
+<!-- ================= FULL CODE ================= -->
+<section id="fullcode">
+  <span class="tag">Reference</span>
+  <h2>The complete code</h2>
+  <p>Two versions of the same chatbot. The <strong>course app</strong> is compact and readable, ideal for learning and for the live build. The <strong>hardened live demo</strong> adds the safeguards you would want before sharing a public link. Both use LlamaIndex, Pinecone, OpenAI and Gradio.</p>
+  <div class="tw"><table>
+    <tr><th></th><th>Course app (Hugging Face folder)</th><th>Hardened live demo</th></tr>
+    <tr><td>Chat model</td><td><code>gpt-4o-mini</code>, temperature 0.2</td><td><code>gpt-4o-mini</code> by default, set by <code>OPENAI_CHAT_MODEL</code></td></tr>
+    <tr><td>Embedding model</td><td><code>text-embedding-ada-002</code> (1536)</td><td><code>text-embedding-3-small</code> (1536)</td></tr>
+    <tr><td>Chunking</td><td>600 / 200</td><td>600 / 150</td></tr>
+    <tr><td>Pinecone index</td><td><code>quickstart</code>, euclidean</td><td><code>dds-hr-handbook</code>, cosine, dimension and metric validated</td></tr>
+    <tr><td>Namespace and re-index control</td><td>None</td><td>Namespace plus <code>FORCE_REINDEX</code> switch</td></tr>
+    <tr><td>Retrieval</td><td>LlamaIndex default top-k (2)</td><td><code>similarity_top_k=4</code>, compact response mode</td></tr>
+    <tr><td>Prompt</td><td>Prose prompt via QA template</td><td>Numbered rules, exact decline message, salary and confidentiality ban</td></tr>
+    <tr><td>Sources shown</td><td>No</td><td>Yes: "Retrieved from: file, page"</td></tr>
+    <tr><td>Interface</td><td><code>gr.Interface</code> with <code>@spaces.GPU</code></td><td><code>gr.Blocks</code>, examples, clear button, no GPU decorator</td></tr>
+    <tr><td>Data folder</td><td><code>Data</code></td><td><code>data</code></td></tr>
+    <tr><td>Error handling</td><td>Returns the exception text</td><td>Friendly message, logs the exception</td></tr>
+    <tr><td>Dependencies</td><td>Unpinned</td><td>Pinned versions</td></tr>
+  </table></div>
+
+  <details open><summary>app.py: course version (full)</summary>
+    <div class="code"><div class="bar"><span>Hugging Face/app.py</span><button data-copy>Copy</button></div><pre># AYesha — DDS Enterprise HR Chatbot (Hugging Face Space, ZeroGPU)
+# !pip install -U gradio spaces pinecone llama-index llama-index-vector-stores-pinecone llama-index-readers-file pypdf llama-index-llms-openai llama-index-embeddings-openai
+
+# --- Imports ---
+import logging
+import os
+import sys
+
+import gradio as gr
+import spaces
+
+from pinecone import Pinecone, ServerlessSpec
+from llama_index.core import (
+    VectorStoreIndex,
+    SimpleDirectoryReader,
+    StorageContext,
+    Settings,
+    PromptTemplate,
+)
+from llama_index.vector_stores.pinecone import PineconeVectorStore
+from llama_index.readers.file import PDFReader
+from llama_index.llms.openai import OpenAI
+from llama_index.embeddings.openai import OpenAIEmbedding
+
+# --- Logging ---
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# --- Keys (set these in Space Settings -&gt; Variables and secrets) ---
+OPENAI_API_KEY = os.getenv(&quot;OPENAI_API_KEY&quot;)
+PINECONE_API_KEY = os.getenv(&quot;PINECONE_API_KEY&quot;)
+
+if not OPENAI_API_KEY:
+    raise RuntimeError(&quot;OPENAI_API_KEY is not set. Add it under Settings -&gt; Variables and secrets.&quot;)
+if not PINECONE_API_KEY:
+    raise RuntimeError(&quot;PINECONE_API_KEY is not set. Add it under Settings -&gt; Variables and secrets.&quot;)
+
+# --- LlamaIndex global settings ---
+Settings.llm = OpenAI(model=&quot;gpt-4o-mini&quot;, temperature=0.2)
+Settings.embed_model = OpenAIEmbedding(model=&quot;text-embedding-ada-002&quot;)
+Settings.chunk_size = 600
+Settings.chunk_overlap = 200
+
+SYSTEM_PROMPT = &quot;&quot;&quot;You are AYesha, the Decoding Data Science (DDS) Enterprise HR Chatbot. Answer questions exclusively using the attached DDS HR Handbook. Base all responses on the most up-to-date information available in the handbook. Only respond to queries directly related to DDS HR policies as outlined in the handbook.
+
+Important instructions:
+- Only answer questions directly supported by the latest DDS HR handbook.
+- Decline politely and redirect to the provided email address for any questions outside scope or for confidential information.
+- Always reason before concluding. Only present the answer after checking scope and source.
+Remember: As AYesha, the DDS HR Enterprise Chatbot, you must never provide information outside authorized HR handbook content and always respond respectfully according to these constraints.
+&quot;&quot;&quot;
+
+# LlamaIndex&#x27;s query engine doesn&#x27;t accept a `system_prompt=` kwarg — that param only
+# exists on as_chat_engine(). The equivalent for a query engine is a custom QA prompt
+# template, which is what actually enforces AYesha&#x27;s scope/persona.
+QA_TEMPLATE = PromptTemplate(
+    SYSTEM_PROMPT
+    + &quot;\n\nContext information is below.\n---------------------\n{context_str}\n---------------------\n&quot;
+    &quot;Given the context information and not prior knowledge, answer the query.\n&quot;
+    &quot;Query: {query_str}\nAnswer: &quot;
+)
+
+# --- Initialize Pinecone ---
+pc = Pinecone(api_key=PINECONE_API_KEY)
+INDEX_NAME = &quot;quickstart&quot;
+DIMENSION = 1536
+
+existing_indexes = [idx[&quot;name&quot;] for idx in pc.list_indexes()]
+
+if INDEX_NAME not in existing_indexes:
+    # Only create the index the first time. Deleting + recreating on every
+    # restart re-embeds every PDF (real API cost) and risks a race if two
+    # cold starts overlap — so we only build the index when it doesn&#x27;t exist yet.
+    pc.create_index(
+        name=INDEX_NAME,
+        dimension=DIMENSION,
+        metric=&quot;euclidean&quot;,
+        spec=ServerlessSpec(cloud=&quot;aws&quot;, region=&quot;us-east-1&quot;),
+    )
+
+pinecone_index = pc.Index(INDEX_NAME)
+vector_store = PineconeVectorStore(pinecone_index=pinecone_index)
+
+# If the index is already populated (from a prior run), just attach to it.
+# Otherwise load the PDFs and build it now.
+stats = pinecone_index.describe_index_stats()
+if stats.get(&quot;total_vector_count&quot;, 0) &gt; 0:
+    index = VectorStoreIndex.from_vector_store(vector_store)
+else:
+    documents = SimpleDirectoryReader(
+        input_dir=&quot;Data&quot;,  # folder name is case-sensitive — must match exactly what you upload
+        required_exts=[&quot;.pdf&quot;],
+        file_extractor={&quot;.pdf&quot;: PDFReader()},
+    ).load_data()
+
+    if not documents:
+        raise ValueError(
+            &quot;No PDF documents were loaded from the &#x27;Data&#x27; folder. &quot;
+            &quot;Make sure a folder named exactly &#x27;Data&#x27; with your PDF(s) is uploaded alongside app.py.&quot;
+        )
+
+    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+    index = VectorStoreIndex.from_documents(documents, storage_context=storage_context)
+
+query_engine = index.as_query_engine(text_qa_template=QA_TEMPLATE)
+
+
+# --- Gradio App ---
+@spaces.GPU
+def query_doc(prompt):
+    try:
+        response = query_engine.query(prompt)
+        return str(response)
+    except Exception as e:
+        logger.exception(&quot;Query failed&quot;)
+        return f&quot;Error: {str(e)}&quot;
+
+
+gr.Interface(
+    fn=query_doc,
+    inputs=gr.Textbox(label=&quot;Ask a question about the document&quot;),
+    outputs=gr.Textbox(label=&quot;Answer&quot;),
+    title=&quot;DDS Enterprise HR Chatbot — AYesha&quot;,
+    description=&quot;Ask questions related to HR for latest information.&quot;,
+).launch()</pre></div>
+  </details>
+  <details><summary>app.py: hardened live-demo version (full)</summary>
+    <div class="code"><div class="bar"><span>dds_hr_huggingface_live_demo/app.py</span><button data-copy>Copy</button></div><pre>import logging
+import os
+import sys
+import time
+from pathlib import Path
+from typing import Any
+
+import gradio as gr
+from pinecone import Pinecone, ServerlessSpec
+
+from llama_index.core import (
+    Settings,
+    SimpleDirectoryReader,
+    StorageContext,
+    VectorStoreIndex,
+)
+from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.llms.openai import OpenAI
+from llama_index.readers.file import PDFReader
+from llama_index.vector_stores.pinecone import PineconeVectorStore
+
+
+# ============================================================
+# Logging
+# ============================================================
+
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.INFO,
+    format=&quot;%(asctime)s | %(levelname)s | %(message)s&quot;,
+)
+logger = logging.getLogger(&quot;dds-hr-chatbot&quot;)
+
+
+# ============================================================
+# Environment variables
+# ============================================================
+
+OPENAI_API_KEY = os.getenv(&quot;OPENAI_API_KEY&quot;)
+PINECONE_API_KEY = os.getenv(&quot;PINECONE_API_KEY&quot;)
+
+if not OPENAI_API_KEY:
+    raise RuntimeError(
+        &quot;OPENAI_API_KEY is missing. Add it as a Hugging Face Space secret &quot;
+        &quot;under Settings &gt; Variables and secrets.&quot;
+    )
+
+if not PINECONE_API_KEY:
+    raise RuntimeError(
+        &quot;PINECONE_API_KEY is missing. Add it as a Hugging Face Space secret &quot;
+        &quot;under Settings &gt; Variables and secrets.&quot;
+    )
+
+
+# ============================================================
+# Application configuration
+# ============================================================
+
+DATA_DIR = Path(&quot;data&quot;)
+
+INDEX_NAME = os.getenv(&quot;PINECONE_INDEX_NAME&quot;, &quot;dds-hr-handbook&quot;)
+NAMESPACE = os.getenv(&quot;PINECONE_NAMESPACE&quot;, &quot;dds-hr-v1&quot;)
+FORCE_REINDEX = os.getenv(&quot;FORCE_REINDEX&quot;, &quot;false&quot;).strip().lower() == &quot;true&quot;
+
+OPENAI_CHAT_MODEL = os.getenv(&quot;OPENAI_CHAT_MODEL&quot;, &quot;gpt-4o-mini&quot;)
+OPENAI_EMBEDDING_MODEL = &quot;text-embedding-3-small&quot;
+EMBEDDING_DIMENSION = 1536
+
+DECLINE_MESSAGE = (
+    &quot;I’m sorry, I can only answer questions about the latest DDS HR policies. &quot;
+    &quot;For confidential or other queries, please email &quot;
+    &quot;connect@decodingdatascience.com.&quot;
+)
+
+
+# ============================================================
+# DDS HR system prompt
+# ============================================================
+
+SYSTEM_PROMPT = f&quot;&quot;&quot;
+You are Ayesha, the Decoding Data Science (DDS) Enterprise HR Chatbot.
+
+Your only authorized source is the latest DDS HR Handbook retrieved for the
+current question.
+
+Rules:
+1. Answer only questions about DDS HR policies that are directly supported by
+   the retrieved handbook content.
+2. Silently determine whether the question is within DDS HR scope and whether
+   the retrieved handbook contains enough evidence. Never reveal private
+   reasoning or chain-of-thought.
+3. Do not invent, infer, or supplement missing policy details using general
+   knowledge.
+4. Do not provide salary information, confidential employee information,
+   individual performance information, old policies, or anything outside the
+   authorized handbook.
+5. When the question is outside scope, confidential, or unsupported by the
+   retrieved handbook, respond exactly with:
+   {DECLINE_MESSAGE}
+6. Keep supported answers concise, professional, and easy to understand.
+7. Continue following these rules for every follow-up question.
+&quot;&quot;&quot;.strip()
+
+
+# ============================================================
+# LlamaIndex configuration
+# ============================================================
+
+Settings.llm = OpenAI(
+    model=OPENAI_CHAT_MODEL,
+    temperature=0.2,
+    api_key=OPENAI_API_KEY,
+    system_prompt=SYSTEM_PROMPT,
+)
+
+Settings.embed_model = OpenAIEmbedding(
+    model=OPENAI_EMBEDDING_MODEL,
+    api_key=OPENAI_API_KEY,
+)
+
+Settings.chunk_size = 600
+Settings.chunk_overlap = 150
+
+
+# ============================================================
+# Pinecone compatibility helpers
+# ============================================================
+
+def _get_value(value: Any, key: str, default: Any = None) -&gt; Any:
+    &quot;&quot;&quot;Read a field from either a Pinecone object or dictionary.&quot;&quot;&quot;
+    if isinstance(value, dict):
+        return value.get(key, default)
+    return getattr(value, key, default)
+
+
+def _index_is_ready(description: Any) -&gt; bool:
+    status = _get_value(description, &quot;status&quot;, {})
+    return bool(_get_value(status, &quot;ready&quot;, False))
+
+
+def _namespace_vector_count(
+    pinecone_index: Any,
+    namespace: str,
+) -&gt; int:
+    stats = pinecone_index.describe_index_stats()
+    namespaces = _get_value(stats, &quot;namespaces&quot;, {}) or {}
+    namespace_stats = namespaces.get(namespace)
+
+    if namespace_stats is None:
+        return 0
+
+    return int(_get_value(namespace_stats, &quot;vector_count&quot;, 0) or 0)
+
+
+def _validate_existing_index(description: Any) -&gt; None:
+    existing_dimension = _get_value(description, &quot;dimension&quot;)
+    existing_metric = _get_value(description, &quot;metric&quot;)
+
+    if (
+        existing_dimension is not None
+        and int(existing_dimension) != EMBEDDING_DIMENSION
+    ):
+        raise RuntimeError(
+            f&quot;Pinecone index &#x27;{INDEX_NAME}&#x27; has dimension &quot;
+            f&quot;{existing_dimension}, but this app requires &quot;
+            f&quot;{EMBEDDING_DIMENSION}. Use a new PINECONE_INDEX_NAME or delete &quot;
+            &quot;the incompatible index manually.&quot;
+        )
+
+    if (
+        existing_metric is not None
+        and str(existing_metric).lower() != &quot;cosine&quot;
+    ):
+        raise RuntimeError(
+            f&quot;Pinecone index &#x27;{INDEX_NAME}&#x27; uses metric &quot;
+            f&quot;&#x27;{existing_metric}&#x27;, but this app requires &#x27;cosine&#x27;. &quot;
+            &quot;Use a new PINECONE_INDEX_NAME or recreate the index manually.&quot;
+        )
+
+
+def get_or_create_pinecone_index() -&gt; Any:
+    pc = Pinecone(api_key=PINECONE_API_KEY)
+    existing_names = pc.list_indexes().names()
+
+    if INDEX_NAME not in existing_names:
+        logger.info(&quot;Creating Pinecone index &#x27;%s&#x27;...&quot;, INDEX_NAME)
+
+        pc.create_index(
+            name=INDEX_NAME,
+            dimension=EMBEDDING_DIMENSION,
+            metric=&quot;cosine&quot;,
+            spec=ServerlessSpec(
+                cloud=&quot;aws&quot;,
+                region=&quot;us-east-1&quot;,
+            ),
+        )
+
+        for _ in range(90):
+            description = pc.describe_index(INDEX_NAME)
+
+            if _index_is_ready(description):
+                logger.info(&quot;Pinecone index is ready.&quot;)
+                break
+
+            time.sleep(2)
+        else:
+            raise TimeoutError(
+                f&quot;Pinecone index &#x27;{INDEX_NAME}&#x27; was not ready after &quot;
+                &quot;three minutes.&quot;
+            )
+    else:
+        description = pc.describe_index(INDEX_NAME)
+        _validate_existing_index(description)
+        logger.info(&quot;Using existing Pinecone index &#x27;%s&#x27;.&quot;, INDEX_NAME)
+
+    return pc.Index(INDEX_NAME)
+
+
+# ============================================================
+# PDF loading and vector indexing
+# ============================================================
+
+def load_pdf_documents():
+    if not DATA_DIR.exists():
+        raise FileNotFoundError(
+            &quot;The lowercase &#x27;data&#x27; folder is missing. Create it and upload &quot;
+            &quot;the DDS HR Handbook PDF.&quot;
+        )
+
+    pdf_files = sorted(DATA_DIR.glob(&quot;*.pdf&quot;))
+
+    if not pdf_files:
+        raise FileNotFoundError(
+            &quot;No PDF was found in the lowercase &#x27;data&#x27; folder. Upload the DDS &quot;
+            &quot;HR Handbook PDF before restarting the Space.&quot;
+        )
+
+    logger.info(
+        &quot;Loading %d PDF file(s): %s&quot;,
+        len(pdf_files),
+        &quot;, &quot;.join(path.name for path in pdf_files),
+    )
+
+    documents = SimpleDirectoryReader(
+        input_dir=str(DATA_DIR),
+        required_exts=[&quot;.pdf&quot;],
+        file_extractor={&quot;.pdf&quot;: PDFReader()},
+    ).load_data()
+
+    if not documents:
+        raise ValueError(
+            &quot;The PDF files were found, but no text was extracted. Ensure the &quot;
+            &quot;handbook contains selectable text and is not only scanned images.&quot;
+        )
+
+    logger.info(&quot;Loaded %d document node(s).&quot;, len(documents))
+    return documents
+
+
+def build_query_engine():
+    pinecone_index = get_or_create_pinecone_index()
+
+    if FORCE_REINDEX:
+        logger.warning(
+            &quot;FORCE_REINDEX=true. Deleting vectors only from namespace &#x27;%s&#x27;.&quot;,
+            NAMESPACE,
+        )
+        pinecone_index.delete(
+            delete_all=True,
+            namespace=NAMESPACE,
+        )
+        time.sleep(2)
+
+    vector_store = PineconeVectorStore(
+        pinecone_index=pinecone_index,
+        namespace=NAMESPACE,
+    )
+
+    vector_count = _namespace_vector_count(
+        pinecone_index,
+        NAMESPACE,
+    )
+
+    if vector_count == 0:
+        logger.info(
+            &quot;Namespace &#x27;%s&#x27; is empty. Indexing the uploaded handbook...&quot;,
+            NAMESPACE,
+        )
+
+        documents = load_pdf_documents()
+
+        storage_context = StorageContext.from_defaults(
+            vector_store=vector_store,
+        )
+
+        index = VectorStoreIndex.from_documents(
+            documents,
+            storage_context=storage_context,
+            show_progress=True,
+        )
+
+        logger.info(&quot;Handbook indexing completed.&quot;)
+    else:
+        logger.info(
+            &quot;Reusing %d existing vector(s) from namespace &#x27;%s&#x27;.&quot;,
+            vector_count,
+            NAMESPACE,
+        )
+
+        index = VectorStoreIndex.from_vector_store(
+            vector_store=vector_store,
+            embed_model=Settings.embed_model,
+        )
+
+    return index.as_query_engine(
+        llm=Settings.llm,
+        similarity_top_k=4,
+        response_mode=&quot;compact&quot;,
+    )
+
+
+# Build at startup so the application is warm before the live demo.
+query_engine = build_query_engine()
+
+
+# ============================================================
+# Gradio query function
+# ============================================================
+
+def _format_sources(response: Any) -&gt; str:
+    source_nodes = getattr(response, &quot;source_nodes&quot;, None) or []
+    sources: list[str] = []
+
+    for source in source_nodes[:3]:
+        node = getattr(source, &quot;node&quot;, None)
+        metadata = getattr(node, &quot;metadata&quot;, {}) or {}
+
+        file_name = metadata.get(&quot;file_name&quot;) or metadata.get(&quot;filename&quot;)
+        page = (
+            metadata.get(&quot;page_label&quot;)
+            or metadata.get(&quot;page_number&quot;)
+            or metadata.get(&quot;page&quot;)
+        )
+
+        if not file_name:
+            continue
+
+        label = str(file_name)
+        if page is not None:
+            label += f&quot;, page {page}&quot;
+
+        if label not in sources:
+            sources.append(label)
+
+    if not sources:
+        return &quot;&quot;
+
+    return &quot;\n\n**Retrieved from:** &quot; + &quot;; &quot;.join(sources)
+
+
+def query_doc(question: str) -&gt; str:
+    question = (question or &quot;&quot;).strip()
+
+    if not question:
+        return &quot;Please enter a question about a DDS HR policy.&quot;
+
+    try:
+        response = query_engine.query(question)
+        answer = str(response).strip()
+
+        if not answer:
+            return DECLINE_MESSAGE
+
+        return answer + _format_sources(response)
+
+    except Exception:
+        logger.exception(&quot;A query failed.&quot;)
+        return (
+            &quot;I could not process your question right now. Please try again &quot;
+            &quot;or email connect@decodingdatascience.com.&quot;
+        )
+
+
+# ============================================================
+# Gradio application
+# ============================================================
+
+with gr.Blocks(
+    title=&quot;DDS Enterprise HR Chatbot&quot;,
+    theme=gr.themes.Soft(),
+) as demo:
+    gr.Markdown(
+        &quot;&quot;&quot;
+        # DDS Enterprise HR Chatbot
+
+        Ask **Ayesha** questions about the latest DDS HR policies. Answers are
+        based exclusively on the uploaded DDS HR Handbook.
+        &quot;&quot;&quot;
+    )
+
+    question = gr.Textbox(
+        label=&quot;Ask an HR policy question&quot;,
+        placeholder=&quot;Example: What is the annual leave policy?&quot;,
+        lines=3,
+        autofocus=True,
+    )
+
+    with gr.Row():
+        ask_button = gr.Button(
+            &quot;Ask Ayesha&quot;,
+            variant=&quot;primary&quot;,
+        )
+        clear_button = gr.Button(&quot;Clear&quot;)
+
+    answer = gr.Markdown(
+        value=&quot;Enter a DDS HR policy question above.&quot;
+    )
+
+    gr.Examples(
+        examples=[
+            [&quot;What is the annual leave policy?&quot;],
+            [&quot;How do I apply for sick leave?&quot;],
+            [&quot;What are the standard working hours?&quot;],
+            [&quot;What is the resignation notice period?&quot;],
+            [&quot;What is the salary range for a data scientist?&quot;],
+        ],
+        inputs=question,
+    )
+
+    ask_button.click(
+        fn=query_doc,
+        inputs=question,
+        outputs=answer,
+    )
+
+    question.submit(
+        fn=query_doc,
+        inputs=question,
+        outputs=answer,
+    )
+
+    clear_button.click(
+        fn=lambda: (&quot;&quot;, &quot;Enter a DDS HR policy question above.&quot;),
+        inputs=None,
+        outputs=[question, answer],
+    )
+
+    gr.Markdown(
+        &quot;&quot;&quot;
+        ---
+        **Scope:** Latest DDS HR policies only  
+        **Support:** connect@decodingdatascience.com
+        &quot;&quot;&quot;
+    )
+
+
+if __name__ == &quot;__main__&quot;:
+    demo.launch()</pre></div>
+  </details>
+  <details><summary>requirements.txt: hardened version (pinned)</summary>
+    <div class="code"><div class="bar"><span>dds_hr_huggingface_live_demo/requirements.txt</span><button data-copy>Copy</button></div><pre>llama-index-core==0.14.23
+llama-index-vector-stores-pinecone==0.8.0
+llama-index-readers-file==0.6.0
+llama-index-llms-openai==0.7.10
+llama-index-embeddings-openai==0.6.0
+pinecone==7.3.0
+pypdf==6.14.2
+openai==2.48.0</pre></div>
+  </details>
+  <details><summary>After-upload checklist (from the live-demo package)</summary>
+    <div class="code"><div class="bar"><span>SETUP_AFTER_UPLOAD.txt</span><button data-copy>Copy</button></div><pre>DDS HR CHATBOT — AFTER-UPLOAD CHECKLIST
+
+1. Upload this package&#x27;s files to a BLANK GRADIO Space.
+   Do not choose Static or Gradio Lite.
+
+2. Your repository must contain:
+   README.md
+   requirements.txt
+   app.py
+   data/&lt;your-handbook&gt;.pdf
+
+3. Delete data/UPLOAD_YOUR_PDF_HERE.txt after uploading your PDF.
+   The placeholder does not affect the app, but it is no longer needed.
+
+4. In Hugging Face, open:
+   Settings &gt; Variables and secrets
+
+5. Add these as SECRETS:
+   OPENAI_API_KEY
+   PINECONE_API_KEY
+
+6. Confirm README.md contains:
+   sdk: gradio
+   sdk_version: 6.20.0
+   python_version: &quot;3.10&quot;
+   app_file: app.py
+
+7. Restart the Space.
+
+8. Watch the Logs. On first successful startup, expect messages similar to:
+   - Creating Pinecone index...
+   - Loading PDF...
+   - Handbook indexing completed.
+
+9. Restart the Space once more. The Logs should now say that it is reusing
+   existing vectors. It should NOT recreate embeddings.
+
+10. Test before the live demo:
+    - One answer clearly contained in the handbook
+    - One unrelated question
+    - One salary/confidential question
+    - Open the Space in an incognito browser
+
+UPDATING THE PDF LATER
+
+The safest approach is to change the Space variable:
+PINECONE_NAMESPACE=dds-hr-v2
+
+Then upload the new PDF and restart.
+
+Alternative:
+Set FORCE_REINDEX=true, restart once, then immediately change it back to false
+and restart again.
+
+IMPORTANT
+
+- The folder name must be lowercase: data
+- The PDF must contain selectable text. Scanned PDFs may need OCR.
+- Do not put API keys inside app.py.
+- Do not add notebook commands such as !pip install.
+- Do not use demo.launch(share=True).
+- OpenAI usage is chargeable even when Hugging Face hosting is free.</pre></div>
+  </details>
+</section>
+
+<!-- ================= EVIDENCE ================= -->
+<section id="evidence">
+  <span class="tag a">Evidence</span>
+  <h2>Demo, evaluation and submission</h2>
+  <p>Evidence is what separates "I learned AI" from "I built an AI application". A serious project shows that it works, where it works and where it still fails.</p>
+
+  <h3>What counts as evidence</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Test questions</h4><p>8 to 10 realistic HR questions across different policies.</p></div>
+    <div class="card"><h4>Grounded answers</h4><p>Answers use retrieved context and avoid guessing.</p></div>
+    <div class="card"><h4>Source visibility</h4><p>Mention the policy or source where possible.</p></div>
+    <div class="card"><h4>Failure handling</h4><p>If context is missing, the bot says so clearly.</p></div>
+    <div class="card"><h4>User demo</h4><p>A short video (2 to 4 minutes): problem, app, test questions, evidence.</p></div>
+    <div class="card"><h4>Improvement notes</h4><p>At least two weaknesses and how you would fix them.</p></div>
+  </div>
+
+  <h3>How to demo in three minutes</h3>
+  <div class="tw"><table>
+    <tr><th>Step</th><th>Say</th></tr>
+    <tr><td>1. Introduce</td><td>"My assistant is called [Bot Name]. It helps [target user] answer [HR problem]."</td></tr>
+    <tr><td>2. Data</td><td>"The knowledge source is the DDS synthetic employee handbook and HR policy documents."</td></tr>
+    <tr><td>3. Architecture</td><td>"The app uses document loading, embeddings, Pinecone retrieval, an LLM and a Gradio UI."</td></tr>
+    <tr><td>4. Tests</td><td>"Here are three questions I tested, including one edge case."</td></tr>
+    <tr><td>5. Honesty</td><td>"The main limitation is [limitation], and the next improvement is [improvement]."</td></tr>
+  </table></div>
+  <p>Demo discipline: keep to about 3 minutes, never expose API keys or confidential data, show evidence not only explanation, and be honest about errors or incomplete deployment. If deployment fails, show the notebook, screenshots, error notes and what you tried. That is still valuable evidence.</p>
+
+  <h3>Evaluation flow and scoring rubric</h3>
+  <div class="flow">
+    <div class="step"><i>1</i><b>Ask a standard HR question</b></div>
+    <div class="step"><i>2</i><b>Check retrieved context</b></div>
+    <div class="step"><i>3</i><b>Is the answer grounded and clear?</b></div>
+    <div class="step"><i>4</i><b>No unsupported claims?</b></div>
+    <div class="step"><i>5</i><b>Sensitive cases escalated?</b></div>
+    <div class="step a"><i>6</i><b>Record score, notes, action</b></div>
+  </div>
+  <p>Score each response from 1 to 5 on six dimensions. The goal is not a perfect score everywhere; it is to find the <strong>weak link</strong>: sometimes retrieval, sometimes prompt design, sometimes missing document coverage, sometimes the UI.</p>
+  <div class="grid g3">
+    <div class="card"><h4>Policy accuracy</h4><p>Does it match the uploaded content?</p></div>
+    <div class="card"><h4>Grounding</h4><p>Does it rely on retrieved context?</p></div>
+    <div class="card"><h4>Clarity</h4><p>Understandable and professional?</p></div>
+    <div class="card"><h4>Safety</h4><p>Avoids risky or unsupported advice?</p></div>
+    <div class="card"><h4>Escalation</h4><p>Routes sensitive or missing-context cases correctly?</p></div>
+    <div class="card"><h4>Usability</h4><p>Would a real user know the next step?</p></div>
+  </div>
+
+  <h3>Final submission checklist</h3>
+  <p>Keep it short. Show what you built, tested and learned.</p>
+  <ul>
+    <li>Bot name and one-line purpose.</li>
+    <li>Which LLM and embedding model you used.</li>
+    <li>The system instruction you used.</li>
+    <li>Three test questions with the bot's outputs, plus one edge-case response.</li>
+    <li>One key learning and one improvement if you had more time.</li>
+    <li>A rough monthly cost estimate.</li>
+    <li>Hugging Face or Gradio demo link, or screenshots.</li>
+  </ul>
+  <div class="tw"><table>
+    <tr><th>Cost tier</th><th>Rough monthly estimate</th><th>What drives it</th></tr>
+    <tr><td>Prototype</td><td>$5 to $20</td><td>Small usage, public demo, minimal monitoring.</td></tr>
+    <tr><td>Team</td><td>$20 to $100</td><td>More users, hosted app, regular testing, better logging.</td></tr>
+    <tr><td>Enterprise</td><td>Depends on usage</td><td>Security, access control, procurement, SLAs, monitoring, support.</td></tr>
+  </table></div>
+  <p>Cost is not just the LLM. Token usage, embeddings, vector database storage and search, hosting, monitoring and repeated testing all count. These are rough thinking categories; replace them with current provider pricing before production.</p>
+
+  <h3>Simple judging criteria</h3>
+  <div class="grid g4">
+    <div class="card"><h4>1. Clarity</h4><p>Specific problem, clear users, realistic scope.</p></div>
+    <div class="card"><h4>2. Functionality</h4><p>The prototype works and gives useful answers.</p></div>
+    <div class="card"><h4>3. Evidence</h4><p>Test questions, demo and honest evaluation.</p></div>
+    <div class="card"><h4>4. Communication</h4><p>Architecture and demo understandable by technical and business audiences.</p></div>
+  </div>
+
+  <h3>If you had more time: improve these areas</h3>
+  <div class="grid g4">
+    <div class="card"><h4>Better system instructions</h4></div>
+    <div class="card"><h4>Citations in answers</h4></div>
+    <div class="card"><h4>More HR documents and scenarios</h4></div>
+    <div class="card"><h4>Fallback and escalation logic</h4></div>
+    <div class="card"><h4>Cleaner UI and UX</h4></div>
+    <div class="card"><h4>Authentication for internal use</h4></div>
+    <div class="card"><h4>More structured testing</h4></div>
+    <div class="card"><h4>Analytics and monitoring</h4></div>
+  </div>
+  <p>These are the typical production-readiness layers. They separate a prototype, a pilot and production. Choose one realistic improvement and include it in your reflection.</p>
+
+  <h3>Reflection prompts</h3>
+  <ul>
+    <li>What did I build?</li><li>What worked well?</li><li>Where did the chatbot fail or behave weakly?</li>
+    <li>What did I learn about RAG, retrieval, prompts or deployment?</li><li>What would I improve next?</li>
+  </ul>
+
+  <h3>Bootcamp conclusion</h3>
+  <div class="flow">
+    <div class="step"><b>AI curious</b><span>Interest, questions, general understanding</span></div>
+    <div class="step"><b>Use-case clarity</b><span>A concrete DDS HR chatbot problem</span></div>
+    <div class="step v"><b>Retrieval system</b><span>Document search with LlamaIndex and Pinecone</span></div>
+    <div class="step a"><b>Working AI app</b><span>LLM, UI and deployment</span></div>
+  </div>
+  <p><strong>Key takeaways:</strong> clarity matters before coding; enterprise AI needs retrieval, not just prompting; LlamaIndex structures the retrieval workflow; Pinecone enables semantic search over enterprise data; system instructions shape reliability and trust; a good assistant depends on both data and behaviour; a chatbot must be testable, grounded and usable; deployment moves a prototype into a portfolio.</p>
+  <div class="say">You did not just learn AI concepts. You built an actual AI application. Keep building, keep testing, keep improving. And the same pattern works for onboarding, compliance, customer support, knowledge management and internal operations.</div>
+</section>
+
+<!-- ================= TROUBLESHOOTING ================= -->
+<section id="trouble">
+  <span class="tag">Reference</span>
+  <h2>Troubleshooting</h2>
+  <details><summary>My Pinecone index is empty or returns no results</summary>
+    <p>Check <code>pinecone_index.describe_index_stats()</code>. If the vector count is 0, the build step never ran or wrote to a different namespace. Confirm the namespace in the code matches the one you query, and that the PDFs actually loaded (documents count above zero).</p></details>
+  <details><summary>Error: dimension mismatch</summary>
+    <p>The Pinecone index dimension must equal the embedding model's output. Both ada-002 and text-embedding-3-small are 1536; text-embedding-3-large is 3072. Use a new index name or delete the incompatible index, then rebuild. Never mix embedding models between indexing and querying.</p></details>
+  <details><summary>The chatbot gives generic answers</summary>
+    <p>Print the retrieved chunks. If they do not contain the answer, fix retrieval (chunk size, top-k, missing document). If they do, tighten the system prompt: "use only the provided context", "say clearly when information is missing".</p></details>
+  <details><summary>"No PDF documents were loaded"</summary>
+    <p>Folder name case: <code>Data</code> vs <code>data</code> must match the code exactly. Also confirm the PDFs have selectable text (scanned images need OCR) and that the files were uploaded next to <code>app.py</code>.</p></details>
+  <details><summary>"OPENAI_API_KEY is not set" on Hugging Face</summary>
+    <p>Add the secret under Settings &rarr; Variables and secrets with the exact name, then restart the Space. Secrets are not read from your notebook or from a <code>.env</code> file you did not upload.</p></details>
+  <details><summary>The Space re-embeds the PDFs on every restart</summary>
+    <p>The index check is not finding existing vectors, usually because the index name or namespace changed between runs. Keep <code>INDEX_NAME</code> and <code>NAMESPACE</code> constant. In the logs you want "Reusing N existing vector(s)".</p></details>
+  <details><summary>The build fails on Hugging Face</summary>
+    <p>Read the build log. Common causes: a package missing from <code>requirements.txt</code>, a notebook command like <code>!pip install</code> left in <code>app.py</code>, or an unpinned library that changed. Pinned versions make builds reproducible. If deployment still fails, document the error and screenshots as evidence.</p></details>
+  <details><summary>Can I use my own HR documents?</summary>
+    <p>Yes, if they are approved for sharing and processing and are text-based PDFs. Do not use confidential employee data. For learning, use the synthetic DDS documents.</p></details>
+  <details><summary>How do I make answers cite their source?</summary>
+    <p>Read <code>response.source_nodes</code> and append file name and page from the metadata, as in the "Retrieved from" function in the Gradio section.</p></details>
+  <details><summary>How would this become production-ready?</summary>
+    <p>Add authentication and role-based access, logging and monitoring, PII protection, human escalation, evaluation pipelines, and data governance. The prototype is the foundation, not the end state.</p></details>
+</section>
+
+<!-- ================= GLOSSARY ================= -->
+<section id="glossary">
+  <span class="tag">Reference</span>
+  <h2>Glossary and links</h2>
+  <div class="tw"><table>
+    <tr><th>Term</th><th>Plain meaning</th></tr>
+    <tr><td><strong>LLM</strong></td><td>Large language model. Generates text; the "brain", not the database.</td></tr>
+    <tr><td><strong>RAG</strong></td><td>Retrieval-Augmented Generation. Retrieve relevant text, add it to the prompt, then generate.</td></tr>
+    <tr><td><strong>Chunk / node</strong></td><td>A passage of a document, the unit that gets embedded and retrieved.</td></tr>
+    <tr><td><strong>Chunk overlap</strong></td><td>Tokens repeated between consecutive chunks so boundary content is not lost.</td></tr>
+    <tr><td><strong>Token</strong></td><td>A piece of text (roughly three-quarters of a word) that models read and are billed by.</td></tr>
+    <tr><td><strong>Embedding</strong></td><td>A list of numbers (here 1536) that represents the meaning of a text.</td></tr>
+    <tr><td><strong>Vector database</strong></td><td>A database built to find the nearest vectors quickly. Here, Pinecone.</td></tr>
+    <tr><td><strong>Metadata</strong></td><td>Information attached to a chunk: file name, page, dates.</td></tr>
+    <tr><td><strong>Namespace</strong></td><td>A partition inside a Pinecone index, useful for versioning documents.</td></tr>
+    <tr><td><strong>Retriever</strong></td><td>The component that finds the top-k most relevant chunks for a question.</td></tr>
+    <tr><td><strong>top-k</strong></td><td>How many chunks the retriever returns.</td></tr>
+    <tr><td><strong>Query engine</strong></td><td>Retriever plus prompt plus LLM in a single call.</td></tr>
+    <tr><td><strong>System prompt</strong></td><td>Instructions that set the assistant's role, scope and rules.</td></tr>
+    <tr><td><strong>Grounded</strong></td><td>An answer supported by retrieved source text.</td></tr>
+    <tr><td><strong>Hallucination</strong></td><td>A fluent answer that is not supported by facts or sources.</td></tr>
+    <tr><td><strong>Temperature</strong></td><td>Randomness control. Low means more stable and factual.</td></tr>
+    <tr><td><strong>Space</strong></td><td>A hosted app on Hugging Face.</td></tr>
+    <tr><td><strong>CPE</strong></td><td>Clarity, Prototype, Evidence.</td></tr>
+  </table></div>
+  <h3>Links</h3>
+  <ul>
+    <li>Bootcamp page (permanent link): <a href="https://decodingdatascience.com/bootcamp">decodingdatascience.com/bootcamp</a></li>
+    <li>Live chatbot to try: <a href="https://huggingface.co/spaces/decodingdatascience/dds-hr-rag-chatbot">huggingface.co/spaces/decodingdatascience/dds-hr-rag-chatbot</a></li>
+    <li>OpenAI 2026 reference (models, embeddings, setup): <a href="https://decodingdatascience.com/openai-2026">decodingdatascience.com/openai-2026</a></li>
+    <li>Workshop resources: <a href="https://github.com/Decoding-Data-Science/CommunityWorkshops">github.com/Decoding-Data-Science/CommunityWorkshops</a></li>
+    <li>Model leaderboard: <a href="https://arena.ai/leaderboard/text">arena.ai/leaderboard/text</a></li>
+    <li>OpenAI platform: <a href="https://platform.openai.com">platform.openai.com</a> &nbsp;|&nbsp; Pinecone: <a href="https://www.pinecone.io">pinecone.io</a> &nbsp;|&nbsp; Hugging Face: <a href="https://huggingface.co">huggingface.co</a> &nbsp;|&nbsp; Gradio: <a href="https://www.gradio.app">gradio.app</a> &nbsp;|&nbsp; LlamaIndex: <a href="https://docs.llamaindex.ai">docs.llamaindex.ai</a></li>
+  </ul>
+  <h3>Housekeeping and online etiquette</h3>
+  <p>Join on time with your correct display name; mic muted when not speaking; use chat or raise hand for questions; keep your workspace safe and take short breaks; do not record, copy or share course materials without permission; attendance and participation are monitored for certificate eligibility. Never share API keys in chat or on screen.</p>
+</section>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>Decoding Data Science</strong> | AI Accelerator Bootcamp | CPD approved training provider. The DDS HR documents used in this bootcamp are synthetic, created for demos and training, and are not legal advice. Model names and prices change; verify current details before any real deployment.
+  </div>
+</footer>
+
+<script>
+(function(){
+  // copy buttons
+  document.querySelectorAll('button[data-copy]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var pre=b.closest('.code').querySelector('pre');
+      var text=pre.innerText;
+      var done=function(){var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o},1400)};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallback(text);done()})}
+      else{fallback(text);done()}
+    });
+  });
+  function fallback(t){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(a)}
+
+  // mobile menu
+  var side=document.getElementById('side'),btn=document.getElementById('menuBtn');
+  btn.addEventListener('click',function(){side.classList.toggle('open')});
+  side.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){side.classList.remove('open')})});
+
+  // scrollspy
+  var links=[].slice.call(document.querySelectorAll('#toc a'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var targets=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(l){l.classList.remove('active')});
+          var l=map[e.target.id]; if(l){l.classList.add('active')}
+        }
+      });
+    },{rootMargin:'-15% 0px -75% 0px'});
+    targets.forEach(function(t){io.observe(t)});
+  }
+
+  // print: open all details
+  window.addEventListener('beforeprint',function(){document.querySelectorAll('details').forEach(function(d){d.setAttribute('open','')})});
+})();
+</script>
+</body>
+</html>
