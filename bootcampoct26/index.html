@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DecoBot RAG Lab | Decoding Data Science</title>
+<title>DecoBot Bootcamp</title>
 <meta name="description" content="Interactive lab for the DDS HR leave chatbot: chunking, embeddings, retrieval, agent routing, cost calculator, data dictionary and glossary. Built with LlamaIndex, Gemini and Pinecone.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -149,38 +149,169 @@ footer{margin-top:80px;border-top:1px solid var(--line);padding-block:28px 60px;
 .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s,transform .6s}
 .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}.trace .l{animation:none;opacity:1;transform:none}}
+
+/* bootcamp additions */
+ul.plain{margin:8px 0 0;padding-left:18px;color:var(--mute);font-size:15px} ul.plain li{margin:5px 0}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-block;font:600 13px var(--mono);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:#05070b;background:var(--ice);border:1px solid var(--ice);padding:12px 18px}
+.btn.ghost{background:transparent;color:var(--ice)} .btn:hover{filter:brightness(1.12)}
+.tl{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.tl-i{border:1px solid var(--line);border-left:3px solid var(--ice);background:rgba(10,16,24,.78);padding:16px}
+.tl-i.am{border-left-color:var(--amber)} .tl-k{font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ice);margin-bottom:6px}
+.tl-i.am .tl-k{color:var(--amber)} .tl-i h3{margin:0 0 6px;font-size:18px} .tl-i p{margin:0 0 10px;color:var(--mute);font-size:14.5px}
+.tl-i a{font:600 12px var(--mono);color:var(--ice);text-transform:uppercase;letter-spacing:.08em}
+.steps4{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:14px}
+.video{position:relative;aspect-ratio:16/9;border:1px solid var(--line);background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.sched{width:100%;border-collapse:collapse} .sched td,.sched th{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14.5px;color:var(--mute)}
+.sched td:first-child{font:600 13px var(--mono);color:var(--amber);white-space:nowrap;width:76px} .sched td:nth-child(2){color:var(--fg);font-weight:600;width:30%}
+.outc{margin-top:16px}
+.quiz .q{border:1px solid var(--line);background:rgba(10,16,24,.78);padding:16px;margin-bottom:12px}
+.quiz .q p{margin:0 0 10px;color:var(--fg)} .quiz .opts{display:flex;gap:8px;flex-wrap:wrap}
+.quiz button{background:var(--code);color:var(--mute);border:1px solid var(--line);padding:9px 14px;font:600 12px var(--mono);cursor:pointer}
+.quiz button:hover{color:var(--ice)} .quiz button.right{border-color:var(--ok);color:var(--ok)} .quiz button.wrong{border-color:var(--bad);color:var(--bad)}
+.quiz .why{margin-top:10px;color:var(--mute);font-size:14.5px;display:none} .quiz .why.on{display:block}
+a{color:var(--ice)}
 </style>
 </head>
 <body>
 <nav class="top"><div class="wrap">
-  <b>DECOBOT LAB</b>
-  <a href="#how">Pipeline</a><a href="#labs">Labs</a><a href="#data">Data</a><a href="#dictionary">Dictionary</a><a href="#glossary">Glossary</a><a href="#stack">Stack</a><a href="#deploy">Deploy</a><a href="#program">Program</a><a href="#limits">Limits</a>
+  <b>DDS BOOTCAMP</b>
+  <a href="#about">About</a><a href="#program">Program</a><a href="#days">Masterclasses</a><a href="#understanding">Data understanding</a><a href="#setup">Setup and keys</a><a href="#how">Pipeline</a><a href="#labs">Labs</a><a href="#data">Data</a><a href="#glossary">Glossary</a><a href="#materials">Materials</a><a href="#limits">Limits</a>
 </div></nav>
-
 <div class="wrap">
 <header class="hero">
   <div class="eyebrow">Decoding Data Science | CPD UK AI Accelerator Bootcamp</div>
-  <h1>DecoBot <em>RAG Lab</em></h1>
-  <p class="lead">One company, one topic: leave at DDS. See how a PDF becomes chunks, how chunks become vectors, how a question finds its answer, and what each choice costs. Every lab on this page runs in your browser.</p>
+  <h1>Build <em>DecoBot</em> with Gemini</h1>
+  <p class="lead">Three masterclasses, about six hours, one story: a leave-policy chatbot for a company of 100 people in Dubai. You start with a prompt, add a policy PDF with RAG, then add a database and an agent. Everything runs in Google Colab.</p>
   <div class="kpis">
-    <div class="kpi"><b>4</b><span>documents (PDF)</span></div>
-    <div class="kpi"><b>1</b><span>SQLite database</span></div>
-    <div class="kpi"><b>100</b><span>employees</span></div>
-    <div class="kpi"><b>273</b><span>leave requests</span></div>
-    <div class="kpi"><b>13</b><span>policy chunks (by section)</span></div>
+    <div class="kpi"><b>3</b><span>masterclasses (2 hours each)</span></div>
+    <div class="kpi"><b>1</b><span>data-understanding warm-up</span></div>
+    <div class="kpi"><b>4</b><span>Colab notebooks</span></div>
+    <div class="kpi"><b>5</b><span>slide decks</span></div>
+    <div class="kpi"><b>100</b><span>employees in the dataset</span></div>
     <div class="kpi"><b>3</b><span>agent tools</span></div>
   </div>
+  <div class="cta"><a class="btn" href="#program">See the program</a><a class="btn ghost" href="#setup">Get your Gemini key</a><a class="btn ghost" href="#understanding">Start with the data</a></div>
 </header>
 
+<section id="about">
+  <div class="sec-h"><div class="eyebrow">About the bootcamp</div><h2>One company, one topic, three layers</h2>
+  <p class="sub">The company is Decoding Data Science (DDS). The topic is employee leave. HR answers the same questions every week: how many days do I have, how much notice do I need, who approves. DecoBot answers them. Each day adds one layer.</p></div>
+  <div class="grid">
+    <div class="card"><div class="tag">Layer 1 | Day 1</div><h3>Behaviour</h3><p>A system prompt gives the AI a job, a scope and rules. It learns to refuse, and to ask one question when a request is unclear.</p></div>
+    <div class="card"><div class="tag">Layer 2 | Day 2</div><h3>Knowledge</h3><p>RAG lets DecoBot answer from the real policy PDF. You learn how chunking and embeddings decide whether it answers well.</p></div>
+    <div class="card am"><div class="tag">Layer 3 | Day 3</div><h3>Data and action</h3><p>SQL tools give DecoBot your personal numbers. An agent chooses between the policy and the database, or uses both.</p></div>
+  </div>
+  <div class="two" style="margin-top:22px">
+    <div class="card"><div class="tag">What you need</div><ul class="plain"><li>A laptop and a Google account (Colab runs in the browser)</li><li>A Gemini API key from Google AI Studio (see Setup and keys)</li><li>A Pinecone key for Day 2B only (free Starter plan)</li><li>The files for each day (see Materials)</li></ul></div>
+    <div class="card am"><div class="tag">What you leave with</div><ul class="plain"><li>A working leave assistant you built step by step</li><li>A method to test chunking with real questions</li><li>Three read-only tools and an agent that routes between them</li><li>A clear view of what to add next (login, write tools, evaluation)</li></ul></div>
+  </div>
+</section>
+
+<section id="program">
+  <div class="sec-h"><div class="eyebrow">The program</div><h2>Warm-up, three masterclasses, one extension</h2>
+  <p class="sub">Run them in this order. Each masterclass is about two hours, built on the one before.</p></div>
+  <div class="tl">
+    <div class="tl-i"><div class="tl-k">Warm-up | 30 min</div><h3>Data understanding</h3><p>Read the policy PDF and the database yourself, then with code. Learn which question goes to which source.</p><a href="#understanding">Open the section</a></div>
+    <div class="tl-i"><div class="tl-k">Masterclass 1 | Day 1 | 2 h</div><h3>Control the AI</h3><p>System prompt, scope, the clarity rule, facts in the prompt, JSON output, prompt clinic.</p><a href="#days" data-day="d1">See the plan</a></div>
+    <div class="tl-i"><div class="tl-k">Masterclass 2 | Day 2 | 2 h</div><h3>Give DecoBot the policy</h3><p>Embeddings, RAG with LlamaIndex, and a 45-minute chunking lab.</p><a href="#days" data-day="d2">See the plan</a></div>
+    <div class="tl-i am"><div class="tl-k">Extension | Day 2B | 30 to 40 min</div><h3>Vector database</h3><p>The same index moved from memory to Pinecone, with a restart test.</p><a href="#days" data-day="d2b">See the plan</a></div>
+    <div class="tl-i am"><div class="tl-k">Masterclass 3 | Day 3 | 2 h</div><h3>From chatbot to agent</h3><p>SQL, three read-only tools, a FunctionAgent, five scenes, bad tool descriptions.</p><a href="#days" data-day="d3">See the plan</a></div>
+  </div>
+</section>
+
+<section id="days">
+  <div class="sec-h"><div class="eyebrow">The masterclasses</div><h2>Minute by minute</h2>
+  <p class="sub">The timings are the instructor plan. If you run short on Day 1, drop Part E and make Part F a take-home.</p></div>
+  <div class="tabs" id="dayTabs"><button class="tab on" data-d="d1">Day 1</button><button class="tab" data-d="d2">Day 2</button><button class="tab" data-d="d2b">Day 2B</button><button class="tab" data-d="d3">Day 3</button></div>
+  <div id="dayBody"></div>
+</section>
+
+<section id="understanding">
+  <div class="sec-h"><div class="eyebrow">Warm-up | about 30 minutes</div><h2>Data understanding</h2>
+  <p class="sub">Never build on data you have not read yourself. There are two kinds of data here, and two ways to read each: by eye, then with code. What you notice by eye tells you what to check in code.</p></div>
+  <div class="two">
+    <div class="card"><div class="tag">Unstructured | 1 PDF</div><h3>DDS_Leave_Policy_v2.pdf</h3><p>Free text with pages and headings. Read with your eyes or <code>pypdf</code>. Used for RAG on Day 2. Answers "what is the rule?"</p><p><b>Example:</b> How much notice does annual leave need?</p></div>
+    <div class="card am"><div class="tag">Structured | 1 database</div><h3>dds_leave.db</h3><p>Tables, rows and columns. Read in a viewer, or with <code>sqlite3</code> and pandas. Used for SQL on Day 3. Answers "what is the number?"</p><p><b>Example:</b> How many days does Aisha Khan have left?</p></div>
+  </div>
+
+  <h3 style="margin-top:34px">Part 1 | The PDF</h3>
+  <div class="steps4">
+    <div class="card"><div class="tag">Step 1 | Read</div><p>By eye: can you select and copy the text? Note headings, tables, version and date. With code, <code>extract_text()</code> gives one string per page. Keep the page number: it becomes the citation later.</p></div>
+    <div class="card"><div class="tag">Step 2 | Profile</div><p>4 pages. About 1,770 words, roughly 11,000 characters. 12 numbered sections, from "1. Leave Entitlements at a Glance" to "12. Governance". Top words: leave, days, calendar, working, notice.</p></div>
+    <div class="card"><div class="tag">Step 3 | Chunk</div><p>Cut the text so it can be searched. Size 1,200 characters and overlap 200 gives about 12 chunks. Too big is noisy, too small cuts a rule in half. Test it in the Chunking lab.</p></div>
+  </div>
+<pre style="margin-top:12px">from pypdf import PdfReader
+reader = PdfReader("DDS_Leave_Policy_v2.pdf")
+pages = [p.extract_text() for p in reader.pages]
+print(len(pages), "pages")          # 4
+print(pages[0][:300])</pre>
+  <div class="msg">Before you trust a PDF, check: text extracts cleanly, headings are numbered, tables did not break, the version and date are clear (version 2.0, effective 1 July 2026).</div>
+
+  <h3 style="margin-top:34px">Part 2 | The database</h3>
+  <div class="steps4">
+    <div class="card"><div class="tag">Step 1 | Structure</div><p><b>employees</b> (100 rows) and <b>leave_requests</b> (273 rows), linked by <code>employee_id</code>. Balances in employees were computed from the requests, so the tables agree.</p></div>
+    <div class="card"><div class="tag">Step 2 | Read with code</div><p>Pandas turns each table into a data frame you can count, filter and chart. Look at ten rows first, and read the column names out loud.</p></div>
+    <div class="card"><div class="tag">Step 3 | Quality</div><p>Five checks return zero issues. One is worth a look: 14 requests are dated after the simulated today (28 Oct 2026). Synthetic data, so we note it and move on.</p></div>
+    <div class="card am"><div class="tag">Step 4 | What it says</div><p>203 of 273 requests are annual leave, 64 are sick. Average annual days left is 14.5, and the range is 0 to 22. Aisha Khan has 2 left.</p></div>
+  </div>
+<pre style="margin-top:12px">import sqlite3, pandas as pd
+con = sqlite3.connect("dds_leave.db")
+emp  = pd.read_sql("SELECT * FROM employees", con)
+reqs = pd.read_sql("SELECT * FROM leave_requests", con)
+print(emp.shape, reqs.shape)        # (100, 13) (273, 8)
+print(emp.annual_remaining.describe())</pre>
+  <div class="tw" style="margin-top:12px"><table><tr><th>Quality check</th><th class="num">Issues</th></tr>
+  <tr><td>Duplicate employee ids</td><td class="num">0</td></tr><tr><td>End date before start date</td><td class="num">0</td></tr><tr><td>Requests for an unknown employee</td><td class="num">0</td></tr><tr><td>Zero or negative working days</td><td class="num">0</td></tr><tr><td>Remaining days that do not add up</td><td class="num">0</td></tr><tr><td>Requested after 28 Oct 2026</td><td class="num" style="color:var(--amber)">14</td></tr></table></div>
+
+  <h3 style="margin-top:34px">Part 3 | Which source answers which question?</h3>
+  <p class="sub">Click the answer you think is right, then see why. This is the idea behind the whole agent.</p>
+  <div id="quiz" class="quiz"></div>
+
+  <h3 style="margin-top:34px">Do the two sources agree?</h3>
+  <div class="two"><div class="card"><div class="tag">The policy says</div><h3>22 annual and 15 sick days</h3><p>Working days per year, in section 1.</p></div><div class="card am"><div class="tag">The database stores</div><h3>22 and 15 for all 100 employees</h3><p><code>annual_total</code> and <code>sick_total</code>. They agree.</p></div></div>
+  <div class="msg">One catch inside the policy: section 1 points to section 4.4 for extended illness, but that content is in section 5.4. Good bots quote section numbers so a reader can check.</div>
+
+  <h3 style="margin-top:34px">Your turn</h3>
+  <ol class="steps"><li>Set the chunk size to 400, then 2,500. How does the chunk count change?</li><li>Which employees took the most sick days? (Hint: 4 days.)</li><li>Write a SQL query: pending requests per department. (The four pending requests are in Engineering 2, Marketing 1, Operations 1.)</li><li>Does the policy define the probation period? Search the text, then check the handbook.</li></ol>
+  <div class="cta" style="margin-top:18px"><a class="btn" href="https://colab.research.google.com/github/Decoding-Data-Science/CommunityWorkshops/blob/main/bootcampoct26/data_understanding/Data_Understanding_DecoBot.ipynb" target="_blank" rel="noopener">Open the notebook in Colab</a><a class="btn ghost" href="data_understanding/CPD_UK_Data_Understanding.pdf" target="_blank" rel="noopener">Slides (PDF, 15)</a><a class="btn ghost" href="data_understanding/CPD_UK_Data_Understanding.pptx">Slides (PowerPoint, animated)</a></div>
+</section>
+
+<section id="setup">
+  <div class="sec-h"><div class="eyebrow">Before Day 1</div><h2>Setup: your keys</h2>
+  <p class="sub">Send this to participants two days before class. Keys are secrets: they go in Colab Secrets and never in a notebook cell or a GitHub file.</p></div>
+  <div class="two">
+    <div>
+      <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/cqAwzk6uAEE" title="How to get your Gemini API key (DDS video)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <p class="note">Video: getting your Gemini API key. If it does not play here, <a href="https://youtu.be/cqAwzk6uAEE" target="_blank" rel="noopener">watch it on YouTube</a>.</p>
+    </div>
+    <div>
+      <div class="tag" style="font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ice);margin-bottom:8px">Get a Gemini API key</div>
+      <ol class="steps">
+        <li>Sign in with your Google account at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> (Google AI Studio).</li>
+        <li>Create an API key and copy it. Official guide: <a href="https://ai.google.dev/gemini-api/docs/api-key" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/api-key</a>.</li>
+        <li>Free-tier limits can be tight for a live class. If your key hits limits, turn on billing for the project.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="two" style="margin-top:20px">
+    <div><div class="tag" style="font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:8px">Put it in Colab Secrets</div>
+      <ol class="steps"><li>In Colab, click the key icon on the left (Secrets).</li><li>Add new secret. Name: <code>GOOGLE_API_KEY</code>. Value: your key.</li><li>Switch on Notebook access.</li><li>The first code cell reads it with <code>userdata.get</code>. Never paste the key into a cell.</li></ol></div>
+    <div><div class="tag" style="font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ice);margin-bottom:8px">Pinecone key (Day 2B only)</div>
+      <ol class="steps"><li>Create a free account at <a href="https://app.pinecone.io" target="_blank" rel="noopener">app.pinecone.io</a> and create an API key.</li><li>Add a second Colab secret named <code>PINECONE_API_KEY</code>, with Notebook access on.</li><li>The notebook creates an index called <code>dds-leave-policy</code>. Delete it afterwards if your plan limits indexes.</li></ol></div>
+  </div>
+  <div class="msg">Models are set in one line per notebook: <code>MODEL = "gemini-3.8-flash"</code> and <code>EMBED_MODEL = "gemini-embedding-001"</code>. If Google renames a model, change that line only.</div>
+</section>
 <section id="how">
-  <div class="sec-h"><div class="eyebrow">01 | The whole journey</div><h2>From PDF to answer</h2>
+  <div class="sec-h"><div class="eyebrow">The whole journey</div><h2>From PDF to answer</h2>
   <p class="sub">Click a step. The dashed step is the one that moves from memory to Pinecone in notebook Day 2B.</p></div>
   <div class="pipe" id="pipe"></div>
   <div class="pipe-detail" id="pipeDetail"></div>
 </section>
 
 <section id="labs">
-  <div class="sec-h"><div class="eyebrow">02 | Simulations</div><h2>Labs</h2>
+  <div class="sec-h"><div class="eyebrow">Simulations</div><h2>Labs</h2>
   <p class="sub">Change a setting and watch what happens. Labs marked "toy" use a simplified model so the idea is visible. They never pretend to be Gemini.</p></div>
   <div class="tabs" id="tabs" role="tablist">
     <button class="tab on" data-lab="chunk">Chunking</button>
@@ -314,7 +445,7 @@ vector storage = vectors x dimensions x 4 bytes</pre>
 </section>
 
 <section id="data">
-  <div class="sec-h"><div class="eyebrow">03 | The data</div><h2>Four documents and one database</h2>
+  <div class="sec-h"><div class="eyebrow">Reference</div><h2>The data in one place</h2>
   <p class="sub">Documents hold rules. The database holds personal numbers. All data is synthetic, made for training.</p></div>
   <div class="grid" id="docCards"></div>
   <h3 style="margin-top:34px">The database: dds_leave.db</h3>
@@ -340,23 +471,23 @@ vector storage = vectors x dimensions x 4 bytes</pre>
 </section>
 
 <section id="dictionary">
-  <div class="sec-h"><div class="eyebrow">04 | Data dictionary</div><h2>Every column explained</h2></div>
+  <div class="sec-h"><div class="eyebrow">Reference</div><h2>Every column explained</h2></div>
   <div class="tw"><table id="dict"></table></div>
 </section>
 
 <section id="glossary">
-  <div class="sec-h"><div class="eyebrow">05 | Glossary</div><h2>Words you will hear</h2></div>
+  <div class="sec-h"><div class="eyebrow">Reference</div><h2>Words you will hear</h2></div>
   <input type="text" id="gSearch" placeholder="Search a term (for example chunk, top_k, dimension)">
   <div class="gl" id="gl"></div>
 </section>
 
 <section id="stack">
-  <div class="sec-h"><div class="eyebrow">06 | The stack</div><h2>What each tool does</h2></div>
+  <div class="sec-h"><div class="eyebrow">Tools</div><h2>The tools and what each one does</h2></div>
   <div class="stack" id="stackCards"></div>
 </section>
 
 <section id="deploy">
-  <div class="sec-h"><div class="eyebrow">07 | Putting it online</div><h2>Colab to a live website</h2>
+  <div class="sec-h"><div class="eyebrow">After the bootcamp</div><h2>Colab to a live website</h2>
   <p class="sub">Teach in Colab. Publish on Hugging Face Spaces. Render is the optional second home.</p></div>
   <div class="two">
     <div><div class="tag" style="color:var(--ice);font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px">Hugging Face Spaces</div>
@@ -385,28 +516,13 @@ index = VectorStoreIndex.from_vector_store(store)      # no embedding at start-u
 policy_engine = index.as_query_engine(similarity_top_k=3, text_qa_template=qa_prompt)</pre></div>
 </section>
 
-<section id="program">
-  <div class="sec-h"><div class="eyebrow">08 | The program</div><h2>Three days, one assistant</h2></div>
-  <div class="grid">
-    <div class="card"><div class="tag">Before Day 2 | 30 min</div><h3>Data understanding</h3><p>Read the PDF and the database yourself. Structured against unstructured.</p></div>
-    <div class="card"><div class="tag">Day 1 | 2 hours</div><h3>Control the AI</h3><p>System prompt, scope, the clarity rule, facts in the prompt, JSON output.</p></div>
-    <div class="card am"><div class="tag">Day 2 | 2 hours</div><h3>Give it the policy</h3><p>Embeddings, RAG with LlamaIndex, chunking lab. Then Day 2B: the same index in Pinecone.</p></div>
-    <div class="card am"><div class="tag">Day 3 | 2 hours</div><h3>Data and tools</h3><p>SQL, three read-only tools, a FunctionAgent, five scenes, bad tool descriptions.</p></div>
-  </div>
-  <div class="tw" style="margin-top:20px"><table>
-    <tr><th>File</th><th>Use</th></tr>
-    <tr><td>Day1_System_Prompt_and_Clarity.ipynb</td><td>Colab, no files</td></tr>
-    <tr><td>Day2_RAG_and_Chunking.ipynb</td><td>Colab, upload the PDF. Index in memory</td></tr>
-    <tr><td>Day2B_RAG_with_Pinecone.ipynb</td><td>Colab, upload the PDF. Index in Pinecone. Needs PINECONE_API_KEY</td></tr>
-    <tr><td>Day3_SQL_Tools_and_Agent.ipynb</td><td>Colab, upload the PDF and dds_leave.db</td></tr>
-    <tr><td>DDS_Leave_Policy_v2.pdf</td><td>The policy, DDS-HR-POL-001 v2.0, effective 1 July 2026</td></tr>
-    <tr><td>dds_leave.db / build_database.py</td><td>The database and the script that rebuilds it</td></tr>
-    <tr><td>Day1, Day2, Day3 decks, overview, data understanding</td><td>15, 15, 17, 3 and 15 slides, click animation on every box</td></tr>
-  </table></div>
+<section id="materials">
+  <div class="sec-h"><div class="eyebrow">Materials</div><h2>Every file, and when you use it</h2>
+  <p class="sub">All files live in the <code>bootcampoct26</code> folder of the CommunityWorkshops repository. Colab links open each notebook directly once the repository is public.</p></div>
+  <div class="tw"><table id="matTable"></table></div>
 </section>
-
 <section id="limits">
-  <div class="sec-h"><div class="eyebrow">09 | Honest limits</div><h2>What to know before class</h2></div>
+  <div class="sec-h"><div class="eyebrow">Before class</div><h2>What to know before class</h2></div>
   <div class="grid">
     <div class="card am"><div class="tag">Untested live</div><p>The Gemini and Pinecone calls were not run end to end by the builder. Run each notebook once with your own keys.</p></div>
     <div class="card"><div class="tag">Policy quirks</div><p>The policy does not define the probation period (the handbook only says "as stated in the employment contract"). Section 1 points to 4.4 for extended illness, but the content is in 5.4.</p></div>
@@ -414,7 +530,7 @@ policy_engine = index.as_query_engine(similarity_top_k=3, text_qa_template=qa_pr
     <div class="card am"><div class="tag">Prices move</div><p>Gemini prices change, some on fixed dates. The calculator is a planning tool, not an invoice.</p></div>
   </div>
 </section>
-<footer>decodingdatascience.com | DecoBot RAG Lab | synthetic data for training | built with LlamaIndex, Gemini, Pinecone</footer>
+<footer>decodingdatascience.com | CPD UK AI Accelerator Bootcamp | DecoBot | synthetic data for training | built with LlamaIndex, Gemini, Pinecone</footer>
 </div>
 <script>
 const D = {"secs": [{"title": "Leave Policy - Decoding Data Science", "text": "Leave Policy - Decoding Data Science\nDocument ID: DDS-HR-POL-001 | Version 2.0 | Effective date: 1 July 2026\nInternal - Synthetic demo document for AI training purposes. Not legal advice.\nThis policy defines all leave entitlements at DDS, how leave accrues, how to request it, and how requests are\napproved. It replaces Leave Policy v1 (March 2026) in full. Where UAE Federal Decree-Law No. 33 of 2021 (the UAE\nLabour Law) provides a greater benefit, the law prevails. Note: this is a synthetic, training-friendly policy created for\ndemos, onboarding simulations, and HR-chatbot prototypes. It is not legal advice."}, {"title": "1. Leave Entitlements at a Glance", "text": "1. Leave Entitlements at a Glance\nAnnual leave: 22 working days per year, full pay, 7 calendar days minimum notice (see section 3.4), no evidence\nrequired. Sick leave: 15 working days per year at full pay (then per section 4.4), notify same day within 1 hour of start\ntime, medical certificate required for 2+ consecutive days. Maternity leave: 60 calendar days, full pay, 30 calendar\ndays' notice before expected date, medical documentation required. Paternity leave: 5 working days within 6 months\nof birth, full pay, 30 calendar days' notice where foreseeable, birth certificate required. Parental leave (additional): 5\nworking days per parent within 6 months of birth, full pay, 14 calendar days' notice, birth certificate required.\nBereavement leave: 5 working days (spouse/child/parent) or 3 working days (sibling/grandparent), full pay, notify as\nsoon as possible, documentation may be requested. Marriage leave: 3 working days (once during employment), full\npay, 14 calendar days' notice, marriage certificate required. Study leave: 10 working days per year (2+ years of\nservice, enrolled at an accredited UAE institution), full pay, 14 calendar days' notice, exam schedule/enrollment proof\nrequired. Hajj leave: up to 30 calendar days (once during employment), unpaid, 60 calendar days' notice, no evidence\nrequired. Unpaid leave: up to 30 calendar days per year, case-by-case, unpaid, 30 calendar days' notice, manager\nand HR approval required. Public holidays: per the official UAE calendar, full pay, not deducted from annual leave."}, {"title": "2. Definitions", "text": "2. Definitions\nLeave year: 1 January to 31 December. Working day: Monday to Friday, excluding UAE public holidays. Calendar\nday: any day, including weekends and public holidays. Immediate family: spouse, child, or parent. Leave system: the\nDDS HR portal where all leave is requested, approved, and tracked."}, {"title": "3. Annual Leave", "text": "3. Annual Leave\n3.1 Entitlement Full-time employees are entitled to 22 working days of paid annual leave per leave year. Part-time\nemployees receive a pro-rata entitlement based on contracted hours. Employees who join or leave mid-year receive\na pro-rata entitlement for that year.\n3.2 Accrual Annual leave accrues at 1.83 working days per completed calendar month of service. During the\nprobation period, leave accrues normally; accrued days may be used during probation with line-manager approval.\n3.3 Booking limits\n- The maximum single block of annual leave is 15 consecutive working days. Longer blocks require CEO approval.\n- At least 5 of the 22 days must be taken as one continuous block of 5 working days each year, to support genuine\nrest.\n- Leave may be taken in half-day units at minimum.\n3.4 Notice periods for annual leave requests 1-2 working days requested: 7 calendar days' notice. 3-9 working days\nrequested: 14 calendar days' notice. 10 or more working days requested: 30 calendar days' notice. Managers\nrespond to leave requests within 3 business days. Employees should not book non-refundable travel before approval\nis confirmed in the leave system.\n\n3.5 Peak periods During flagship delivery windows (major bootcamps, the annual conference season, and product\nlaunches), approvals may be restricted. HR publishes restricted weeks at the start of each quarter. Requests in\nrestricted weeks require Head-of-Department approval."}, {"title": "4. Carry-Over, Expiry and Encashment", "text": "4. Carry-Over, Expiry and Encashment\n4.1 Carry-over A maximum of 10 unused annual-leave days may be carried into the next leave year. Carry-over is\nautomatic; no approval is needed.\n4.2 Expiry Carried-over days must be used by 31 March (end of Q1) of the new leave year. Any carried-over days not\nused by 31 March expire without compensation.\n4.3 Encashment Unused annual leave is not paid out during employment. On termination of employment, accrued but\nunused annual leave for the current year is paid out at the employee's basic salary rate, in line with UAE Labour Law."}, {"title": "5. Sick Leave", "text": "5. Sick Leave\n5.1 Entitlement Employees receive 15 working days of fully paid sick leave per leave year, available after completion\nof the probation period.\n5.2 Notification\n- Notify your line manager within 1 hour of your normal start time on the first day of absence (message or call).\n- Log the absence in the leave system on the day of return, or earlier if able.\n5.3 Medical certificates A medical certificate from a licensed practitioner is required for any absence of 2 or more\nconsecutive working days, and may be requested for shorter or repeated absences where a pattern suggests misuse.\n5.4 Extended illness If an illness continues beyond the 15 fully paid days, additional sick leave follows the UAE\nLabour Law structure within the same leave year: up to 30 further calendar days at half pay, then up to 45 further\ncalendar days unpaid, subject to medical documentation. HR manages extended-illness cases confidentially with the\nemployee.\n5.5 Partial working If an employee is unwell but able to work reduced hours, this may be agreed with the line\nmanager. Health always takes priority; nobody is expected to work while genuinely unwell."}, {"title": "6. Public Holidays", "text": "6. Public Holidays\n- DDS observes the official UAE public-holiday calendar for Dubai-based employees. HR publishes the calendar each\nJanuary.\n- Public holidays are paid and are not deducted from the annual-leave balance.\n- If a public holiday falls within an approved period of annual leave, that day is not counted as an annual-leave day.\n- Employees contracted outside the UAE observe the public holidays of their contract location.\n- Where business-critical operations (live events, launches) require work on a public holiday, the employee receives a\nsubstitute day off in lieu, to be taken within 60 days."}, {"title": "7. Maternity, Paternity and Parental Leave", "text": "7. Maternity, Paternity and Parental Leave\n7.1 Maternity leave\n- 60 calendar days at full pay. This exceeds the UAE statutory minimum as an enhanced DDS benefit.\n- Notify HR at least 30 calendar days before the expected date of leave, with medical documentation.\n- Leave may begin up to 30 days before the expected delivery date.\n\n- An additional period of up to 45 calendar days unpaid may be taken for medical reasons related to the pregnancy or\ndelivery, with a medical certificate.\n7.2 Nursing breaks For 6 months following return from maternity leave, the employee is entitled to one paid nursing\nbreak of 1 hour per day, scheduled flexibly with the line manager.\n7.3 Paternity leave Fathers receive 5 working days at full pay, to be taken within 6 months of the child's birth,\nconsecutively or split. Provide notice 30 calendar days ahead where foreseeable.\n7.4 Parental leave (additional) In addition to maternity/paternity leave, each parent may take 5 working days of paid\nparental leave within 6 months of the birth, in line with UAE Labour Law.\n7.5 Adoption Employees adopting a child under the age of 5 receive the same entitlements as in sections 7.1-7.4,\nmeasured from the date of placement.\n7.6 Return to work Managers must agree a written transition plan before leave begins and a re-onboarding plan for\nthe return. Returning parents come back to the same role or an equivalent role on the same terms."}, {"title": "8. Other Leave Types", "text": "8. Other Leave Types\n8.1 Bereavement (compassionate) leave 5 working days at full pay for the death of a spouse, child, or parent; 3\nworking days at full pay for the death of a sibling, grandparent, or grandchild. Notify your manager as soon as\npossible; documentation may be requested. Additional unpaid leave may be approved case-by-case.\n8.2 Marriage leave 3 working days at full pay, once during employment, taken within 30 days of the marriage. Provide\n14 calendar days' notice and a marriage certificate.\n8.3 Study and exam leave Employees with 2 or more years of service who are enrolled at an accredited UAE\neducational institution receive 10 working days of paid study leave per year for examinations, per UAE Labour Law.\nProvide the exam schedule 14 calendar days ahead.\n8.4 Hajj leave Muslim employees may take up to 30 calendar days of unpaid leave once during their employment to\nperform Hajj. Request 60 calendar days in advance so coverage can be planned.\n8.5 Unpaid leave\n- Up to 30 calendar days per leave year, approved case-by-case by the line manager and HR.\n- Annual leave must be exhausted first unless HR agrees otherwise.\n- Unpaid leave may affect payroll, benefits accrual, and visa arrangements; HR will confirm the impact in writing\nbefore approval."}, {"title": "9. Religious Observance and Ramadan Working Hours", "text": "9. Religious Observance and Ramadan Working Hours\n- During Ramadan, daily working hours are reduced by 2 hours for all employees, per UAE regulation.\n- Teams schedule meetings considerately around fasting and prayer times.\n- Additional flexibility (shifted hours, remote days) can be agreed with the line manager where the role allows."}, {"title": "10. How to Request Leave (Workflow)", "text": "10. How to Request Leave (Workflow)\nStep 1: Employee submits the request in the leave system with dates, leave type, and a short coverage plan\n(deliverables, who covers, key deadlines), per the notice table in section 3.4. Step 2: Line manager reviews and\napproves/declines with a reason, within 3 business days. Step 3: HR runs an automatic compliance check for\nbalance, carry-over expiry, and restricted weeks. Step 4: Employee notifies affected stakeholders and hands over\nclient-facing commitments before leave starts. Step 5: For emergency leave, the employee notifies their manager\nimmediately by any channel, then submits the request retroactively within 48 hours. Approved leave appears in the\nshared team calendar. Cancelling approved leave restores the days to the employee's balance automatically."}, {"title": "11. Misuse and Compliance", "text": "11. Misuse and Compliance\n- Misrepresenting sickness, falsifying certificates, or working a second job while on sick leave are treated as\nmisconduct under the DDS Disciplinary Policy.\n- DDS may request documentation where reasonable and lawful.\n- Managers may not pressure employees to cancel or shorten approved leave except in genuine business\nemergencies, and any such case must be reported to HR."}, {"title": "12. Governance", "text": "12. Governance\n- Policy owner: Head of People & Culture, DDS.\n- Review cycle: annually, each June, or earlier if UAE labour regulations change.\n- Precedence: where an employment contract or UAE Labour Law grants a greater benefit, that provision prevails\nover this policy.\n- Questions: contact People & Culture via the HR portal, or ask DecoBot, the DDS HR assistant.\nVersion history: v1.0 (March 2026) initial synthetic policy. v2.0 (July 2026) full rewrite with fixed entitlements, notice\ntables, carry-over and expiry rules, extended parental provisions, and workflow SLAs."}], "full": "Leave Policy - Decoding Data Science\nDocument ID: DDS-HR-POL-001 | Version 2.0 | Effective date: 1 July 2026\nInternal - Synthetic demo document for AI training purposes. Not legal advice.\nThis policy defines all leave entitlements at DDS, how leave accrues, how to request it, and how requests are\napproved. It replaces Leave Policy v1 (March 2026) in full. Where UAE Federal Decree-Law No. 33 of 2021 (the UAE\nLabour Law) provides a greater benefit, the law prevails. Note: this is a synthetic, training-friendly policy created for\ndemos, onboarding simulations, and HR-chatbot prototypes. It is not legal advice.\n1. Leave Entitlements at a Glance\nAnnual leave: 22 working days per year, full pay, 7 calendar days minimum notice (see section 3.4), no evidence\nrequired. Sick leave: 15 working days per year at full pay (then per section 4.4), notify same day within 1 hour of start\ntime, medical certificate required for 2+ consecutive days. Maternity leave: 60 calendar days, full pay, 30 calendar\ndays' notice before expected date, medical documentation required. Paternity leave: 5 working days within 6 months\nof birth, full pay, 30 calendar days' notice where foreseeable, birth certificate required. Parental leave (additional): 5\nworking days per parent within 6 months of birth, full pay, 14 calendar days' notice, birth certificate required.\nBereavement leave: 5 working days (spouse/child/parent) or 3 working days (sibling/grandparent), full pay, notify as\nsoon as possible, documentation may be requested. Marriage leave: 3 working days (once during employment), full\npay, 14 calendar days' notice, marriage certificate required. Study leave: 10 working days per year (2+ years of\nservice, enrolled at an accredited UAE institution), full pay, 14 calendar days' notice, exam schedule/enrollment proof\nrequired. Hajj leave: up to 30 calendar days (once during employment), unpaid, 60 calendar days' notice, no evidence\nrequired. Unpaid leave: up to 30 calendar days per year, case-by-case, unpaid, 30 calendar days' notice, manager\nand HR approval required. Public holidays: per the official UAE calendar, full pay, not deducted from annual leave.\n2. Definitions\nLeave year: 1 January to 31 December. Working day: Monday to Friday, excluding UAE public holidays. Calendar\nday: any day, including weekends and public holidays. Immediate family: spouse, child, or parent. Leave system: the\nDDS HR portal where all leave is requested, approved, and tracked.\n3. Annual Leave\n3.1 Entitlement Full-time employees are entitled to 22 working days of paid annual leave per leave year. Part-time\nemployees receive a pro-rata entitlement based on contracted hours. Employees who join or leave mid-year receive\na pro-rata entitlement for that year.\n3.2 Accrual Annual leave accrues at 1.83 working days per completed calendar month of service. During the\nprobation period, leave accrues normally; accrued days may be used during probation with line-manager approval.\n3.3 Booking limits\n- The maximum single block of annual leave is 15 consecutive working days. Longer blocks require CEO approval.\n- At least 5 of the 22 days must be taken as one continuous block of 5 working days each year, to support genuine\nrest.\n- Leave may be taken in half-day units at minimum.\n3.4 Notice periods for annual leave requests 1-2 working days requested: 7 calendar days' notice. 3-9 working days\nrequested: 14 calendar days' notice. 10 or more working days requested: 30 calendar days' notice. Managers\nrespond to leave requests within 3 business days. Employees should not book non-refundable travel before approval\nis confirmed in the leave system.\n\n3.5 Peak periods During flagship delivery windows (major bootcamps, the annual conference season, and product\nlaunches), approvals may be restricted. HR publishes restricted weeks at the start of each quarter. Requests in\nrestricted weeks require Head-of-Department approval.\n4. Carry-Over, Expiry and Encashment\n4.1 Carry-over A maximum of 10 unused annual-leave days may be carried into the next leave year. Carry-over is\nautomatic; no approval is needed.\n4.2 Expiry Carried-over days must be used by 31 March (end of Q1) of the new leave year. Any carried-over days not\nused by 31 March expire without compensation.\n4.3 Encashment Unused annual leave is not paid out during employment. On termination of employment, accrued but\nunused annual leave for the current year is paid out at the employee's basic salary rate, in line with UAE Labour Law.\n5. Sick Leave\n5.1 Entitlement Employees receive 15 working days of fully paid sick leave per leave year, available after completion\nof the probation period.\n5.2 Notification\n- Notify your line manager within 1 hour of your normal start time on the first day of absence (message or call).\n- Log the absence in the leave system on the day of return, or earlier if able.\n5.3 Medical certificates A medical certificate from a licensed practitioner is required for any absence of 2 or more\nconsecutive working days, and may be requested for shorter or repeated absences where a pattern suggests misuse.\n5.4 Extended illness If an illness continues beyond the 15 fully paid days, additional sick leave follows the UAE\nLabour Law structure within the same leave year: up to 30 further calendar days at half pay, then up to 45 further\ncalendar days unpaid, subject to medical documentation. HR manages extended-illness cases confidentially with the\nemployee.\n5.5 Partial working If an employee is unwell but able to work reduced hours, this may be agreed with the line\nmanager. Health always takes priority; nobody is expected to work while genuinely unwell.\n6. Public Holidays\n- DDS observes the official UAE public-holiday calendar for Dubai-based employees. HR publishes the calendar each\nJanuary.\n- Public holidays are paid and are not deducted from the annual-leave balance.\n- If a public holiday falls within an approved period of annual leave, that day is not counted as an annual-leave day.\n- Employees contracted outside the UAE observe the public holidays of their contract location.\n- Where business-critical operations (live events, launches) require work on a public holiday, the employee receives a\nsubstitute day off in lieu, to be taken within 60 days.\n7. Maternity, Paternity and Parental Leave\n7.1 Maternity leave\n- 60 calendar days at full pay. This exceeds the UAE statutory minimum as an enhanced DDS benefit.\n- Notify HR at least 30 calendar days before the expected date of leave, with medical documentation.\n- Leave may begin up to 30 days before the expected delivery date.\n\n- An additional period of up to 45 calendar days unpaid may be taken for medical reasons related to the pregnancy or\ndelivery, with a medical certificate.\n7.2 Nursing breaks For 6 months following return from maternity leave, the employee is entitled to one paid nursing\nbreak of 1 hour per day, scheduled flexibly with the line manager.\n7.3 Paternity leave Fathers receive 5 working days at full pay, to be taken within 6 months of the child's birth,\nconsecutively or split. Provide notice 30 calendar days ahead where foreseeable.\n7.4 Parental leave (additional) In addition to maternity/paternity leave, each parent may take 5 working days of paid\nparental leave within 6 months of the birth, in line with UAE Labour Law.\n7.5 Adoption Employees adopting a child under the age of 5 receive the same entitlements as in sections 7.1-7.4,\nmeasured from the date of placement.\n7.6 Return to work Managers must agree a written transition plan before leave begins and a re-onboarding plan for\nthe return. Returning parents come back to the same role or an equivalent role on the same terms.\n8. Other Leave Types\n8.1 Bereavement (compassionate) leave 5 working days at full pay for the death of a spouse, child, or parent; 3\nworking days at full pay for the death of a sibling, grandparent, or grandchild. Notify your manager as soon as\npossible; documentation may be requested. Additional unpaid leave may be approved case-by-case.\n8.2 Marriage leave 3 working days at full pay, once during employment, taken within 30 days of the marriage. Provide\n14 calendar days' notice and a marriage certificate.\n8.3 Study and exam leave Employees with 2 or more years of service who are enrolled at an accredited UAE\neducational institution receive 10 working days of paid study leave per year for examinations, per UAE Labour Law.\nProvide the exam schedule 14 calendar days ahead.\n8.4 Hajj leave Muslim employees may take up to 30 calendar days of unpaid leave once during their employment to\nperform Hajj. Request 60 calendar days in advance so coverage can be planned.\n8.5 Unpaid leave\n- Up to 30 calendar days per leave year, approved case-by-case by the line manager and HR.\n- Annual leave must be exhausted first unless HR agrees otherwise.\n- Unpaid leave may affect payroll, benefits accrual, and visa arrangements; HR will confirm the impact in writing\nbefore approval.\n9. Religious Observance and Ramadan Working Hours\n- During Ramadan, daily working hours are reduced by 2 hours for all employees, per UAE regulation.\n- Teams schedule meetings considerately around fasting and prayer times.\n- Additional flexibility (shifted hours, remote days) can be agreed with the line manager where the role allows.\n10. How to Request Leave (Workflow)\nStep 1: Employee submits the request in the leave system with dates, leave type, and a short coverage plan\n(deliverables, who covers, key deadlines), per the notice table in section 3.4. Step 2: Line manager reviews and\napproves/declines with a reason, within 3 business days. Step 3: HR runs an automatic compliance check for\nbalance, carry-over expiry, and restricted weeks. Step 4: Employee notifies affected stakeholders and hands over\nclient-facing commitments before leave starts. Step 5: For emergency leave, the employee notifies their manager\nimmediately by any channel, then submits the request retroactively within 48 hours. Approved leave appears in the\nshared team calendar. Cancelling approved leave restores the days to the employee's balance automatically.\n\n11. Misuse and Compliance\n- Misrepresenting sickness, falsifying certificates, or working a second job while on sick leave are treated as\nmisconduct under the DDS Disciplinary Policy.\n- DDS may request documentation where reasonable and lawful.\n- Managers may not pressure employees to cancel or shorten approved leave except in genuine business\nemergencies, and any such case must be reported to HR.\n12. Governance\n- Policy owner: Head of People & Culture, DDS.\n- Review cycle: annually, each June, or earlier if UAE labour regulations change.\n- Precedence: where an employment contract or UAE Labour Law grants a greater benefit, that provision prevails\nover this policy.\n- Questions: contact People & Culture via the HR portal, or ask DecoBot, the DDS HR assistant.\nVersion history: v1.0 (March 2026) initial synthetic policy. v2.0 (July 2026) full rewrite with fixed entitlements, notice\ntables, carry-over and expiry rules, extended parental provisions, and workflow SLAs.\n", "demo": [{"employee_id": 1024, "name": "Aisha Khan", "department": "Engineering", "job_title": "Software Engineer", "branch": "Dubai HQ", "join_date": "2022-03-14", "annual_total": 22, "annual_used": 15, "annual_booked": 5, "annual_remaining": 2, "sick_total": 15, "sick_used": 2, "sick_remaining": 13}, {"employee_id": 1025, "name": "John Doe", "department": "Marketing", "job_title": "Content Lead", "branch": "Dubai HQ", "join_date": "2024-09-02", "annual_total": 22, "annual_used": 5, "annual_booked": 0, "annual_remaining": 17, "sick_total": 15, "sick_used": 1, "sick_remaining": 14}, {"employee_id": 1026, "name": "Maria Garcia", "department": "Data & AI Training", "job_title": "Instructor", "branch": "Dubai HQ", "join_date": "2021-01-10", "annual_total": 22, "annual_used": 15, "annual_booked": 0, "annual_remaining": 7, "sick_total": 15, "sick_used": 3, "sick_remaining": 12}, {"employee_id": 1027, "name": "David Lee", "department": "Finance", "job_title": "Finance Analyst", "branch": "Dubai HQ", "join_date": "2025-11-03", "annual_total": 22, "annual_used": 5, "annual_booked": 0, "annual_remaining": 17, "sick_total": 15, "sick_used": 2, "sick_remaining": 13}], "dreq": {"1024": [{"leave_type": "Annual", "start_date": "2026-02-09", "end_date": "2026-02-13", "working_days": 5, "status": "Approved"}, {"leave_type": "Annual", "start_date": "2026-06-22", "end_date": "2026-07-03", "working_days": 10, "status": "Approved"}, {"leave_type": "Sick", "start_date": "2026-04-07", "end_date": "2026-04-08", "working_days": 2, "status": "Approved"}, {"leave_type": "Annual", "start_date": "2026-12-21", "end_date": "2026-12-25", "working_days": 5, "status": "Approved"}], "1025": [{"leave_type": "Annual", "start_date": "2026-05-04", "end_date": "2026-05-08", "working_days": 5, "status": "Approved"}, {"leave_type": "Sick", "start_date": "2026-09-15", "end_date": "2026-09-15", "working_days": 1, "status": "Approved"}, {"leave_type": "Annual", "start_date": "2026-11-16", "end_date": "2026-11-20", "working_days": 5, "status": "Pending"}], "1026": [{"leave_type": "Annual", "start_date": "2026-03-02", "end_date": "2026-03-06", "working_days": 5, "status": "Approved"}, {"leave_type": "Annual", "start_date": "2026-08-10", "end_date": "2026-08-21", "working_days": 10, "status": "Approved"}, {"leave_type": "Sick", "start_date": "2026-01-12", "end_date": "2026-01-14", "working_days": 3, "status": "Approved"}, {"leave_type": "Study", "start_date": "2026-05-18", "end_date": "2026-05-22", "working_days": 5, "status": "Approved"}], "1027": [{"leave_type": "Annual", "start_date": "2026-07-06", "end_date": "2026-07-10", "working_days": 5, "status": "Approved"}, {"leave_type": "Sick", "start_date": "2026-03-23", "end_date": "2026-03-24", "working_days": 2, "status": "Approved"}, {"leave_type": "Annual", "start_date": "2026-12-28", "end_date": "2026-12-31", "working_days": 4, "status": "Rejected"}]}, "stats": {"types": {"Annual": 203, "Sick": 64, "Bereavement": 2, "Marriage": 2, "Study": 1, "Paternity": 1}, "status": {"Approved": 239, "Rejected": 19, "Cancelled": 11, "Pending": 4}, "dept": {"Engineering": 22, "Data & AI Training": 20, "Marketing": 14, "Sales": 14, "Operations": 9, "Finance": 9, "Community": 6, "People & Culture": 6}, "rem_hist": [4, 6, 11, 34, 30, 15], "avg_rem": 14.5}};
@@ -441,7 +557,7 @@ function showPipe(i) { $$('.node').forEach((n, k) => n.classList.toggle('on', k 
 showPipe(0); 
 
 /* ---------- TABS ---------- */
-$('#tabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if (!b) return; $$('.tab').forEach(t => t.classList.remove('on')); b.classList.add('on'); $$('.lab').forEach(l => l.classList.remove('on')); $('#lab-' + b.dataset.lab).classList.add('on'); if (b.dataset.lab === 'emb') { drawGrid(); drawMap(); } });
+$('#tabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if (!b) return; $$('#tabs .tab').forEach(t => t.classList.remove('on')); b.classList.add('on'); $$('.lab').forEach(l => l.classList.remove('on')); $('#lab-' + b.dataset.lab).classList.add('on'); if (b.dataset.lab === 'emb') { drawGrid(); drawMap(); } });
 
 /* ---------- CHUNKING LAB ---------- */
 const FULL = D.full, PHRASE = '10 or more working days requested';
@@ -643,11 +759,57 @@ $('#stackCards').innerHTML = [
  ['Google Colab','Where we teach','Runs the notebooks in the browser. Keys live in Colab Secrets.',''],['Gemini','Generation and embeddings','gemini-3.8-flash writes answers. gemini-embedding-001 makes vectors. Used through Google AI Studio keys.','am'],['LlamaIndex','The framework','Loads, chunks, indexes, queries, and runs the FunctionAgent with tools.',''],['Pinecone','Vector database','Stores policy vectors so they survive restarts and are shared by many users.','am'],['SQLite','The HR database','One file, two tables, read-only for the bot.',''],['Gradio','The chat page','Turns the agent into a web page.','am'],['Hugging Face Spaces','Deploy','Hosts the Gradio app. Secrets are set in Space settings.',''],['Render','Deploy (optional)','A second home for the same app. Free plans sleep when idle.','am'],['GitHub','Source','Holds the code and this page. Keys never go here.','']
 ].map(s => `<div class="card ${s[3]}"><div class="tag">${s[1]}</div><h3>${s[0]}</h3><p>${s[2]}</p></div>`).join('');
 
+
+/* ---------- BOOTCAMP: DAYS ---------- */
+const DAYS = {
+ d1: {t:'Day 1 | Control the AI', s:'2 hours | Notebook: Day1 (prompt engineering) | Slides: Day 1 deck', rows:[
+  ['0:00','Intro','What we build this week. Meet DecoBot.'],['0:10','Part 0 | Setup','Colab, Secrets, the Gemini key, first call.'],['0:20','Part A | Raw model','Ask Gemini about leave with no instructions. See why it guesses.'],['0:30','Part B | Prompts v1 to v3','Add a role, a scope and rules. Run the scope tests: it must refuse off-topic questions.'],['1:00','Part C | Clarity lab','When a request is unclear, ask one question instead of guessing.'],['1:15','Part D | Cheat sheet','Put the facts in the prompt: entitlements, notice, rules.'],['1:30','Part E | JSON extraction','Turn a free-text request into fields. Foundation for tools.'],['1:40','Part F | Prompt Clinic','Fix bad prompts together. Take-home if time is short.']],
+  o:['A system prompt with role, scope, rules and tone','A bot that refuses off-topic questions','A bot that asks when a request is unclear','Structured JSON output from free text']},
+ d2: {t:'Day 2 | Give DecoBot the policy', s:'2 hours | Notebook: Day2 (RAG, in memory) | Slides: Day 2 deck', rows:[
+  ['0:00','Recap + Part 0','Why prompts alone cannot hold a 4-page policy. Setup.'],['0:15','Part A | Embeddings','Text becomes numbers. Compare similar and different sentences.'],['0:25','Part B | PDF + default index','Load DDS_Leave_Policy_v2.pdf. Build a first VectorStoreIndex with defaults.'],['0:40','Part C | Chunking lab (45 min)','Three strategies give 4, 28 and 13 chunks. Check the notice table (section 3.4). Score a mini test of 8 questions. Change top_k.'],['1:25','Part D | Final engine','Section-based chunks plus a strict prompt. Scenario cards and trap questions.'],['1:45','Wrap-up','What RAG cannot do: personal numbers. That is Day 3.']],
+  o:['A working RAG engine over the real policy PDF','A method to test chunking with real questions','Understanding of top_k, embeddings and dimensions','A list of questions RAG cannot answer (balances)']},
+ d2b: {t:'Day 2B | The vector database', s:'30 to 40 minutes | Notebook: Day2B_RAG_with_Pinecone | Needs a Pinecone key', rows:[
+  ['0:00','Part A | Chunks','The same section-based chunks as Day 2.'],['0:05','Part B | In memory','Index in memory first. This is the Day 2 result.'],['0:12','Part C | Pinecone','Create the index (dimension measured from the embedding, cosine), upload the vectors.'],['0:22','Part D | Ask','Same questions and trap questions against Pinecone.'],['0:28','Part E | Restart test','Delete the Python index, reconnect with from_vector_store. The knowledge is still there.']],
+  o:['The same RAG moved from memory to Pinecone','Index dimension must match the embedding model','Why a vector database: persistence and sharing','The whole journey in one comparison table']},
+ d3: {t:'Day 3 | From chatbot to agent', s:'2 hours | Notebook: Day3 (SQL + agent) | Slides: Day 3 deck', rows:[
+  ['0:00','Recap + Part 0','Policy answers the rule, the database answers the number.'],['0:15','Part A | SQL (25 min)','SELECT, WHERE, JOIN, GROUP BY on dds_leave.db. Exercises.'],['0:40','Part B | Three tools','Policy search, balance lookup, request history. All read-only, parameterised.'],['1:00','Part C | The agent','A FunctionAgent chooses the tool and reads the result.'],['1:15','Part D | Scenes 1 to 5','Aisha, John, Maria, David: balances, notice, carry-over, refuse-to-share, mixed questions.'],['1:40','Part E | Bad tool descriptions','Break the agent with a vague docstring, then fix it.'],['1:50','Wrap-up','Next steps: login, write tools, evaluation, deployment.']],
+  o:['SQL basics on a real database','Three read-only tools','An agent that routes between policy and data','A feel for why tool descriptions matter']}
+};
+function showDay(k){
+  const d = DAYS[k];
+  $$('#dayTabs .tab').forEach(t => t.classList.toggle('on', t.dataset.d === k));
+  $('#dayBody').innerHTML = `<div class="card ${k==='d3'||k==='d2b'?'am':''}"><h3>${d.t}</h3><p class="note" style="margin:6px 0 14px">${d.s}</p><div class="tw"><table class="sched">${d.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table></div><div class="outc"><div class="tag">After this session you have</div><ul class="plain">${d.o.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`;
+}
+$('#dayTabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if (b) showDay(b.dataset.d); });
+$$('a[data-day]').forEach(a => a.addEventListener('click', () => showDay(a.dataset.day)));
+showDay('d1');
+
+/* ---------- BOOTCAMP: QUIZ ---------- */
+const QZ = [
+ ['How many annual leave days does Aisha Khan have left?', ['Policy PDF','Database'], 1, 'A personal number. It lives in employees.annual_remaining. The PDF only says everyone gets 22.'],
+ ['How much notice does a 12-day leave need?', ['Policy PDF','Database'], 0, 'A rule. Section 3.4: 10 or more working days needs 30 calendar days.'],
+ ['Can Aisha take 5 days from 14 December?', ['Policy PDF','Database','Both'], 2, 'Notice comes from the policy, her balance (2 left) from the database. The agent needs both.'],
+ ['Which department has the most pending requests?', ['Policy PDF','Database'], 1, 'A count across rows. SQL: GROUP BY department. The answer is Engineering with 2.'],
+ ['Does the policy define the probation period?', ['Policy PDF','Database'], 0, 'Search the text. It does not define it. A good bot says so instead of guessing.']
+];
+$('#quiz').innerHTML = QZ.map((q,i)=>`<div class="q" data-i="${i}"><p>${i+1}. ${q[0]}</p><div class="opts">${q[1].map((o,j)=>`<button data-j="${j}">${o}</button>`).join('')}</div><div class="why"></div></div>`).join('');
+$('#quiz').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const box = b.closest('.q'), q = QZ[+box.dataset.i], j = +b.dataset.j; box.querySelectorAll('button').forEach(x => x.classList.remove('right','wrong')); b.classList.add(j === q[2] ? 'right' : 'wrong'); const w = box.querySelector('.why'); w.classList.add('on'); w.textContent = (j === q[2] ? 'Correct. ' : 'Not quite. ') + q[3]; });
+
+/* ---------- BOOTCAMP: MATERIALS ---------- */
+const MAT = [
+ ['Before Day 1','data_understanding/Data_Understanding_DecoBot.ipynb','Colab notebook','Warm-up: read the PDF and the database'],
+ ['Before Day 1','data_understanding/CPD_UK_Data_Understanding.pptx / .pdf','Slides (15)','Warm-up deck, animated'],
+ ['Day 1','notebooks/Day1 notebook','Colab notebook','Prompt engineering'],['Day 1','slides/Day 1 deck (.pptx) and slides_pdf/','Slides','Prompts, scope, clarity, JSON'],
+ ['Day 2','notebooks/Day2 notebook','Colab notebook','RAG in memory, chunking lab'],['Day 2','data/DDS_Leave_Policy_v2.pdf','PDF','Upload to Colab when asked'],['Day 2','slides/Day 2 deck and slides_pdf/','Slides','Embeddings, RAG, chunking'],
+ ['Day 2B','notebooks/Day2B_RAG_with_Pinecone.ipynb','Colab notebook','Same RAG in Pinecone'],
+ ['Day 3','notebooks/Day3 notebook','Colab notebook','SQL, tools, agent'],['Day 3','data/dds_leave.db','SQLite database','Upload to Colab when asked'],['Day 3','slides/Day 3 deck and slides_pdf/','Slides','Tools and agents'],
+ ['Overview','slides/Program overview deck and slides_pdf/','Slides','Whole program on one deck'],['Instructor','guides/','Markdown','Instructor guide and README']
+];
+$('#matTable').innerHTML = '<tr><th>When</th><th>File</th><th>Type</th><th>Use</th></tr>' + MAT.map(r => `<tr><td>${r[0]}</td><td style="font-family:var(--mono);font-size:13px;color:var(--fg)">${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('');
+
 /* ---------- INIT ---------- */
 renderChunks(); renderRetr(); drawGrid(); setPrices(); $('#aQ').onchange();
 const secs = $$('section'); const links = $$('nav.top a');
 addEventListener('scroll', () => { let cur = ''; secs.forEach(s => { if (s.getBoundingClientRect().top < 140) cur = s.id; }); links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur)); }, {passive: true});
 
-</script>
-</body>
-</html>
+</script></body></html>
