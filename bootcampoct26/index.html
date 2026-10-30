@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DecoBot RAG Lab | Decoding Data Science</title>
+<meta name="description" content="Interactive lab for the DDS HR leave chatbot: chunking, embeddings, retrieval, agent routing, cost calculator, data dictionary and glossary. Built with LlamaIndex, Gemini and Pinecone.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05070b; --bg2:#0a1018; --panel:#0b131d; --line:#1e2a3a; --fg:#f2f6fa; --mute:#b8c6d8; --faint:#7f90a6;
+  --ice:#9fd6ff; --amber:#ffb454; --ok:#5fe3a1; --bad:#ff6b7a; --code:#070b11;
+  --sans:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif; --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.65 var(--sans);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+   radial-gradient(900px 500px at 82% -8%,rgba(159,214,255,.12),transparent 60%),
+   radial-gradient(700px 420px at 4% 30%,rgba(255,180,84,.06),transparent 60%),
+   linear-gradient(rgba(159,214,255,.045) 1px,transparent 1px) 0 0/48px 48px,
+   linear-gradient(90deg,rgba(159,214,255,.045) 1px,transparent 1px) 0 0/48px 48px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:max(18px,env(safe-area-inset-left,0px))}
+a{color:var(--ice)}
+code,.mono{font-family:var(--mono)}
+/* nav */
+nav.top{position:sticky;top:0;z-index:50;background:rgba(5,7,11,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+nav.top b{font:600 13px var(--mono);letter-spacing:.14em;color:var(--ice);margin-right:12px;white-space:nowrap}
+nav.top a{font:600 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);text-decoration:none;padding:6px 10px;border:1px solid transparent;white-space:nowrap}
+nav.top a:hover,nav.top a.on{color:var(--ice);border-color:var(--line)}
+/* hero */
+header.hero{padding-block:84px 56px}
+.eyebrow{font:600 12px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ice)}
+h1{font-size:clamp(38px,7vw,84px);line-height:1;margin:14px 0 18px;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ice);text-shadow:0 0 38px rgba(159,214,255,.45)}
+.lead{max-width:62ch;color:var(--mute);font-size:19px;margin:0 0 30px}
+.kpis{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.kpi{border:1px solid var(--line);background:rgba(10,16,24,.7);padding:16px 18px;border-top:2px solid var(--ice)}
+.kpi:nth-child(even){border-top-color:var(--amber)}
+.kpi b{display:block;font:700 34px/1 var(--mono);color:var(--fg)}
+.kpi span{font-size:13px;color:var(--mute)}
+/* sections */
+section{padding-block:72px 8px}
+.sec-h{display:flex;flex-direction:column;gap:6px;margin-bottom:26px}
+h2{font-size:clamp(28px,4vw,42px);margin:0;line-height:1.1;text-wrap:balance}
+.sub{color:var(--mute);margin:0;max-width:72ch}
+h3{margin:0 0 8px;font-size:20px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.card{background:rgba(10,16,24,.78);border:1px solid var(--line);border-top:2px solid var(--ice);padding:20px;min-width:0}
+.card.am{border-top-color:var(--amber)}
+.tag{font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ice);margin:0 0 8px}
+.am .tag{color:var(--amber)}
+.card p{margin:0;color:var(--mute);font-size:15px}
+.card p+p{margin-top:8px}
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.node{border:1px solid var(--line);background:var(--panel);padding:14px 10px;text-align:left;color:var(--fg);cursor:pointer;font:inherit;position:relative;min-height:96px}
+.node small{display:block;font:600 11px var(--mono);letter-spacing:.1em;color:var(--faint);text-transform:uppercase}
+.node strong{display:block;margin-top:6px;font-size:15px}
+.node.on{border-color:var(--ice);box-shadow:0 0 0 1px var(--ice),0 0 28px rgba(159,214,255,.2) inset}
+.node.pine{border-style:dashed}
+.node::after{content:"";position:absolute;right:-9px;top:50%;width:10px;height:2px;background:var(--line)}
+.node:last-child::after{display:none}
+.pipe-detail{margin-top:14px;border:1px solid var(--line);border-left:3px solid var(--amber);background:rgba(10,16,24,.8);padding:18px 20px;min-height:110px}
+.pipe-detail p{margin:0 0 6px;color:var(--mute)} .pipe-detail pre{margin:10px 0 0}
+@media(max-width:860px){.pipe{grid-template-columns:repeat(2,minmax(0,1fr))}.node::after{display:none}}
+/* labs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.tab{font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;background:transparent;color:var(--mute);border:1px solid var(--line);padding:10px 14px;cursor:pointer}
+.tab:hover{color:var(--ice)} .tab.on{color:#05070b;background:var(--ice);border-color:var(--ice)}
+.lab{display:none;border:1px solid var(--line);background:rgba(8,13,20,.86);padding:22px}
+.lab.on{display:block}
+.lab h3{font-size:22px}
+.two{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.ctl{display:flex;flex-direction:column;gap:12px;min-width:0}
+label{font:600 12px var(--mono);letter-spacing:.08em;color:var(--faint);text-transform:uppercase;display:flex;justify-content:space-between;gap:10px;align-items:center}
+label output{color:var(--ice);font-size:13px}
+select,input[type=number],input[type=text],input[type=date]{width:100%;background:var(--code);color:var(--fg);border:1px solid var(--line);padding:9px 10px;font:14px var(--mono);border-radius:0}
+select:focus,input:focus,button:focus-visible{outline:2px solid var(--ice);outline-offset:1px}
+input[type=range]{width:100%;accent-color:var(--ice)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--code);color:var(--mute);border:1px solid var(--line);padding:8px 12px;font:600 12px var(--mono);cursor:pointer}
+.seg button.on{border-color:var(--ice);color:var(--ice);box-shadow:0 0 14px rgba(159,214,255,.18)}
+.stats{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));margin-top:6px}
+.stat{border:1px solid var(--line);padding:10px 12px;background:var(--code)}
+.stat b{display:block;font:700 22px var(--mono);color:var(--fg)} .stat span{font-size:12px;color:var(--faint)}
+.stat.good b{color:var(--ok)} .stat.bad b{color:var(--bad)} .stat.warn b{color:var(--amber)}
+.msg{border-left:3px solid var(--amber);padding:6px 0 6px 14px;color:var(--mute);font-size:14.5px;margin:12px 0 0}
+.msg.ok{border-left-color:var(--ok)} .msg.bad{border-left-color:var(--bad)}
+pre{margin:0;background:var(--code);border:1px solid var(--line);padding:14px 16px;overflow-x:auto;font:13px/1.6 var(--mono);color:#dfeaf5}
+.note{font-size:13px;color:var(--faint);margin-top:12px}
+/* chunk bar */
+.bar{position:relative;height:54px;background:var(--code);border:1px solid var(--line);margin-top:8px;overflow:hidden}
+.bar i{position:absolute;top:0;bottom:0;border-right:1px solid #05070b}
+.bar i.o{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 3px,transparent 3px 6px)}
+.mark{position:absolute;top:0;bottom:0;background:rgba(255,180,84,.38);border:1px solid var(--amber);box-shadow:0 0 14px rgba(255,180,84,.5);z-index:3}
+.chunklist{max-height:260px;overflow:auto;border:1px solid var(--line);margin-top:10px}
+.chunklist div{padding:8px 12px;border-bottom:1px solid var(--line);font-size:13px;color:var(--mute);display:flex;gap:10px}
+.chunklist b{font:600 12px var(--mono);color:var(--ice);white-space:nowrap}
+/* retrieval */
+.rank{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.r{display:grid;grid-template-columns:28px minmax(0,1fr) 54px;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);background:var(--code);position:relative}
+.r.cut{opacity:.42}
+.r .n{font:600 12px var(--mono);color:var(--faint)}
+.r .t{font-size:13.5px;min-width:0} .r .t small{display:block;color:var(--faint);font:11px var(--mono)}
+.r .s{font:600 12px var(--mono);text-align:right;color:var(--ice)}
+.r .fill{position:absolute;left:0;bottom:0;height:2px;background:var(--ice)}
+.r.hit{border-color:var(--ok)} .r.hit .fill{background:var(--ok)}
+.cutline{border-top:2px dashed var(--amber);text-align:center;font:600 11px var(--mono);color:var(--amber);letter-spacing:.14em;padding-top:4px;margin:2px 0}
+#kTable{min-width:520px}
+canvas{max-width:100%;background:var(--code);border:1px solid var(--line);display:block}
+/* agent */
+.trace{background:var(--code);border:1px solid var(--line);padding:12px 14px;min-height:210px;font:13px/1.7 var(--mono);color:var(--mute)}
+.trace .l{opacity:0;transform:translateY(4px);animation:in .35s forwards}
+.trace .t1{color:var(--ice)} .trace .t2{color:var(--amber)} .trace .t3{color:var(--ok)}
+@keyframes in{to{opacity:1;transform:none}}
+.bubble{border:1px solid var(--ice);background:rgba(159,214,255,.07);padding:12px 14px;margin-top:10px;font-size:15px}
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);background:rgba(8,13,20,.86)}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);background:rgba(10,16,24,.9)}
+td:first-child{font-family:var(--mono);font-size:13px;color:var(--ice);white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+.hbar{display:flex;align-items:center;gap:8px;font:12px var(--mono);color:var(--mute)}
+.hbar i{display:block;height:10px;background:var(--ice);min-width:2px}
+.hbar.am i{background:var(--amber)}
+.hist{display:flex;align-items:flex-end;gap:8px;height:130px;margin-top:8px}
+.hist div{flex:1;background:linear-gradient(var(--ice),rgba(159,214,255,.25));position:relative;min-height:2px}
+.hist div span{position:absolute;top:-20px;left:0;right:0;text-align:center;font:600 12px var(--mono);color:var(--fg)}
+.hist div em{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font:11px var(--mono);color:var(--faint);font-style:normal}
+/* glossary */
+.gl{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));margin-top:12px}
+.term{border:1px solid var(--line);background:rgba(10,16,24,.78);padding:14px 16px}
+.term b{display:block;color:var(--ice);font:600 14px var(--mono);margin-bottom:4px}
+.term span{font-size:14px;color:var(--mute)}
+.term u{display:block;margin-top:6px;font:11px var(--mono);color:var(--faint);text-decoration:none;text-transform:uppercase;letter-spacing:.1em}
+.stack{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.steps{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:s}
+.steps li{counter-increment:s;border:1px solid var(--line);background:rgba(10,16,24,.78);padding:12px 14px 12px 52px;position:relative;font-size:15px;color:var(--mute)}
+.steps li::before{content:counter(s);position:absolute;left:14px;top:10px;font:700 18px var(--mono);color:var(--amber)}
+footer{margin-top:80px;border-top:1px solid var(--line);padding-block:28px 60px;color:var(--faint);font:12px var(--mono)}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}.trace .l{animation:none;opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<nav class="top"><div class="wrap">
+  <b>DECOBOT LAB</b>
+  <a href="#how">Pipeline</a><a href="#labs">Labs</a><a href="#data">Data</a><a href="#dictionary">Dictionary</a><a href="#glossary">Glossary</a><a href="#stack">Stack</a><a href="#deploy">Deploy</a><a href="#program">Program</a><a href="#limits">Limits</a>
+</div></nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">Decoding Data Science | CPD UK AI Accelerator Bootcamp</div>
+  <h1>DecoBot <em>RAG Lab</em></h1>
+  <p class="lead">One company, one topic: leave at DDS. See how a PDF becomes chunks, how chunks become vectors, how a question finds its answer, and what each choice costs. Every lab on this page runs in your browser.</p>
+  <div class="kpis">
+    <div class="kpi"><b>4</b><span>documents (PDF)</span></div>
+    <div class="kpi"><b>1</b><span>SQLite database</span></div>
+    <div class="kpi"><b>100</b><span>employees</span></div>
+    <div class="kpi"><b>273</b><span>leave requests</span></div>
+    <div class="kpi"><b>13</b><span>policy chunks (by section)</span></div>
+    <div class="kpi"><b>3</b><span>agent tools</span></div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="sec-h"><div class="eyebrow">01 | The whole journey</div><h2>From PDF to answer</h2>
+  <p class="sub">Click a step. The dashed step is the one that moves from memory to Pinecone in notebook Day 2B.</p></div>
+  <div class="pipe" id="pipe"></div>
+  <div class="pipe-detail" id="pipeDetail"></div>
+</section>
+
+<section id="labs">
+  <div class="sec-h"><div class="eyebrow">02 | Simulations</div><h2>Labs</h2>
+  <p class="sub">Change a setting and watch what happens. Labs marked "toy" use a simplified model so the idea is visible. They never pretend to be Gemini.</p></div>
+  <div class="tabs" id="tabs" role="tablist">
+    <button class="tab on" data-lab="chunk">Chunking</button>
+    <button class="tab" data-lab="retr">Retrieval and top_k</button>
+    <button class="tab" data-lab="emb">Embeddings and dimensions</button>
+    <button class="tab" data-lab="agent">Agent router</button>
+    <button class="tab" data-lab="cost">Cost calculator</button>
+  </div>
+
+  <!-- CHUNKING -->
+  <div class="lab on" id="lab-chunk">
+    <h3>Chunking lab</h3>
+    <p class="sub">The real DDS Leave Policy v2 text (about 11,000 characters). The amber band is the notice table in section 3.4 (7, 14 and 30 days). If a chunk boundary cuts through it, the bot may read only part of the table.</p>
+    <div class="two" style="margin-top:16px">
+      <div class="ctl">
+        <label>Strategy</label>
+        <div class="seg" id="cStrat">
+          <button data-v="section" class="on">By section</button><button data-v="big">Big fixed (1,000 tokens)</button><button data-v="small">Small fixed (120 tokens)</button><button data-v="custom">Custom</button>
+        </div>
+        <label>Chunk size <output id="oSize">1000</output></label><input type="range" id="cSize" min="100" max="5000" step="50" value="1000">
+        <label>Overlap <output id="oOver">0</output></label><input type="range" id="cOver" min="0" max="500" step="10" value="0">
+        <div class="note">Sizes here are in characters. LlamaIndex counts tokens (about 4 characters each) and cuts at sentence ends. This lab cuts at exact characters, so counts differ a little from the notebook.</div>
+      </div>
+      <div>
+        <div class="stats" id="cStats"></div>
+        <div class="msg" id="cMsg"></div>
+      </div>
+    </div>
+    <label style="margin-top:18px">The document, left to right. Each block is one chunk. Striped area is overlap.</label>
+    <div class="bar" id="cBar"></div>
+    <div class="chunklist" id="cList"></div>
+  </div>
+
+  <!-- RETRIEVAL -->
+  <div class="lab" id="lab-retr">
+    <h3>Retrieval and top_k lab (toy)</h3>
+    <p class="sub">A question is compared with every chunk. The best <b>top_k</b> chunks go to Gemini. This toy retriever uses keywords plus a few synonyms so you can see the ranking. Real Gemini embeddings understand meaning far better.</p>
+    <div class="two" style="margin-top:16px">
+      <div class="ctl">
+        <label>Question</label><select id="rQ"></select>
+        <input type="text" id="rQc" placeholder="or type your own question">
+        <label>top_k <output id="oK">3</output></label><input type="range" id="rK" min="1" max="10" value="3">
+        <label>Documents in the index</label>
+        <div class="seg" id="rDocs"></div>
+        <div class="stats" id="rStats"></div>
+        <div class="msg" id="rMsg"></div>
+      </div>
+      <div><label>Ranked chunks (dashed line = what Gemini receives)</label><div class="rank" id="rRank"></div></div>
+    </div>
+  </div>
+
+  <!-- EMBEDDINGS -->
+  <div class="lab" id="lab-emb">
+    <h3>Embeddings and dimensions lab</h3>
+    <p class="sub">An embedding is a list of numbers. The number of numbers is the <b>dimension</b>. The vector database index must use the same dimension as the embedding model.</p>
+    <div class="two" style="margin-top:16px">
+      <div class="ctl">
+        <label>Model output dimension <output id="oDim">3072</output></label>
+        <div class="seg" id="eDim"><button data-v="768">768</button><button data-v="1536">1536</button><button data-v="3072" class="on">3072</button></div>
+        <label>Text</label><input type="text" id="eText" value="annual leave">
+        <label>What one vector looks like (illustrative values, 1 cell = 1 number)</label>
+        <canvas id="eGrid" width="640" height="200"></canvas>
+        <div class="stats" id="eStats"></div>
+      </div>
+      <div class="ctl">
+        <label>Compatibility check: the index you created</label>
+        <div class="seg" id="eIdx"><button data-v="768">768</button><button data-v="1536">1536</button><button data-v="3072" class="on">3072</button></div>
+        <div class="msg" id="eCompat"></div>
+        <label style="margin-top:8px">Meaning map (illustrative positions, not real embeddings)</label>
+        <select id="mQ"></select>
+        <canvas id="mMap" width="640" height="340"></canvas>
+        <div class="note">Phrases with similar meaning sit close together, even without shared words. The bot finds "annual leave" for a "vacation days" question because they are neighbours.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGENT -->
+  <div class="lab" id="lab-agent">
+    <h3>Agent router lab</h3>
+    <p class="sub">An agent reads the question, picks the tool, reads the result and writes the answer. Employee data below is real, from <code>dds_leave.db</code>. The reply text is a simulation of what DecoBot is told to say, not a live Gemini call.</p>
+    <div class="two" style="margin-top:16px">
+      <div class="ctl">
+        <label>Signed in as</label><select id="aEmp"></select>
+        <label>Question</label><select id="aQ"></select>
+        <div id="aExtra" style="display:none;gap:10px;flex-direction:column">
+          <label>Start date</label><input type="date" id="aDate" value="2026-12-14">
+          <label>Working days</label><input type="number" id="aDays" value="5" min="1" max="30">
+        </div>
+        <div class="seg"><button id="aRun" class="on">Run the agent</button></div>
+        <div class="note">Today in the simulation is 2026-10-28. Notice rule: 1-2 working days need 7 calendar days, 3-9 need 14, 10 or more need 30.</div>
+      </div>
+      <div><div class="trace" id="aTrace"></div><div class="bubble" id="aBubble" style="display:none"></div></div>
+    </div>
+  </div>
+
+  <!-- COST -->
+  <div class="lab" id="lab-cost">
+    <h3>Cost calculator</h3>
+    <p class="sub">Gemini API prices in US dollars per 1 million tokens, from Google's pricing page checked on 30 Oct 2026. Prices are editable. Always confirm on <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/pricing</a> before you budget.</p>
+    <div class="two" style="margin-top:16px">
+      <div class="ctl">
+        <label>Generation model</label><select id="kModel"></select>
+        <label>Price window</label>
+        <select id="kWin"><option value="0">Until 30 Nov 2026</option><option value="1">1 to 31 Dec 2026</option><option value="2">From 1 Jan 2027</option></select>
+        <div class="two" style="gap:10px"><div class="ctl"><label>Input $/1M</label><input type="number" id="kIn" step="0.01"></div><div class="ctl"><label>Output $/1M</label><input type="number" id="kOut" step="0.01"></div></div>
+        <label>Mode</label>
+        <div class="seg" id="kMode"><button data-v="1">Chatbot (1 call)</button><button data-v="3" class="on">Agent (3 calls)</button></div>
+        <label>Employees using it <output id="oU">100</output></label><input type="range" id="kU" min="1" max="2000" value="100">
+        <label>Questions per employee per month <output id="oQ">8</output></label><input type="range" id="kQ" min="1" max="100" value="8">
+        <label>top_k <output id="oKK">3</output></label><input type="range" id="kK" min="1" max="10" value="3">
+        <label>Average chunk size (tokens) <output id="oC">215</output></label><input type="range" id="kC" min="50" max="1000" value="215">
+        <label>Embedding dimensions (Pinecone index)</label>
+        <div class="seg" id="kDim"><button data-v="768">768</button><button data-v="1536">1536</button><button data-v="3072" class="on">3072</button></div>
+        <label>Hosting and vector database, $ per month</label><input type="number" id="kHost" value="0" step="1" min="0">
+      </div>
+      <div>
+        <div class="stats" id="kStats"></div>
+        <label style="margin-top:16px">Same usage on every model, per month</label>
+        <div class="tw"><table id="kTable"></table></div>
+        <label style="margin-top:16px">How the numbers are made</label>
+<pre>input tokens  = calls x (system 330 + tools 400 + question 30)
+              + top_k x chunk tokens + tool output 150 x (calls - 1)
+output tokens = answer 120 + 40 x (calls - 1)
+cost / question = input x in-price + output x out-price
+embedding (one time) = chunks x chunk tokens x $0.15 / 1M
+vector storage = vectors x dimensions x 4 bytes</pre>
+        <div class="note">Assumptions are rounded teaching values. Real usage depends on your prompt length and how often the agent loops.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="data">
+  <div class="sec-h"><div class="eyebrow">03 | The data</div><h2>Four documents and one database</h2>
+  <p class="sub">Documents hold rules. The database holds personal numbers. All data is synthetic, made for training.</p></div>
+  <div class="grid" id="docCards"></div>
+  <h3 style="margin-top:34px">The database: dds_leave.db</h3>
+  <div class="grid" style="margin-top:10px">
+    <div class="card"><div class="tag">Table | 100 rows</div><h3>employees</h3><p>One row per person, with leave balances already computed from the requests.</p></div>
+    <div class="card am"><div class="tag">Table | 273 rows</div><h3>leave_requests</h3><p>One row per request. Links to employees by <code>employee_id</code>. One employee has 1 to 5 requests.</p></div>
+    <div class="card"><div class="tag">Link</div><h3>employee_id</h3><p><code>leave_requests.employee_id</code> points to <code>employees.employee_id</code>. The same key joins the tables in SQL.</p></div>
+  </div>
+  <div class="two" style="margin-top:26px">
+    <div class="card"><div class="tag">Requests by leave type</div><div id="chType"></div></div>
+    <div class="card am"><div class="tag">Requests by status</div><div id="chStatus"></div></div>
+    <div class="card"><div class="tag">Employees by department</div><div id="chDept"></div></div>
+    <div class="card am"><div class="tag">Annual days remaining (100 employees, average 14.5)</div><div class="hist" id="chHist" style="margin-bottom:30px"></div></div>
+  </div>
+  <h3 style="margin-top:34px">Demo cast</h3>
+  <div class="tw" style="margin-top:10px"><table id="demoTable"></table></div>
+  <h3 style="margin-top:34px">Quality checks</h3>
+  <div class="grid" style="margin-top:10px">
+    <div class="card"><div class="tag">Passed (0 issues)</div><p>Duplicate employee ids. End before start. Requests for unknown employees. Zero or negative working days. Remaining days that do not add up.</p></div>
+    <div class="card am"><div class="tag">Worth a look</div><p>14 requests are dated after the simulated today (2026-10-28). 9 approved requests overlap an earlier one for the same person. Synthetic data, so we note it.</p></div>
+    <div class="card"><div class="tag">Rule of the data</div><p>Working days are Monday to Friday, no public holidays removed. Approved and started by 28 Oct 2026 means used. Approved and later means booked. Pending, Rejected and Cancelled do not count.</p></div>
+  </div>
+</section>
+
+<section id="dictionary">
+  <div class="sec-h"><div class="eyebrow">04 | Data dictionary</div><h2>Every column explained</h2></div>
+  <div class="tw"><table id="dict"></table></div>
+</section>
+
+<section id="glossary">
+  <div class="sec-h"><div class="eyebrow">05 | Glossary</div><h2>Words you will hear</h2></div>
+  <input type="text" id="gSearch" placeholder="Search a term (for example chunk, top_k, dimension)">
+  <div class="gl" id="gl"></div>
+</section>
+
+<section id="stack">
+  <div class="sec-h"><div class="eyebrow">06 | The stack</div><h2>What each tool does</h2></div>
+  <div class="stack" id="stackCards"></div>
+</section>
+
+<section id="deploy">
+  <div class="sec-h"><div class="eyebrow">07 | Putting it online</div><h2>Colab to a live website</h2>
+  <p class="sub">Teach in Colab. Publish on Hugging Face Spaces. Render is the optional second home.</p></div>
+  <div class="two">
+    <div><div class="tag" style="color:var(--ice);font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px">Hugging Face Spaces</div>
+      <ol class="steps">
+        <li>Create a new Space. Choose the Gradio SDK.</li>
+        <li>Upload <code>app.py</code>, <code>requirements.txt</code>, and the <code>data</code> folder (PDF and database).</li>
+        <li>In Settings, add secrets <code>GOOGLE_API_KEY</code> and <code>PINECONE_API_KEY</code>.</li>
+        <li>The Space builds on its own. Open the link and test with the demo employees.</li>
+      </ol></div>
+    <div><div class="tag" style="color:var(--amber);font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px">Render (optional)</div>
+      <ol class="steps">
+        <li>Push the project to GitHub. The real keys must never be in the repository.</li>
+        <li>In Render choose New, then Web Service (or Blueprint with <code>render.yaml</code>).</li>
+        <li>Build: <code>pip install -r requirements.txt</code>. Start: <code>python app.py</code>.</li>
+        <li>Add the two keys under Environment. Free plans sleep when idle, so the first load can be slow.</li>
+      </ol></div>
+  </div>
+  <div style="margin-top:18px"><div class="tag" style="color:var(--ice);font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px">Moving the policy search from memory to Pinecone</div>
+<pre>from pinecone import Pinecone
+from llama_index.core import VectorStoreIndex
+from llama_index.vector_stores.pinecone import PineconeVectorStore
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+store = PineconeVectorStore(pinecone_index=pc.Index("dds-leave-policy"))
+index = VectorStoreIndex.from_vector_store(store)      # no embedding at start-up
+policy_engine = index.as_query_engine(similarity_top_k=3, text_qa_template=qa_prompt)</pre></div>
+</section>
+
+<section id="program">
+  <div class="sec-h"><div class="eyebrow">08 | The program</div><h2>Three days, one assistant</h2></div>
+  <div class="grid">
+    <div class="card"><div class="tag">Before Day 2 | 30 min</div><h3>Data understanding</h3><p>Read the PDF and the database yourself. Structured against unstructured.</p></div>
+    <div class="card"><div class="tag">Day 1 | 2 hours</div><h3>Control the AI</h3><p>System prompt, scope, the clarity rule, facts in the prompt, JSON output.</p></div>
+    <div class="card am"><div class="tag">Day 2 | 2 hours</div><h3>Give it the policy</h3><p>Embeddings, RAG with LlamaIndex, chunking lab. Then Day 2B: the same index in Pinecone.</p></div>
+    <div class="card am"><div class="tag">Day 3 | 2 hours</div><h3>Data and tools</h3><p>SQL, three read-only tools, a FunctionAgent, five scenes, bad tool descriptions.</p></div>
+  </div>
+  <div class="tw" style="margin-top:20px"><table>
+    <tr><th>File</th><th>Use</th></tr>
+    <tr><td>Day1_System_Prompt_and_Clarity.ipynb</td><td>Colab, no files</td></tr>
+    <tr><td>Day2_RAG_and_Chunking.ipynb</td><td>Colab, upload the PDF. Index in memory</td></tr>
+    <tr><td>Day2B_RAG_with_Pinecone.ipynb</td><td>Colab, upload the PDF. Index in Pinecone. Needs PINECONE_API_KEY</td></tr>
+    <tr><td>Day3_SQL_Tools_and_Agent.ipynb</td><td>Colab, upload the PDF and dds_leave.db</td></tr>
+    <tr><td>DDS_Leave_Policy_v2.pdf</td><td>The policy, DDS-HR-POL-001 v2.0, effective 1 July 2026</td></tr>
+    <tr><td>dds_leave.db / build_database.py</td><td>The database and the script that rebuilds it</td></tr>
+    <tr><td>Day1, Day2, Day3 decks, overview, data understanding</td><td>15, 15, 17, 3 and 15 slides, click animation on every box</td></tr>
+  </table></div>
+</section>
+
+<section id="limits">
+  <div class="sec-h"><div class="eyebrow">09 | Honest limits</div><h2>What to know before class</h2></div>
+  <div class="grid">
+    <div class="card am"><div class="tag">Untested live</div><p>The Gemini and Pinecone calls were not run end to end by the builder. Run each notebook once with your own keys.</p></div>
+    <div class="card"><div class="tag">Policy quirks</div><p>The policy does not define the probation period (the handbook only says "as stated in the employment contract"). Section 1 points to 4.4 for extended illness, but the content is in 5.4.</p></div>
+    <div class="card"><div class="tag">Not security</div><p>A prompt that says "refuse other people's data" is not security. A real site needs company login and tools locked to the signed-in employee.</p></div>
+    <div class="card am"><div class="tag">Prices move</div><p>Gemini prices change, some on fixed dates. The calculator is a planning tool, not an invoice.</p></div>
+  </div>
+</section>
+<footer>decodingdatascience.com | DecoBot RAG Lab | synthetic data for training | built with LlamaIndex, Gemini, Pinecone</footer>
+</div>
+<script>
+const D = {"secs": [{"title": "Leave Policy - Decoding Data Science", "text": "Leave Policy - Decoding Data Science\nDocument ID: DDS-HR-POL-001 | Version 2.0 | Effective date: 1 July 2026\nInternal - Synthetic demo document for AI training purposes. Not legal advice.\nThis policy defines all leave entitlements at DDS, how leave accrues, how to request it, and how requests are\napproved. It replaces Leave Policy v1 (March 2026) in full. Where UAE Federal Decree-Law No. 33 of 2021 (the UAE\nLabour Law) provides a greater benefit, the law prevails. Note: this is a synthetic, training-friendly policy created for\ndemos, onboarding simulations, and HR-chatbot prototypes. It is not legal advice."}, {"title": "1. Leave Entitlements at a Glance", "text": "1. Leave Entitlements at a Glance\nAnnual leave: 22 working days per year, full pay, 7 calendar days minimum notice (see section 3.4), no evidence\nrequired. Sick leave: 15 working days per year at full pay (then per section 4.4), notify same day within 1 hour of start\ntime, medical certificate required for 2+ consecutive days. Maternity leave: 60 calendar days, full pay, 30 calendar\ndays' notice before expected date, medical documentation required. Paternity leave: 5 working days within 6 months\nof birth, full pay, 30 calendar days' notice where foreseeable, birth certificate required. Parental leave (additional): 5\nworking days per parent within 6 months of birth, full pay, 14 calendar days' notice, birth certificate required.\nBereavement leave: 5 working days (spouse/child/parent) or 3 working days (sibling/grandparent), full pay, notify as\nsoon as possible, documentation may be requested. Marriage leave: 3 working days (once during employment), full\npay, 14 calendar days' notice, marriage certificate required. Study leave: 10 working days per year (2+ years of\nservice, enrolled at an accredited UAE institution), full pay, 14 calendar days' notice, exam schedule/enrollment proof\nrequired. Hajj leave: up to 30 calendar days (once during employment), unpaid, 60 calendar days' notice, no evidence\nrequired. Unpaid leave: up to 30 calendar days per year, case-by-case, unpaid, 30 calendar days' notice, manager\nand HR approval required. Public holidays: per the official UAE calendar, full pay, not deducted from annual leave."}, {"title": "2. Definitions", "text": "2. Definitions\nLeave year: 1 January to 31 December. Working day: Monday to Friday, excluding UAE public holidays. Calendar\nday: any day, including weekends and public holidays. Immediate family: spouse, child, or parent. Leave system: the\nDDS HR portal where all leave is requested, approved, and tracked."}, {"title": "3. Annual Leave", "text": "3. Annual Leave\n3.1 Entitlement Full-time employees are entitled to 22 working days of paid annual leave per leave year. Part-time\nemployees receive a pro-rata entitlement based on contracted hours. Employees who join or leave mid-year receive\na pro-rata entitlement for that year.\n3.2 Accrual Annual leave accrues at 1.83 working days per completed calendar month of service. During the\nprobation period, leave accrues normally; accrued days may be used during probation with line-manager approval.\n3.3 Booking limits\n- The maximum single block of annual leave is 15 consecutive working days. Longer blocks require CEO approval.\n- At least 5 of the 22 days must be taken as one continuous block of 5 working days each year, to support genuine\nrest.\n- Leave may be taken in half-day units at minimum.\n3.4 Notice periods for annual leave requests 1-2 working days requested: 7 calendar days' notice. 3-9 working days\nrequested: 14 calendar days' notice. 10 or more working days requested: 30 calendar days' notice. Managers\nrespond to leave requests within 3 business days. Employees should not book non-refundable travel before approval\nis confirmed in the leave system.\n\n3.5 Peak periods During flagship delivery windows (major bootcamps, the annual conference season, and product\nlaunches), approvals may be restricted. HR publishes restricted weeks at the start of each quarter. Requests in\nrestricted weeks require Head-of-Department approval."}, {"title": "4. Carry-Over, Expiry and Encashment", "text": "4. Carry-Over, Expiry and Encashment\n4.1 Carry-over A maximum of 10 unused annual-leave days may be carried into the next leave year. Carry-over is\nautomatic; no approval is needed.\n4.2 Expiry Carried-over days must be used by 31 March (end of Q1) of the new leave year. Any carried-over days not\nused by 31 March expire without compensation.\n4.3 Encashment Unused annual leave is not paid out during employment. On termination of employment, accrued but\nunused annual leave for the current year is paid out at the employee's basic salary rate, in line with UAE Labour Law."}, {"title": "5. Sick Leave", "text": "5. Sick Leave\n5.1 Entitlement Employees receive 15 working days of fully paid sick leave per leave year, available after completion\nof the probation period.\n5.2 Notification\n- Notify your line manager within 1 hour of your normal start time on the first day of absence (message or call).\n- Log the absence in the leave system on the day of return, or earlier if able.\n5.3 Medical certificates A medical certificate from a licensed practitioner is required for any absence of 2 or more\nconsecutive working days, and may be requested for shorter or repeated absences where a pattern suggests misuse.\n5.4 Extended illness If an illness continues beyond the 15 fully paid days, additional sick leave follows the UAE\nLabour Law structure within the same leave year: up to 30 further calendar days at half pay, then up to 45 further\ncalendar days unpaid, subject to medical documentation. HR manages extended-illness cases confidentially with the\nemployee.\n5.5 Partial working If an employee is unwell but able to work reduced hours, this may be agreed with the line\nmanager. Health always takes priority; nobody is expected to work while genuinely unwell."}, {"title": "6. Public Holidays", "text": "6. Public Holidays\n- DDS observes the official UAE public-holiday calendar for Dubai-based employees. HR publishes the calendar each\nJanuary.\n- Public holidays are paid and are not deducted from the annual-leave balance.\n- If a public holiday falls within an approved period of annual leave, that day is not counted as an annual-leave day.\n- Employees contracted outside the UAE observe the public holidays of their contract location.\n- Where business-critical operations (live events, launches) require work on a public holiday, the employee receives a\nsubstitute day off in lieu, to be taken within 60 days."}, {"title": "7. Maternity, Paternity and Parental Leave", "text": "7. Maternity, Paternity and Parental Leave\n7.1 Maternity leave\n- 60 calendar days at full pay. This exceeds the UAE statutory minimum as an enhanced DDS benefit.\n- Notify HR at least 30 calendar days before the expected date of leave, with medical documentation.\n- Leave may begin up to 30 days before the expected delivery date.\n\n- An additional period of up to 45 calendar days unpaid may be taken for medical reasons related to the pregnancy or\ndelivery, with a medical certificate.\n7.2 Nursing breaks For 6 months following return from maternity leave, the employee is entitled to one paid nursing\nbreak of 1 hour per day, scheduled flexibly with the line manager.\n7.3 Paternity leave Fathers receive 5 working days at full pay, to be taken within 6 months of the child's birth,\nconsecutively or split. Provide notice 30 calendar days ahead where foreseeable.\n7.4 Parental leave (additional) In addition to maternity/paternity leave, each parent may take 5 working days of paid\nparental leave within 6 months of the birth, in line with UAE Labour Law.\n7.5 Adoption Employees adopting a child under the age of 5 receive the same entitlements as in sections 7.1-7.4,\nmeasured from the date of placement.\n7.6 Return to work Managers must agree a written transition plan before leave begins and a re-onboarding plan for\nthe return. Returning parents come back to the same role or an equivalent role on the same terms."}, {"title": "8. Other Leave Types", "text": "8. Other Leave Types\n8.1 Bereavement (compassionate) leave 5 working days at full pay for the death of a spouse, child, or parent; 3\nworking days at full pay for the death of a sibling, grandparent, or grandchild. Notify your manager as soon as\npossible; documentation may be requested. Additional unpaid leave may be approved case-by-case.\n8.2 Marriage leave 3 working days at full pay, once during employment, taken within 30 days of the marriage. Provide\n14 calendar days' notice and a marriage certificate.\n8.3 Study and exam leave Employees with 2 or more years of service who are enrolled at an accredited UAE\neducational institution receive 10 working days of paid study leave per year for examinations, per UAE Labour Law.\nProvide the exam schedule 14 calendar days ahead.\n8.4 Hajj leave Muslim employees may take up to 30 calendar days of unpaid leave once during their employment to\nperform Hajj. Request 60 calendar days in advance so coverage can be planned.\n8.5 Unpaid leave\n- Up to 30 calendar days per leave year, approved case-by-case by the line manager and HR.\n- Annual leave must be exhausted first unless HR agrees otherwise.\n- Unpaid leave may affect payroll, benefits accrual, and visa arrangements; HR will confirm the impact in writing\nbefore approval."}, {"title": "9. Religious Observance and Ramadan Working Hours", "text": "9. Religious Observance and Ramadan Working Hours\n- During Ramadan, daily working hours are reduced by 2 hours for all employees, per UAE regulation.\n- Teams schedule meetings considerately around fasting and prayer times.\n- Additional flexibility (shifted hours, remote days) can be agreed with the line manager where the role allows."}, {"title": "10. How to Request Leave (Workflow)", "text": "10. How to Request Leave (Workflow)\nStep 1: Employee submits the request in the leave system with dates, leave type, and a short coverage plan\n(deliverables, who covers, key deadlines), per the notice table in section 3.4. Step 2: Line manager reviews and\napproves/declines with a reason, within 3 business days. Step 3: HR runs an automatic compliance check for\nbalance, carry-over expiry, and restricted weeks. Step 4: Employee notifies affected stakeholders and hands over\nclient-facing commitments before leave starts. Step 5: For emergency leave, the employee notifies their manager\nimmediately by any channel, then submits the request retroactively within 48 hours. Approved leave appears in the\nshared team calendar. Cancelling approved leave restores the days to the employee's balance automatically."}, {"title": "11. Misuse and Compliance", "text": "11. Misuse and Compliance\n- Misrepresenting sickness, falsifying certificates, or working a second job while on sick leave are treated as\nmisconduct under the DDS Disciplinary Policy.\n- DDS may request documentation where reasonable and lawful.\n- Managers may not pressure employees to cancel or shorten approved leave except in genuine business\nemergencies, and any such case must be reported to HR."}, {"title": "12. Governance", "text": "12. Governance\n- Policy owner: Head of People & Culture, DDS.\n- Review cycle: annually, each June, or earlier if UAE labour regulations change.\n- Precedence: where an employment contract or UAE Labour Law grants a greater benefit, that provision prevails\nover this policy.\n- Questions: contact People & Culture via the HR portal, or ask DecoBot, the DDS HR assistant.\nVersion history: v1.0 (March 2026) initial synthetic policy. v2.0 (July 2026) full rewrite with fixed entitlements, notice\ntables, carry-over and expiry rules, extended parental provisions, and workflow SLAs."}], "full": "Leave Policy - Decoding Data Science\nDocument ID: DDS-HR-POL-001 | Version 2.0 | Effective date: 1 July 2026\nInternal - Synthetic demo document for AI training purposes. Not legal advice.\nThis policy defines all leave entitlements at DDS, how leave accrues, how to request it, and how requests are\napproved. It replaces Leave Policy v1 (March 2026) in full. Where UAE Federal Decree-Law No. 33 of 2021 (the UAE\nLabour Law) provides a greater benefit, the law prevails. Note: this is a synthetic, training-friendly policy created for\ndemos, onboarding simulations, and HR-chatbot prototypes. It is not legal advice.\n1. Leave Entitlements at a Glance\nAnnual leave: 22 working days per year, full pay, 7 calendar days minimum notice (see section 3.4), no evidence\nrequired. Sick leave: 15 working days per year at full pay (then per section 4.4), notify same day within 1 hour of start\ntime, medical certificate required for 2+ consecutive days. Maternity leave: 60 calendar days, full pay, 30 calendar\ndays' notice before expected date, medical documentation required. Paternity leave: 5 working days within 6 months\nof birth, full pay, 30 calendar days' notice where foreseeable, birth certificate required. Parental leave (additional): 5\nworking days per parent within 6 months of birth, full pay, 14 calendar days' notice, birth certificate required.\nBereavement leave: 5 working days (spouse/child/parent) or 3 working days (sibling/grandparent), full pay, notify as\nsoon as possible, documentation may be requested. Marriage leave: 3 working days (once during employment), full\npay, 14 calendar days' notice, marriage certificate required. Study leave: 10 working days per year (2+ years of\nservice, enrolled at an accredited UAE institution), full pay, 14 calendar days' notice, exam schedule/enrollment proof\nrequired. Hajj leave: up to 30 calendar days (once during employment), unpaid, 60 calendar days' notice, no evidence\nrequired. Unpaid leave: up to 30 calendar days per year, case-by-case, unpaid, 30 calendar days' notice, manager\nand HR approval required. Public holidays: per the official UAE calendar, full pay, not deducted from annual leave.\n2. Definitions\nLeave year: 1 January to 31 December. Working day: Monday to Friday, excluding UAE public holidays. Calendar\nday: any day, including weekends and public holidays. Immediate family: spouse, child, or parent. Leave system: the\nDDS HR portal where all leave is requested, approved, and tracked.\n3. Annual Leave\n3.1 Entitlement Full-time employees are entitled to 22 working days of paid annual leave per leave year. Part-time\nemployees receive a pro-rata entitlement based on contracted hours. Employees who join or leave mid-year receive\na pro-rata entitlement for that year.\n3.2 Accrual Annual leave accrues at 1.83 working days per completed calendar month of service. During the\nprobation period, leave accrues normally; accrued days may be used during probation with line-manager approval.\n3.3 Booking limits\n- The maximum single block of annual leave is 15 consecutive working days. Longer blocks require CEO approval.\n- At least 5 of the 22 days must be taken as one continuous block of 5 working days each year, to support genuine\nrest.\n- Leave may be taken in half-day units at minimum.\n3.4 Notice periods for annual leave requests 1-2 working days requested: 7 calendar days' notice. 3-9 working days\nrequested: 14 calendar days' notice. 10 or more working days requested: 30 calendar days' notice. Managers\nrespond to leave requests within 3 business days. Employees should not book non-refundable travel before approval\nis confirmed in the leave system.\n\n3.5 Peak periods During flagship delivery windows (major bootcamps, the annual conference season, and product\nlaunches), approvals may be restricted. HR publishes restricted weeks at the start of each quarter. Requests in\nrestricted weeks require Head-of-Department approval.\n4. Carry-Over, Expiry and Encashment\n4.1 Carry-over A maximum of 10 unused annual-leave days may be carried into the next leave year. Carry-over is\nautomatic; no approval is needed.\n4.2 Expiry Carried-over days must be used by 31 March (end of Q1) of the new leave year. Any carried-over days not\nused by 31 March expire without compensation.\n4.3 Encashment Unused annual leave is not paid out during employment. On termination of employment, accrued but\nunused annual leave for the current year is paid out at the employee's basic salary rate, in line with UAE Labour Law.\n5. Sick Leave\n5.1 Entitlement Employees receive 15 working days of fully paid sick leave per leave year, available after completion\nof the probation period.\n5.2 Notification\n- Notify your line manager within 1 hour of your normal start time on the first day of absence (message or call).\n- Log the absence in the leave system on the day of return, or earlier if able.\n5.3 Medical certificates A medical certificate from a licensed practitioner is required for any absence of 2 or more\nconsecutive working days, and may be requested for shorter or repeated absences where a pattern suggests misuse.\n5.4 Extended illness If an illness continues beyond the 15 fully paid days, additional sick leave follows the UAE\nLabour Law structure within the same leave year: up to 30 further calendar days at half pay, then up to 45 further\ncalendar days unpaid, subject to medical documentation. HR manages extended-illness cases confidentially with the\nemployee.\n5.5 Partial working If an employee is unwell but able to work reduced hours, this may be agreed with the line\nmanager. Health always takes priority; nobody is expected to work while genuinely unwell.\n6. Public Holidays\n- DDS observes the official UAE public-holiday calendar for Dubai-based employees. HR publishes the calendar each\nJanuary.\n- Public holidays are paid and are not deducted from the annual-leave balance.\n- If a public holiday falls within an approved period of annual leave, that day is not counted as an annual-leave day.\n- Employees contracted outside the UAE observe the public holidays of their contract location.\n- Where business-critical operations (live events, launches) require work on a public holiday, the employee receives a\nsubstitute day off in lieu, to be taken within 60 days.\n7. Maternity, Paternity and Parental Leave\n7.1 Maternity leave\n- 60 calendar days at full pay. This exceeds the UAE statutory minimum as an enhanced DDS benefit.\n- Notify HR at least 30 calendar days before the expected date of leave, with medical documentation.\n- Leave may begin up to 30 days before the expected delivery date.\n\n- An additional period of up to 45 calendar days unpaid may be taken for medical reasons related to the pregnancy or\ndelivery, with a medical certificate.\n7.2 Nursing breaks For 6 months following return from maternity leave, the employee is entitled to one paid nursing\nbreak of 1 hour per day, scheduled flexibly with the line manager.\n7.3 Paternity leave Fathers receive 5 working days at full pay, to be taken within 6 months of the child's birth,\nconsecutively or split. Provide notice 30 calendar days ahead where foreseeable.\n7.4 Parental leave (additional) In addition to maternity/paternity leave, each parent may take 5 working days of paid\nparental leave within 6 months of the birth, in line with UAE Labour Law.\n7.5 Adoption Employees adopting a child under the age of 5 receive the same entitlements as in sections 7.1-7.4,\nmeasured from the date of placement.\n7.6 Return to work Managers must agree a written transition plan before leave begins and a re-onboarding plan for\nthe return. Returning parents come back to the same role or an equivalent role on the same terms.\n8. Other Leave Types\n8.1 Bereavement (compassionate) leave 5 working days at full pay for the death of a spouse, child, or parent; 3\nworking days at full pay for the death of a sibling, grandparent, or grandchild. Notify your manager as soon as\npossible; documentation may be requested. Additional unpaid leave may be approved case-by-case.\n8.2 Marriage leave 3 working days at full pay, once during employment, taken within 30 days of the marriage. Provide\n14 calendar days' notice and a marriage certificate.\n8.3 Study and exam leave Employees with 2 or more years of service who are enrolled at an accredited UAE\neducational institution receive 10 working days of paid study leave per year for examinations, per UAE Labour Law.\nProvide the exam schedule 14 calendar days ahead.\n8.4 Hajj leave Muslim employees may take up to 30 calendar days of unpaid leave once during their employment to\nperform Hajj. Request 60 calendar days in advance so coverage can be planned.\n8.5 Unpaid leave\n- Up to 30 calendar days per leave year, approved case-by-case by the line manager and HR.\n- Annual leave must be exhausted first unless HR agrees otherwise.\n- Unpaid leave may affect payroll, benefits accrual, and visa arrangements; HR will confirm the impact in writing\nbefore approval.\n9. Religious Observance and Ramadan Working Hours\n- During Ramadan, daily working hours are reduced by 2 hours for all employees, per UAE regulation.\n- Teams schedule meetings considerately around fasting and prayer times.\n- Additional flexibility (shifted hours, remote days) can be agreed with the line manager where the role allows.\n10. How to Request Leave (Workflow)\nStep 1: Employee submits the request in the leave system with dates, leave type, and a short coverage plan\n(deliverables, who covers, key deadlines), per the notice table in section 3.4. Step 2: Line manager reviews and\napproves/declines with a reason, within 3 business days. Step 3: HR runs an automatic compliance check for\nbalance, carry-over expiry, and restricted weeks. Step 4: Employee notifies affected stakeholders and hands over\nclient-facing commitments before leave starts. Step 5: For emergency leave, the employee notifies their manager\nimmediately by any channel, then submits the request retroactively within 48 hours. Approved leave appears in the\nshared team calendar. Cancelling approved leave restores the days to the employee's balance automatically.\n\n11. Misuse and Compliance\n- Misrepresenting sickness, falsifying certificates, or working a second job while on sick leave are treated as\nmisconduct under the DDS Disciplinary Policy.\n- DDS may request documentation where reasonable and lawful.\n- Managers may not pressure employees to cancel or shorten approved leave except in genuine business\nemergencies, and any such case must be reported to HR.\n12. Governance\n- Policy owner: Head of People & Culture, DDS.\n- Review cycle: annually, each June, or earlier if UAE labour regulations change.\n- Precedence: where an employment contract or UAE Labour Law grants a greater benefit, that provision prevails\nover this policy.\n- Questions: contact People & Culture via the HR portal, or ask DecoBot, the DDS HR assistant.\nVersion history: v1.0 (March 2026) initial synthetic policy. v2.0 (July 2026) full rewrite with fixed entitlements, notice\ntables, carry-over and expiry rules, extended parental provisions, and workflow SLAs.\n", "demo": [{"employee_id": 1024, "name": "Aisha Khan", "department": "Engineering", "job_title": "Software Engineer", "branch": "Dubai HQ", "join_date": "2022-03-14", "annual_total": 22, "annual_used": 15, "annual_booked": 5, "annual_remaining": 2, "sick_total": 15, "sick_used": 2, "sick_remaining": 13}, {"employee_id": 1025, "name": "John Doe", "department": "Marketing", "job_title": "Content Lead", "branch": "Dubai HQ", "join_date": "2024-09-02", "annual_total": 22, "annual_used": 5, "annual_booked": 0, "annual_remaining": 17, "sick_total": 15, "sick_used": 1, "sick_remaining": 14}, {"employee_id": 1026, "name": "Maria Garcia", "department": "Data & AI Training", "job_title": "Instructor", "branch": "Dubai HQ", "join_date": "2021-01-10", "annual_total": 22, "annual_used": 15, "annual_booked": 0, "annual_remaining": 7, "sick_total": 15, "sick_used": 3, "sick_remaining": 12}, {"employee_id": 1027, "name": "David Lee", "department": "Finance", "job_title": "Finance Analyst", "branch": "Dubai HQ", "join_date": "2025-11-03", "annual_total": 22, "annual_used": 5, "annual_booked": 0, "annual_remaining": 17, "sick_total": 15, "sick_used": 2, "sick_remaining": 13}], "dreq": {"1024": [{"leave_type": "Annual", "start_date": "2026-02-09", "end_date": "2026-02-13", "working_days": 5, "status": "Approved"}, {"leave_type": "Annual", "start_date": "2026-06-22", "end_date": "2026-07-03", "working_days": 10, "status": "Approved"}, {"leave_type": "Sick", "start_date": "2026-04-07", "end_date": "2026-04-08", "working_days": 2, "status": "Approved"}, {"leave_type": "Annual", "start_date": "2026-12-21", "end_date": "2026-12-25", "working_days": 5, "status": "Approved"}], "1025": [{"leave_type": "Annual", "start_date": "2026-05-04", "end_date": "2026-05-08", "working_days": 5, "status": "Approved"}, {"leave_type": "Sick", "start_date": "2026-09-15", "end_date": "2026-09-15", "working_days": 1, "status": "Approved"}, {"leave_type": "Annual", "start_date": "2026-11-16", "end_date": "2026-11-20", "working_days": 5, "status": "Pending"}], "1026": [{"leave_type": "Annual", "start_date": "2026-03-02", "end_date": "2026-03-06", "working_days": 5, "status": "Approved"}, {"leave_type": "Annual", "start_date": "2026-08-10", "end_date": "2026-08-21", "working_days": 10, "status": "Approved"}, {"leave_type": "Sick", "start_date": "2026-01-12", "end_date": "2026-01-14", "working_days": 3, "status": "Approved"}, {"leave_type": "Study", "start_date": "2026-05-18", "end_date": "2026-05-22", "working_days": 5, "status": "Approved"}], "1027": [{"leave_type": "Annual", "start_date": "2026-07-06", "end_date": "2026-07-10", "working_days": 5, "status": "Approved"}, {"leave_type": "Sick", "start_date": "2026-03-23", "end_date": "2026-03-24", "working_days": 2, "status": "Approved"}, {"leave_type": "Annual", "start_date": "2026-12-28", "end_date": "2026-12-31", "working_days": 4, "status": "Rejected"}]}, "stats": {"types": {"Annual": 203, "Sick": 64, "Bereavement": 2, "Marriage": 2, "Study": 1, "Paternity": 1}, "status": {"Approved": 239, "Rejected": 19, "Cancelled": 11, "Pending": 4}, "dept": {"Engineering": 22, "Data & AI Training": 20, "Marketing": 14, "Sales": 14, "Operations": 9, "Finance": 9, "Community": 6, "People & Culture": 6}, "rem_hist": [4, 6, 11, 34, 30, 15], "avg_rem": 14.5}};
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tok = chars => Math.ceil(chars / 4);
+const fmt = (n, d = 0) => Number(n).toLocaleString('en-US', {minimumFractionDigits: d, maximumFractionDigits: d});
+const usd = n => n < 0.01 && n > 0 ? '$' + n.toFixed(4) : '$' + fmt(n, 2);
+function seg(id, cb) { $(id).addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; $$(id + ' button').forEach(x => x.classList.remove('on')); b.classList.add('on'); cb(b.dataset.v); }); }
+const segVal = id => ($(id + ' button.on') || {}).dataset?.v;
+
+/* ---------- 01 PIPELINE ---------- */
+const PIPE = [
+ ['Step 1','PDF','Load', 'The policy is a PDF. <code>pypdf</code> reads the text page by page. Always read a PDF yourself first: if you cannot select its text it is a scan and the code returns nothing.', 'pages = [p.extract_text() for p in PdfReader("DDS_Leave_Policy_v2.pdf").pages]'],
+ ['Step 2','Chunks','Split', 'A chatbot cannot read the whole policy for every question, so we cut it into chunks. We cut by numbered section, so one rule stays in one piece. Try this in the Chunking lab.', 'parts = re.split(r"(?m)^(?=\\d{1,2}\\.\\s+[A-Z])", full_text)'],
+ ['Step 3','Vectors','Embed', 'Each chunk goes to an embedding model (<code>gemini-embedding-001</code>) and comes back as a list of numbers, 3,072 by default. Similar meaning gives similar numbers.', 'Settings.embed_model = GoogleGenAIEmbedding(model_name="gemini-embedding-001")'],
+ ['Step 4','Store','Index', 'Day 2 keeps the vectors in memory. Day 2B stores them in Pinecone, so they survive a restart and many users can share one index. The index dimension must match the model.', 'index = VectorStoreIndex(nodes, storage_context=StorageContext.from_defaults(vector_store=PineconeVectorStore(...)))'],
+ ['Step 5','Retrieve','Search', 'The question is embedded the same way. The database returns the <b>top_k</b> closest chunks. Too few and you miss the rule. Too many and you confuse the model and pay for more tokens.', 'engine = index.as_query_engine(similarity_top_k=3)'],
+ ['Step 6','Answer','Generate', 'Gemini receives the question and only those chunks, with the instruction to answer only from them and quote the section. If the answer is not there, it must say so.', 'Answer ONLY from the policy excerpts below. If the answer is not in the excerpts, say you could not find it.']
+];
+const pipe = $('#pipe');
+PIPE.forEach((p, i) => { const b = document.createElement('button'); b.className = 'node' + (i === 3 ? ' pine' : ''); b.innerHTML = `<small>${p[0]}</small><strong>${p[1]}</strong><small style="margin-top:6px">${p[2]}</small>`; b.onclick = () => showPipe(i); pipe.appendChild(b); });
+function showPipe(i) { $$('.node').forEach((n, k) => n.classList.toggle('on', k === i)); const p = PIPE[i]; $('#pipeDetail').innerHTML = `<div class="tag">${p[0]} | ${p[2]}</div><p>${p[3]}</p><pre>${esc(p[4])}</pre>`; }
+showPipe(0); 
+
+/* ---------- TABS ---------- */
+$('#tabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if (!b) return; $$('.tab').forEach(t => t.classList.remove('on')); b.classList.add('on'); $$('.lab').forEach(l => l.classList.remove('on')); $('#lab-' + b.dataset.lab).classList.add('on'); if (b.dataset.lab === 'emb') { drawGrid(); drawMap(); } });
+
+/* ---------- CHUNKING LAB ---------- */
+const FULL = D.full, PHRASE = '10 or more working days requested';
+function norm(s) { return s.replace(/\s+/g, ' '); }
+function phrasePos() { const s0 = FULL.indexOf('3.4 Notice'), e0 = FULL.indexOf("30 calendar days' notice.", s0); if (s0 >= 0 && e0 > s0) return [s0, e0 + 26];
+  return phrasePosOld(); }
+function phrasePosOld() { const idx = FULL.replace(/\s+/g, ' ').indexOf(PHRASE); /* map normalised index back */ let n = 0, i = 0; const t = FULL; while (i < t.length && n < idx) { if (/\s/.test(t[i])) { while (i + 1 < t.length && /\s/.test(t[i + 1])) i++; } i++; n++; } return [i, i + PHRASE.length + 20]; }
+function chunksFixed(size, over) { const out = []; const step = Math.max(1, size - over); for (let s = 0; s < FULL.length; s += step) { out.push([s, Math.min(FULL.length, s + size)]); if (s + size >= FULL.length) break; } return out; }
+function chunksSection() { const out = []; let pos = 0; D.secs.forEach(s => { const i = FULL.indexOf(s.text.slice(0, 40), pos); const st = i < 0 ? pos : i; out.push([st, st + s.text.length, s.title]); pos = st + s.text.length; }); return out; }
+function renderChunks() {
+  const st = segVal('#cStrat'); let size = +$('#cSize').value, over = +$('#cOver').value;
+  if (st === 'big') { size = 4000; over = 0; } if (st === 'small') { size = 480; over = 80; }
+  if (st !== 'custom' && st !== 'section') { $('#cSize').value = size; $('#cOver').value = over; }
+  $('#cSize').disabled = $('#cOver').disabled = (st === 'section' || st === 'big' || st === 'small');
+  if (over >= size) over = size - 10;
+  $('#oSize').textContent = st === 'section' ? 'by section' : size; $('#oOver').textContent = st === 'section' ? 'none' : over;
+  const ch = st === 'section' ? chunksSection() : chunksFixed(size, over);
+  const lens = ch.map(c => c[1] - c[0]); const [ps, pe] = phrasePos();
+  const whole = ch.some(c => c[0] <= ps && c[1] >= pe); const touched = ch.filter(c => c[1] > ps && c[0] < pe).length;
+  $('#cStats').innerHTML = `<div class="stat"><b>${ch.length}</b><span>chunks</span></div><div class="stat"><b>${fmt(lens.reduce((a, b) => a + b, 0) / ch.length)}</b><span>avg characters</span></div><div class="stat"><b>${fmt(Math.max(...lens))}</b><span>biggest</span></div><div class="stat"><b>~${fmt(tok(lens.reduce((a, b) => a + b, 0)))}</b><span>tokens to embed</span></div><div class="stat ${whole ? 'good' : 'bad'}"><b>${whole ? 'whole' : 'cut'}</b><span>notice table</span></div>`;
+  $('#cMsg').className = 'msg ' + (whole ? 'ok' : 'bad');
+  $('#cMsg').textContent = whole ? 'The whole notice table (section 3.4) sits inside one chunk. The model can read every row.' : `The notice table is split across ${touched} chunks. A search may return only some of its rows, for example 7 and 14 days but not the 30 days for long leave.`;
+  const L = FULL.length; let html = '', k = 0;
+  ch.forEach((c, i) => { const hue = i % 2 ? 'rgba(159,214,255,.55)' : 'rgba(159,214,255,.28)'; html += `<i style="left:${c[0] / L * 100}%;width:${(c[1] - c[0]) / L * 100}%;background:${hue}" title="chunk ${i + 1}: ${c[1] - c[0]} characters"></i>`; if (i > 0 && c[0] < ch[i - 1][1]) html += `<i class="o" style="left:${c[0] / L * 100}%;width:${(ch[i - 1][1] - c[0]) / L * 100}%"></i>`; });
+  html += `<span class="mark" style="left:${ps / L * 100}%;width:${Math.max(3, (pe - ps) / L * 100)}%"></span>`; $('#cBar').innerHTML = html;
+  $('#cList').innerHTML = ch.slice(0, 80).map((c, i) => `<div><b>#${i + 1} | ${c[1] - c[0]} ch</b><span>${esc(norm(FULL.slice(c[0], c[1])).slice(0, 110))}...</span></div>`).join('') + (ch.length > 80 ? `<div><b>...</b><span>${ch.length - 80} more chunks</span></div>` : '');
+}
+seg('#cStrat', renderChunks); $('#cSize').oninput = $('#cOver').oninput = () => { if (segVal('#cStrat') !== 'custom') { $$('#cStrat button').forEach(x => x.classList.toggle('on', x.dataset.v === 'custom')); } renderChunks(); };
+
+/* ---------- RETRIEVAL LAB (toy) ---------- */
+const OTHER = [
+ ['Handbook v1','4. Anti-Harassment','DDS is committed to a workplace free from discrimination and harassment. We do not tolerate harassment based on protected characteristics. Report concerns to HR or a designated People Partner. Reports are handled confidentially to the extent possible. Retaliation against anyone raising a concern in good faith is prohibited.'],
+ ['Handbook v1','8. Probation & Confirmation','New hires may be placed on a probation period as stated in the employment contract. During probation, performance expectations are set clearly with weekly check-ins. Confirmation occurs after successful completion of probation and required documentation.'],
+ ['Handbook v1','13. Acceptable Use of AI Tools','AI is part of our workflows, but must be used safely: verify outputs, cite sources, use approved model providers and enterprise settings when handling sensitive data.'],
+ ['Handbook v1','17. Grievance & Reporting Channels','If you have a complaint or concern: raise it with your manager, then contact HR or a People Partner, then escalate to leadership if needed. DDS aims to respond quickly and protect confidentiality.'],
+ ['HR FAQ v1','How do I request leave?','Submit a request in the leave system with dates and a short coverage plan. Notify your manager and any stakeholders affected by deadlines. Typical approval time: 1-3 business days.'],
+ ['HR FAQ v1','What if I am sick?','Inform your manager as soon as possible. If you will be absent for 2+ consecutive workdays, you may be asked to provide a medical certificate. Focus on recovery first.'],
+ ['HR FAQ v1','Can I work remotely full-time?','It depends on your role, performance, and operational needs. Discuss with your manager. HR may provide role-based guidelines.'],
+ ['HR FAQ v1','How do I report harassment or discrimination?','You can contact HR or a People Partner directly, or raise it with your manager if appropriate. Confidentiality is respected, and retaliation is prohibited.'],
+ ['Remote Work v1','2. Eligibility & Approval','Remote work depends on role suitability, performance, and operational needs. Approval is granted by the line manager. HR may define role-based constraints. DDS may revoke remote status if outcomes or security requirements are not met.'],
+ ['Remote Work v1','7. Working From Abroad','Working from outside your usual country may require manager approval. Consider visa, tax, and data access restrictions. Use VPN if required. Time zone shifts must not disrupt critical commitments.']
+];
+const CORPUS = [];
+D.secs.forEach(s => CORPUS.push({doc: 'Leave Policy v2', title: s.title, text: s.text}));
+OTHER.forEach(o => CORPUS.push({doc: o[0], title: o[1], text: o[2]}));
+const STOP = new Set('a an the of to in on for and or is are do does i my me we you it be can how what when which who with from at by as this that if so any'.split(' '));
+function stem(w) { w = w.toLowerCase().replace(/[^a-z0-9]/g, ''); for (const suf of ['ing', 'ed', 'es', 's']) if (w.length > 4 && w.endsWith(suf)) return w.slice(0, -suf.length); return w; }
+const SYN = [['vacation', 'annual', 'leave', 'off'], ['sick', 'ill', 'illness', 'unwell', 'medical', 'certificate', 'doctor'], ['harassment', 'harass', 'discrimination', 'complaint', 'grievance', 'report', 'concern'], ['remote', 'wfh', 'home', 'abroad', 'hybrid'], ['notice', 'advance', 'book', 'request'], ['carry', 'carryover', 'expire', 'expiry'], ['maternity', 'pregnant', 'baby', 'birth', 'paternity', 'parental'], ['probation', 'confirmation']].map(g => g.map(stem));
+const toks = t => t.split(/[^A-Za-z0-9]+/).filter(w => w && !STOP.has(w.toLowerCase())).map(stem).filter(Boolean);
+function buildIdx(list) { const docs = list.map(c => { const tf = {}; toks(c.title + ' ' + c.title + ' ' + c.text).forEach(t => tf[t] = (tf[t] || 0) + 1); return tf; }); const df = {}; docs.forEach(tf => Object.keys(tf).forEach(t => df[t] = (df[t] || 0) + 1)); const N = list.length; const idf = t => Math.log(1 + N / (1 + (df[t] || 0))); return {docs, idf}; }
+function retrieve(q, list, k) {
+  const {docs, idf} = buildIdx(list); const qt = {}; toks(q).forEach(t => { qt[t] = (qt[t] || 0) + 1; SYN.forEach(g => { if (g.includes(t)) g.forEach(s => { if (s !== t) qt[s] = (qt[s] || 0) + 0.5; }); }); });
+  const qv = {}; Object.keys(qt).forEach(t => qv[t] = qt[t] * idf(t)); const qn = Math.sqrt(Object.values(qv).reduce((a, b) => a + b * b, 0)) || 1;
+  const res = docs.map((tf, i) => { let dot = 0, dn = 0; Object.keys(tf).forEach(t => { const w = tf[t] * idf(t); dn += w * w; if (qv[t]) dot += w * qv[t]; }); return {i, score: dot / (qn * Math.sqrt(dn || 1))}; });
+  return res.sort((a, b) => b.score - a.score);
+}
+const RQ = [
+ ['How much notice do I need to book 12 working days of annual leave?', ['3. Annual Leave']],
+ ['How many vacation days do I get?', ['1. Leave Entitlements at a Glance', '3. Annual Leave']],
+ ['Do I need a medical certificate for 3 sick days?', ['5. Sick Leave', 'What if I am sick?']],
+ ['How do I report harassment?', ['4. Anti-Harassment', 'How do I report harassment or discrimination?']],
+ ['What is the probation period?', ['8. Probation & Confirmation']],
+ ['Can I work from home full time?', ['Can I work remotely full-time?', '2. Eligibility & Approval']],
+ ['What is the office dress code?', []],
+ ['How many leave days do I have left?', []]
+];
+$('#rQ').innerHTML = RQ.map((q, i) => `<option value="${i}">${esc(q[0])}</option>`).join('');
+const DOCS = ['Leave Policy v2', 'Handbook v1', 'HR FAQ v1', 'Remote Work v1'];
+$('#rDocs').innerHTML = DOCS.map((d, i) => `<button data-d="${d}" class="${i === 0 ? 'on' : ''}">${d}</button>`).join('');
+$('#rDocs').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; b.classList.toggle('on'); if (!$$('#rDocs button.on').length) b.classList.add('on'); renderRetr(); });
+function renderRetr(fromSelect) {
+  const custom = $('#rQc').value.trim(); const qi = +$('#rQ').value; const q = custom || RQ[qi][0]; const expect = custom ? null : RQ[qi][1]; const k = +$('#rK').value; $('#oK').textContent = k;
+  const on = $$('#rDocs button.on').map(b => b.dataset.d); const list = CORPUS.filter(c => on.includes(c.doc));
+  const res = retrieve(q, list, k); const max = res[0]?.score || 1; let html = '', hit = false, ctx = 0;
+  res.slice(0, 12).forEach((r, n) => { const c = list[r.i]; if (n === k) html += '<div class="cutline">TOP_K CUT</div>'; const isHit = expect && expect.includes(c.title); const inK = n < k; if (inK && isHit) hit = true; if (inK) ctx += tok(c.text.length);
+    html += `<div class="r ${inK ? '' : 'cut'} ${inK && isHit ? 'hit' : ''}"><span class="n">${n + 1}</span><span class="t">${esc(c.title)}<small>${esc(c.doc)} | ~${tok(c.text.length)} tokens${isHit ? ' | holds the answer' : ''}</small></span><span class="s">${r.score.toFixed(2)}</span><i class="fill" style="width:${Math.max(2, r.score / max * 100)}%"></i></div>`; });
+  $('#rRank').innerHTML = html;
+  const noAns = expect && expect.length === 0; const exists = expect && expect.some(t => list.some(c => c.title === t));
+  $('#rStats').innerHTML = `<div class="stat"><b>${list.length}</b><span>chunks in index</span></div><div class="stat"><b>~${fmt(ctx)}</b><span>context tokens sent</span></div>${expect ? `<div class="stat ${noAns ? 'warn' : hit ? 'good' : 'bad'}"><b>${noAns ? 'n/a' : hit ? 'found' : 'missed'}</b><span>answer chunk in top_k</span></div>` : ''}`;
+  let m = '', cls = 'msg';
+  if (!expect) m = 'Custom question. Look at which chunks rise to the top, and how fast the scores fall.';
+  else if (noAns) m = RQ[qi][0].includes('left') ? 'No chunk can answer this. It is a personal number, so it lives in the database. The agent must call a SQL tool (Day 3).' : 'Nothing in the documents covers this. The right behaviour is to say "I could not find that in the DDS leave policy".';
+  else if (!exists) { m = 'The chunk that answers this question is not in the index. Add the document that holds it.'; cls += ' bad'; }
+  else if (hit) { m = 'The answer chunk is inside top_k. Gemini can quote it.'; cls += ' ok'; }
+  else { m = 'The answer chunk is below the top_k line, so Gemini never sees it. Raise top_k, or improve the chunks.'; cls += ' bad'; }
+  if (RQ[qi][0].includes('probation') && !custom) m += ' Note: the leave policy does not define probation. Only the handbook mentions it, and only to say "as stated in the employment contract".';
+  $('#rMsg').className = cls; $('#rMsg').textContent = m;
+}
+$('#rQ').onchange = () => { $('#rQc').value = ''; renderRetr(); }; $('#rK').oninput = () => renderRetr(); $('#rQc').oninput = renderRetr;
+
+/* ---------- EMBEDDINGS LAB ---------- */
+function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function hash(s) { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+function drawGrid() {
+  const dims = +segVal('#eDim'); $('#oDim').textContent = dims; const text = $('#eText').value || ' '; const cv = $('#eGrid'), g = cv.getContext('2d'); const rows = 16, cols = dims / rows, cw = cv.width / cols, ch = cv.height / rows; const r = rng(hash(text));
+  g.clearRect(0, 0, cv.width, cv.height); for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) { const v = (r() + r() + r()) / 3 * 2 - 1; g.fillStyle = v >= 0 ? `rgba(159,214,255,${.12 + Math.abs(v) * 1.6})` : `rgba(255,180,84,${.12 + Math.abs(v) * 1.6})`; g.fillRect(x * cw, y * ch, Math.max(1, cw - .4), Math.max(1, ch - .4)); }
+  const chunks = D.secs.length; const per = dims * 4;
+  $('#eStats').innerHTML = `<div class="stat"><b>${fmt(dims)}</b><span>numbers per vector</span></div><div class="stat"><b>${fmt(per / 1024, 1)} KB</b><span>per vector (float32)</span></div><div class="stat"><b>${fmt(chunks * per / 1024, 0)} KB</b><span>${chunks} policy chunks</span></div><div class="stat"><b>${fmt(100000 * per / 1048576, 0)} MB</b><span>100,000 chunks</span></div>`;
+  const idx = +segVal('#eIdx'); const ok = idx === dims;
+  $('#eCompat').className = 'msg ' + (ok ? 'ok' : 'bad');
+  $('#eCompat').innerHTML = ok ? `Model makes ${dims} numbers, index expects ${idx}. Upload works.` : `Model makes ${dims} numbers, but the index expects ${idx}. Pinecone rejects the upload with a dimension mismatch. Fix: delete the index and create it with dimension ${dims}, then embed everything again. That is why the notebook measures the dimension instead of typing it.`;
+}
+seg('#eDim', drawGrid); seg('#eIdx', drawGrid); $('#eText').oninput = drawGrid;
+const MAP = [['annual leave', .2, .25], ['vacation days', .25, .31], ['time off', .17, .36], ['carry-over', .31, .19], ['notice period', .37, .33], ['sick leave', .72, .22], ['medical certificate', .8, .3], ['feeling unwell', .68, .34], ['maternity leave', .74, .7], ['newborn baby', .84, .76], ['paternity leave', .67, .8], ['work from home', .22, .74], ['remote work', .17, .82], ['working abroad', .31, .86], ['cafeteria opens at 8 am', .52, .52], ['office dress code', .56, .46]];
+const MQ = [['How many vacation days do I get?', .23, .29], ['Am I allowed to stay home when ill?', .7, .3], ['Can I work from my sofa?', .2, .78], ['What time does lunch start?', .52, .5]];
+$('#mQ').innerHTML = MQ.map((q, i) => `<option value="${i}">${esc(q[0])}</option>`).join(''); $('#mQ').onchange = drawMap;
+function drawMap() {
+  const cv = $('#mMap'), g = cv.getContext('2d'), W = cv.width, H = cv.height; g.clearRect(0, 0, W, H);
+  g.strokeStyle = 'rgba(159,214,255,.07)'; for (let i = 1; i < 10; i++) { g.beginPath(); g.moveTo(i * W / 10, 0); g.lineTo(i * W / 10, H); g.moveTo(0, i * H / 10); g.lineTo(W, i * H / 10); g.stroke(); }
+  const q = MQ[+$('#mQ').value], k = +($('#rK').value || 3); const near = MAP.map(p => ({p, d: Math.hypot(p[1] - q[1], p[2] - q[2])})).sort((a, b) => a.d - b.d); const top = near.slice(0, Math.min(k, 5)).map(n => n.p[0]);
+  near.slice(0, Math.min(k, 5)).forEach(n => { g.strokeStyle = 'rgba(255,180,84,.75)'; g.setLineDash([5, 4]); g.beginPath(); g.moveTo(q[1] * W, q[2] * H); g.lineTo(n.p[1] * W, n.p[2] * H); g.stroke(); g.setLineDash([]); });
+  g.font = '12px "JetBrains Mono",monospace';
+  MAP.forEach(p => { const hit = top.includes(p[0]); g.fillStyle = hit ? '#ffb454' : '#9fd6ff'; g.shadowColor = hit ? '#ffb454' : '#9fd6ff'; g.shadowBlur = hit ? 14 : 6; g.beginPath(); g.arc(p[1] * W, p[2] * H, hit ? 6 : 4, 0, 7); g.fill(); g.shadowBlur = 0; g.fillStyle = hit ? '#f2f6fa' : '#7f90a6'; g.textAlign = p[1] > .7 ? 'right' : 'left'; g.fillText(p[0], p[1] * W + (p[1] > .7 ? -10 : 10), p[2] * H + 4); });
+  g.fillStyle = '#05070b'; g.strokeStyle = '#f2f6fa'; g.lineWidth = 2; g.beginPath(); g.arc(q[1] * W, q[2] * H, 7, 0, 7); g.fill(); g.stroke(); g.lineWidth = 1; g.fillStyle = '#f2f6fa'; g.textAlign = 'left'; g.font = '13px "JetBrains Mono",monospace'; g.fillText('Question: ' + q[0], 12, 22); g.fillStyle = '#7f90a6'; g.font = '11px "JetBrains Mono",monospace'; g.fillText('white ring = question | orange = nearest neighbours', 12, H - 12);
+}
+
+/* ---------- AGENT LAB ---------- */
+const EMP = D.demo; $('#aEmp').innerHTML = EMP.map(e => `<option value="${e.employee_id}">${esc(e.name)} | ${esc(e.department)} | id ${e.employee_id}</option>`).join('');
+const AQ = [['How many annual leave days do I have left?', 'bal'], ['Show my leave requests', 'req'], ['How much notice do I need for 12 working days?', 'pol'], ['Can I take N working days from a date?', 'both'], ['What is the office dress code?', 'none'], ['Show Maria Garcia\'s leave balance', 'other']];
+$('#aQ').innerHTML = AQ.map((q, i) => `<option value="${i}">${esc(q[0])}</option>`).join('');
+$('#aQ').onchange = () => { $('#aExtra').style.display = AQ[+$('#aQ').value][1] === 'both' ? 'flex' : 'none'; };
+const days = (a, b) => Math.round((new Date(b) - new Date(a)) / 864e5);
+const noticeNeeded = n => n >= 10 ? 30 : n >= 3 ? 14 : 7;
+let aTimer = [];
+function runAgent() {
+  aTimer.forEach(clearTimeout); aTimer = []; const e = EMP.find(x => x.employee_id == $('#aEmp').value); const [qt, kind] = AQ[+$('#aQ').value]; const lines = []; let reply = '';
+  const bal = `${e.name} (${e.department}). Annual leave: ${e.annual_total} total, ${e.annual_used} taken, ${e.annual_booked} booked, ${e.annual_remaining} remaining. Sick leave: ${e.sick_total} total, ${e.sick_used} taken, ${e.sick_remaining} remaining.`;
+  const reqs = D.dreq[e.employee_id].map(r => `${r.leave_type} ${r.start_date} to ${r.end_date} (${r.working_days} wd) - ${r.status}`);
+  lines.push(['t1', `signed in as ${e.name}; system prompt loaded (read-only, leave only)`]);
+  if (kind === 'bal') { lines.push(['t2', '[tool] get_my_leave_balance()'], ['t3', bal]); reply = `You have ${e.annual_remaining} annual leave days left (${e.annual_used} taken, ${e.annual_booked} booked).`; }
+  else if (kind === 'req') { lines.push(['t2', '[tool] list_my_leave_requests()'], ...reqs.map(r => ['t3', r])); reply = `You have ${reqs.length} requests this year. The latest is ${reqs[reqs.length - 1]}.`; }
+  else if (kind === 'pol') { lines.push(['t2', '[tool] search_leave_policy("notice for 12 working days")'], ['t3', 'Section 3.4: 10 or more working days requested: 30 calendar days notice.']); reply = 'You need 30 calendar days notice for 10 or more working days (section 3.4).'; }
+  else if (kind === 'both') {
+    const n = +$('#aDays').value, d = $('#aDate').value, need = noticeNeeded(n), away = days('2026-10-28', d);
+    lines.push(['t2', '[tool] get_my_leave_balance()'], ['t3', `${e.annual_remaining} annual days remaining`], ['t2', `[tool] search_leave_policy("notice for ${n} working days")`], ['t3', `${need} calendar days notice for ${n} working day${n > 1 ? 's' : ''} (section 3.4)`], ['t1', `check: balance ${e.annual_remaining} vs ${n}; notice ${away} days away vs ${need} needed`]);
+    const okB = e.annual_remaining >= n, okN = away >= need;
+    reply = okB && okN ? `Yes. You have ${e.annual_remaining} days left, and ${d} is ${away} days away, which covers the ${need} days notice.` : !okB && okN ? `Not as asked. The notice is fine (${away} days away, ${need} needed), but you only have ${e.annual_remaining} annual days left and asked for ${n}.` : okB && !okN ? `Not yet. You have the balance, but ${d} is only ${away} days away and ${n} working days need ${need} days notice.` : `No. You have ${e.annual_remaining} days left and the notice is too short (${away} days away, ${need} needed).`;
+  }
+  else if (kind === 'none') { lines.push(['t2', '[tool] search_leave_policy("office dress code")'], ['t3', 'Not found in the DDS leave policy.']); reply = 'I could not find that in the DDS leave policy. Please contact People & Culture.'; }
+  else { lines.push(['t1', 'guard: the tools take no name. The employee id comes from the sign-in.'], ['t2', '(no tool called)']); reply = `I can only discuss your own leave, ${e.name.split(' ')[0]}. For anyone else's information, please contact People & Culture.`; }
+  $('#aTrace').innerHTML = ''; $('#aBubble').style.display = 'none'; $('#aBubble').textContent = '';
+  lines.forEach((l, i) => aTimer.push(setTimeout(() => { const d = document.createElement('div'); d.className = 'l ' + l[0]; d.textContent = (l[0] === 't3' ? '  -> ' : '> ') + l[1]; $('#aTrace').appendChild(d); }, i * 520)));
+  aTimer.push(setTimeout(() => { $('#aBubble').style.display = 'block'; $('#aBubble').innerHTML = '<div class="tag">DecoBot (simulated reply)</div>' + esc(reply); }, lines.length * 520 + 200));
+}
+$('#aRun').onclick = runAgent;
+
+/* ---------- COST LAB ---------- */
+const MODELS = [
+ {id: 'gemini-3.8-flash', p: [[.75, 3.75], [.75, 3.75], [1.5, 7.5]], note: 'used in the notebooks'},
+ {id: 'gemini-3.6-flash', p: [[.75, 3.75], [.75, 3.75], [1.5, 7.5]]},
+ {id: 'gemini-3.5-flash-lite', p: [[.30, 2.5], [.30, 2.5], [.30, 2.5]]},
+ {id: 'gemini-3.1-flash-lite', p: [[.25, 1.5], [.25, 1.5], [.25, 1.5]]},
+ {id: 'gemini-3.1-pro-preview', p: [[2, 12], [2, 12], [2, 12]], note: 'prompts up to 200k tokens'},
+ {id: 'gemini-4-argon', p: [[2, 10], [4, 20], [4, 20]]}
+];
+$('#kModel').innerHTML = MODELS.map((m, i) => `<option value="${i}">${m.id}</option>`).join('');
+const EMB_PRICE = 0.15;
+function setPrices() { const m = MODELS[+$('#kModel').value], w = +$('#kWin').value; $('#kIn').value = m.p[w][0]; $('#kOut').value = m.p[w][1]; renderCost(); }
+function costFor(pin, pout, calls, users, qpu, k, ct) {
+  const inTok = calls * (330 + 400 + 30) + k * ct + 150 * (calls - 1), outTok = 120 + 40 * (calls - 1);
+  const perQ = inTok / 1e6 * pin + outTok / 1e6 * pout; return {inTok, outTok, perQ, month: perQ * users * qpu};
+}
+function renderCost() {
+  const calls = +segVal('#kMode'), users = +$('#kU').value, qpu = +$('#kQ').value, k = +$('#kK').value, ct = +$('#kC').value, host = +$('#kHost').value || 0, dim = +segVal('#kDim');
+  $('#oU').textContent = users; $('#oQ').textContent = qpu; $('#oKK').textContent = k; $('#oC').textContent = ct;
+  const c = costFor(+$('#kIn').value, +$('#kOut').value, calls, users, qpu, k, ct);
+  const chunks = D.secs.length, embOnce = chunks * ct / 1e6 * EMB_PRICE, qEmb = users * qpu * 30 / 1e6 * EMB_PRICE, vecKB = chunks * dim * 4 / 1024;
+  $('#kStats').innerHTML = `<div class="stat"><b>${usd(c.perQ)}</b><span>per question</span></div><div class="stat good"><b>${usd(c.month + qEmb + host)}</b><span>per month, all-in</span></div><div class="stat"><b>${usd((c.month + qEmb + host) / users)}</b><span>per employee per month</span></div><div class="stat"><b>${fmt(c.inTok)} / ${fmt(c.outTok)}</b><span>tokens in / out per question</span></div><div class="stat"><b>${usd(embOnce)}</b><span>embed the policy once</span></div><div class="stat"><b>${fmt(vecKB, 0)} KB</b><span>vectors stored (${chunks} chunks x ${dim})</span></div><div class="stat"><b>${fmt(users * qpu)}</b><span>questions per month</span></div>`;
+  const w = +$('#kWin').value; let rows = '<tr><th>Model</th><th class="num">Input $/1M</th><th class="num">Output $/1M</th><th class="num">Per question</th><th class="num">Per month</th></tr>';
+  MODELS.forEach(m => { const x = costFor(m.p[w][0], m.p[w][1], calls, users, qpu, k, ct); rows += `<tr><td>${m.id}</td><td class="num">${m.p[w][0].toFixed(2)}</td><td class="num">${m.p[w][1].toFixed(2)}</td><td class="num">${usd(x.perQ)}</td><td class="num">${usd(x.month)}</td></tr>`; });
+  $('#kTable').innerHTML = rows;
+}
+$('#kModel').onchange = $('#kWin').onchange = setPrices; ['kIn', 'kOut', 'kU', 'kQ', 'kK', 'kC', 'kHost'].forEach(id => $('#' + id).oninput = renderCost); seg('#kMode', renderCost); seg('#kDim', renderCost);
+
+/* ---------- DATA ---------- */
+$('#docCards').innerHTML = [
+ ['Used in class', 'Leave Policy v2', 'DDS-HR-POL-001 v2.0, effective 1 July 2026. 4 pages, 12 numbered sections plus a title block (13 chunks). Entitlements, notice, carry-over, sick, family leave, workflow. Replaces v1 (March 2026).', ''],
+ ['Context', 'Employee Handbook v1', '4 pages, 18 sections. Values, conduct, working hours, probation, performance, data protection, AI use, grievance. Mentions probation but gives no number.', 'am'],
+ ['Context', 'HR FAQ v1', '1 page, 6 questions: request leave, sickness, remote work, tools, harassment, case-specific questions.', ''],
+ ['Context', 'Remote Work Policy v1', '2 pages, 8 sections. Eligibility, hours, home office, security, async work, working from abroad, equipment.', 'am']
+].map(d => `<div class="card ${d[3]}"><div class="tag">${d[0]}</div><h3>${d[1]}</h3><p>${d[2]}</p></div>`).join('');
+const bars = (obj, cls) => { const m = Math.max(...Object.values(obj)); return Object.entries(obj).map(([k, v]) => `<div class="hbar ${cls || ''}" style="margin:6px 0"><span style="width:130px;flex:none">${esc(k)}</span><i style="width:${Math.max(2, v / m * 55)}%"></i><b>${v}</b></div>`).join(''); };
+$('#chType').innerHTML = bars(D.stats.types); $('#chStatus').innerHTML = bars(D.stats.status, 'am'); $('#chDept').innerHTML = bars(D.stats.dept);
+const hm = Math.max(...D.stats.rem_hist); $('#chHist').innerHTML = D.stats.rem_hist.map((v, i) => `<div style="height:${Math.max(2, v / hm * 100)}%"><span>${v}</span><em>${i * 4}-${i * 4 + 3}</em></div>`).join('');
+$('#demoTable').innerHTML = '<tr><th>Employee</th><th>Department</th><th class="num">Annual left</th><th class="num">Sick left</th><th>Use it for</th></tr>' + D.demo.map(e => `<tr><td>${esc(e.name)} (${e.employee_id})</td><td>${esc(e.department)}</td><td class="num">${e.annual_remaining}</td><td class="num">${e.sick_remaining}</td><td>${({1024: 'Asks for 5 days from 14 December: notice fine, balance not. Then carry-over.', 1025: '10 days from 7 December: balance fine, 30 days notice, date arithmetic. One pending request.', 1026: 'Refuse-to-share demo. Has a Study leave record.', 1027: 'Under 2 years of service. One rejected request.'})[e.employee_id]}</td></tr>`).join('');
+const DICT = [
+ ['employees','employee_id','INTEGER','Unique id. Primary key. Demo cast uses 1024 to 1027.','1024'],['employees','name','TEXT','Full name. First names repeat, so the tool asks which one if it is ambiguous.','Aisha Khan'],['employees','department','TEXT','One of 8 departments.','Engineering'],['employees','job_title','TEXT','Role within the department.','Software Engineer'],['employees','branch','TEXT','Office. Always Dubai HQ.','Dubai HQ'],['employees','join_date','TEXT (date)','ISO date YYYY-MM-DD. Used for service-length rules such as study leave.','2022-03-14'],['employees','annual_total','INTEGER','Annual entitlement in working days. 22 for everyone, as in the policy.','22'],['employees','annual_used','INTEGER','Approved annual working days that started on or before 2026-10-28.','15'],['employees','annual_booked','INTEGER','Approved annual working days that start after 2026-10-28.','5'],['employees','annual_remaining','INTEGER','annual_total - annual_used - annual_booked.','2'],['employees','sick_total','INTEGER','Sick entitlement in working days. 15 for everyone.','15'],['employees','sick_used','INTEGER','Approved sick working days taken.','2'],['employees','sick_remaining','INTEGER','sick_total - sick_used.','13'],
+ ['leave_requests','request_id','INTEGER','Unique id of the request. Primary key.','5001'],['leave_requests','employee_id','INTEGER','Foreign key to employees.employee_id.','1024'],['leave_requests','leave_type','TEXT','Annual, Sick, Study, Bereavement, Marriage or Paternity.','Annual'],['leave_requests','start_date','TEXT (date)','First day of leave. Always a weekday.','2026-02-09'],['leave_requests','end_date','TEXT (date)','Last day of leave. Never before start_date.','2026-02-13'],['leave_requests','working_days','INTEGER','Monday to Friday days in the range. Public holidays not removed.','5'],['leave_requests','status','TEXT','Approved, Pending, Rejected or Cancelled. Only Approved counts in balances.','Approved'],['leave_requests','requested_on','TEXT (date)','When the request was made. 14 values fall after the simulated today.','2026-01-05']
+];
+$('#dict').innerHTML = '<tr><th>Table</th><th>Column</th><th>Type</th><th>Meaning and rules</th><th>Example</th></tr>' + DICT.map(r => `<tr><td>${r[0]}</td><td style="font-family:var(--mono);font-size:13px;color:var(--fg)">${r[1]}</td><td style="font-family:var(--mono);font-size:12px;color:var(--faint)">${r[2]}</td><td>${r[3]}</td><td style="font-family:var(--mono);font-size:13px;color:var(--amber)">${r[4]}</td></tr>`).join('');
+
+/* ---------- GLOSSARY ---------- */
+const GL = [
+ ['RAG','Retrieval Augmented Generation. Find the relevant text first, then let the model answer using only that text.','Core'],['LLM','Large language model. Here: Gemini. It writes the answer.','Core'],['Embedding','A list of numbers that captures the meaning of a text. Similar meaning, similar numbers.','Core'],['Dimension','How many numbers an embedding has. gemini-embedding-001 gives 3,072 by default, and can be scaled to 1,536 or 768.','Core'],['Vector','The embedding itself, seen as a point in space.','Core'],['Cosine similarity','A score for how close two vectors point. 1 is the same direction. Used to rank chunks.','Core'],['Chunk','One piece of a document, stored and searched on its own.','Chunking'],['Chunk size','How big each chunk is. Too big is noisy, too small cuts rules in half.','Chunking'],['Overlap','The end of one chunk repeated at the start of the next, so boundary sentences stay whole.','Chunking'],['Node','LlamaIndex name for a chunk with its metadata.','LlamaIndex'],['Metadata','Extra facts stored with a chunk, such as its section title. Helps citations.','Chunking'],['top_k','How many of the best chunks are sent to the model. Too few misses the rule, too many adds noise and cost.','Retrieval'],['Retriever','The part that finds the closest chunks for a question.','Retrieval'],['Vector database','A service that stores vectors and finds the closest ones fast. Here: Pinecone.','Pinecone'],['Index (Pinecone)','One collection of vectors, like a table. It has a fixed dimension and metric.','Pinecone'],['Metric','How closeness is measured in the index. We use cosine.','Pinecone'],['Serverless','A Pinecone index type with no machines to manage. You pay for what you use.','Pinecone'],['Upsert','Insert a vector, or update it if the id already exists.','Pinecone'],['Namespace','A partition inside an index, for example one per document set.','Pinecone'],['System prompt','The job description the model reads before every question. Sets scope, rules and style.','Prompting'],['Hallucination','A confident answer that is not supported by the data. RAG and refusal rules reduce it.','Prompting'],['Temperature','How random the output is. We use a low value (0.1 to 0.2) for steady answers.','Prompting'],['Token','A piece of text the model counts and bills. About 4 characters in English.','Cost'],['Context window','The most tokens a model can read in one call.','Cost'],['Tool','A Python function the agent may call. Its docstring tells the model when to use it.','Agent'],['Agent','A model that decides which tool to call, reads the result, and decides the next step.','Agent'],['FunctionAgent','LlamaIndex class that runs the agent loop with function tools.','LlamaIndex'],['Read-only','A tool or connection that can look but not change. DecoBot never writes.','Safety'],['Parameterised query','SQL with ? placeholders so user text is data, never part of the query.','Safety'],['Structured data','Rows and columns, such as the database. Answers "what is the number?".','Data'],['Unstructured data','Free text, such as the PDFs. Answers "what is the rule?".','Data'],['Synthetic data','Made up for training. Not real people, not legal advice.','Data'],['Colab Secret','A place in Google Colab to keep an API key outside the notebook.','Tools'],['Gradio','A Python library that turns a function into a web page with a chat window.','Tools'],['Hugging Face Space','A hosted app on Hugging Face. Free CPU Spaces can run a Gradio app.','Tools']
+];
+function renderGl() { const q = $('#gSearch').value.toLowerCase(); $('#gl').innerHTML = GL.filter(g => !q || (g[0] + g[1] + g[2]).toLowerCase().includes(q)).map(g => `<div class="term"><b>${esc(g[0])}</b><span>${esc(g[1])}</span><u>${g[2]}</u></div>`).join('') || '<div class="term"><span>No term found.</span></div>'; }
+$('#gSearch').oninput = renderGl; renderGl();
+$('#stackCards').innerHTML = [
+ ['Google Colab','Where we teach','Runs the notebooks in the browser. Keys live in Colab Secrets.',''],['Gemini','Generation and embeddings','gemini-3.8-flash writes answers. gemini-embedding-001 makes vectors. Used through Google AI Studio keys.','am'],['LlamaIndex','The framework','Loads, chunks, indexes, queries, and runs the FunctionAgent with tools.',''],['Pinecone','Vector database','Stores policy vectors so they survive restarts and are shared by many users.','am'],['SQLite','The HR database','One file, two tables, read-only for the bot.',''],['Gradio','The chat page','Turns the agent into a web page.','am'],['Hugging Face Spaces','Deploy','Hosts the Gradio app. Secrets are set in Space settings.',''],['Render','Deploy (optional)','A second home for the same app. Free plans sleep when idle.','am'],['GitHub','Source','Holds the code and this page. Keys never go here.','']
+].map(s => `<div class="card ${s[3]}"><div class="tag">${s[1]}</div><h3>${s[0]}</h3><p>${s[2]}</p></div>`).join('');
+
+/* ---------- INIT ---------- */
+renderChunks(); renderRetr(); drawGrid(); setPrices(); $('#aQ').onchange();
+const secs = $$('section'); const links = $$('nav.top a');
+addEventListener('scroll', () => { let cur = ''; secs.forEach(s => { if (s.getBoundingClientRect().top < 140) cur = s.id; }); links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur)); }, {passive: true});
+
+</script>
+</body>
+</html>
